@@ -238,7 +238,8 @@ class SimConfig:
 class Sim:
     """Fully batched sim. State lives in MLX arrays; step() is 2 kernel dispatches."""
 
-    def __init__(self, pack: ScenePack, num_envs: int, cfg: SimConfig | None = None, seed: int = 0):
+    def __init__(self, pack: ScenePack, num_envs: int, cfg: SimConfig | None = None, seed: int = 0,
+                 scene_assign: np.ndarray | None = None):
         self.pack = pack
         self.cfg = cfg = cfg or SimConfig()
         self.num_envs = n = num_envs
@@ -265,7 +266,9 @@ class Sim:
                               cfg.expert_blend_radius], dtype=mx.float32)
         self.pe_i = mx.array([hg, wg, k, n], dtype=mx.int32)
 
-        self.scene = mx.array(np.arange(n, dtype=np.int32) % len(pack.scenes))
+        if scene_assign is None:
+            scene_assign = np.arange(n, dtype=np.int32) % len(pack.scenes)
+        self.scene = mx.array(scene_assign.astype(np.int32))
         self.pos = mx.zeros((n, 2), dtype=mx.float32)
         self.goal = mx.zeros((n, 2), dtype=mx.float32)
         self.goal_k = mx.zeros((n,), dtype=mx.int32)
@@ -316,6 +319,27 @@ class Sim:
         """Returns (obs, terminated, truncated); auto-resets internally."""
         self._step_raw(actions, self._zero)
         return self.obs(), self.term, self.trunc
+
+    def set_state(self, pos: np.ndarray, goal: np.ndarray, goal_k: np.ndarray) -> None:
+        """Force exact episode states (e.g. to replay failures). Resets counters."""
+        n = self.num_envs
+        self.pos = mx.array(pos.astype(np.float32))
+        self.goal = mx.array(goal.astype(np.float32))
+        self.goal_k = mx.array(goal_k.astype(np.int32))
+        self.step_ct = mx.zeros((n,), dtype=mx.int32)
+        self.term = mx.zeros((n,), dtype=mx.uint8)
+        self.trunc = mx.zeros((n,), dtype=mx.uint8)
+        self.expert_prev = mx.zeros((n, 2), dtype=mx.float32)
+        self.last_done = mx.zeros((n, 1), dtype=mx.float32)
+        self.dist_goal = mx.sqrt(mx.sum(mx.square(self.goal - self.pos), axis=1))
+        self.lidar = _lidar_kernel(
+            inputs=[self.pos, self.scene, self.edf, self.origin, self.p_f, self.p_i],
+            output_shapes=[(n, self.cfg.n_rays)],
+            output_dtypes=[mx.float32],
+            grid=(n * self.cfg.n_rays, 1, 1),
+            threadgroup=(256, 1, 1),
+        )[0]
+        mx.eval(self.pos, self.lidar)
 
     def expert_actions(self) -> mx.array:
         prev = self.expert_prev * (1.0 - self.last_done)

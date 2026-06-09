@@ -68,7 +68,7 @@ class MosaicRenderer:
         return img
 
     def frame(self, pos: np.ndarray, goal: np.ndarray, lidar: np.ndarray, scene: np.ndarray,
-              ego: bool = False) -> np.ndarray:
+              ego: bool = False, highlight: np.ndarray | None = None) -> np.ndarray:
         tiles = []
         for i in self.env_ids:
             s = int(scene[i])
@@ -85,7 +85,10 @@ class MosaicRenderer:
             cv2.circle(img, self._to_px(s, goal[i]), 5, (50, 50, 230), -1)
             cv2.circle(img, ppx, max(2, int(self.sim.cfg.robot_radius / self.cell * self.scale)),
                        (60, 160, 30), -1)
-            cv2.rectangle(img, (0, 0), (self.tile_w - 1, self.tile_h - 1), (180, 180, 180), 1)
+            if highlight is not None and highlight[i]:
+                cv2.rectangle(img, (0, 0), (self.tile_w - 1, self.tile_h - 1), (60, 60, 220), 3)
+            else:
+                cv2.rectangle(img, (0, 0), (self.tile_w - 1, self.tile_h - 1), (180, 180, 180), 1)
             if ego:
                 img = np.concatenate([img, self.ego_tile(lidar[i], goal[i] - pos[i])], axis=1)
             tiles.append(img)
