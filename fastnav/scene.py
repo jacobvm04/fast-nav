@@ -272,10 +272,15 @@ class ScenePack:
         self.geo_hw = (hg, wg)
 
     @staticmethod
-    def load_dir(path: str | Path) -> "ScenePack":
+    def load_dir(path: str | Path, include: list[str] | None = None) -> "ScenePack":
+        """Load scenes from a directory, optionally filtered by fnmatch patterns on the stem."""
+        import fnmatch
+
         files = sorted(Path(path).glob("*.npz"))
+        if include is not None:
+            files = [f for f in files if any(fnmatch.fnmatch(f.stem, p) for p in include)]
         if not files:
-            raise FileNotFoundError(f"no scene .npz files in {path}")
+            raise FileNotFoundError(f"no scene .npz files in {path} (include={include})")
         return ScenePack([Scene.load(f) for f in files])
 
     def start_range_for(self, min_geo: float, max_geo: float) -> np.ndarray:

@@ -75,6 +75,21 @@ scripts/                preprocess, bench, collect_demos, render_mosaic
 tests/                  kernel correctness vs numpy reference
 ```
 
+## DAgger training (MLX-native, GPU-resident)
+
+`scripts/train_dagger.py` runs hyper-online DAgger: PPO-shaped loop (rollout chunk
+with the current policy → expert kernel labels every visited state → GPU ring buffer
+→ compiled minibatch Adam updates), no transition ever touching host memory.
+83k-param MLP (lidar+goal → velocity), continuous single-step actions.
+
+Scene split: train on all sc0/sc1 furniture layouts (19), hold out all sc2/sc3 (6).
+Baseline result on M2 Max: ~4.7M frames/s end-to-end; 99.7% success on train
+layouts and ~89-90% on held-out layouts after 131M frames (~1 min wall clock).
+
+```bash
+uv run python scripts/train_dagger.py --iters 1600 --eval-every 200
+```
+
 ## Next steps (not yet built)
 
 - Reward design + PPO via pufferlib (3.0 trainer takes the env instance directly;
