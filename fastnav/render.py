@@ -12,29 +12,48 @@ from fastnav.sim import Sim
 
 
 class MosaicRenderer:
-    def __init__(self, sim: Sim, env_ids: list[int], cols: int = 6, tile_h: int = 290):
+    def __init__(self, sim: Sim, env_ids: list[int], cols: int = 6, tile_h: int = 290,
+                 tile_w: int | None = None):
         self.sim = sim
         self.env_ids = env_ids
         self.cols = cols
         pack = sim.pack
-        h, w = pack.grid_hw
-        self.scale = tile_h / h
         self.tile_h = tile_h
-        self.tile_w = int(w * self.scale)
-        self.bgs = []
-        for occ in pack.occupancy:
-            img = np.full((*occ.shape, 3), 245, dtype=np.uint8)
-            img[occ > 0] = (60, 50, 45)
-            self.bgs.append(cv2.resize(img, (self.tile_w, tile_h), interpolation=cv2.INTER_AREA))
+        self.tile_w = tile_w or tile_h
         self.origin = pack.origin
         self.cell = pack.cell
+        # scenes share a padded grid; crop each to its own free-space extent so
+        # small scenes fill their tile instead of floating in padding
+        self.bgs, self.scales, self.crop0, self.paste0 = [], [], [], []
+        for occ in pack.occupancy:
+            ys, xs = np.nonzero(occ == 0)
+            m = 4
+            y0, y1 = max(ys.min() - m, 0), min(ys.max() + m, occ.shape[0])
+            x0, x1 = max(xs.min() - m, 0), min(xs.max() + m, occ.shape[1])
+            crop = occ[y0:y1, x0:x1]
+            scale = min(self.tile_w / crop.shape[1], self.tile_h / crop.shape[0])
+            w_px = max(int(crop.shape[1] * scale), 1)
+            h_px = max(int(crop.shape[0] * scale), 1)
+            sub = np.full((*crop.shape, 3), 245, dtype=np.uint8)
+            sub[crop > 0] = (60, 50, 45)
+            sub = cv2.resize(sub, (w_px, h_px), interpolation=cv2.INTER_AREA)
+            tile = np.full((self.tile_h, self.tile_w, 3), 235, dtype=np.uint8)
+            py = (self.tile_h - h_px) // 2
+            px = (self.tile_w - w_px) // 2
+            tile[py:py + h_px, px:px + w_px] = sub
+            self.bgs.append(tile)
+            self.scales.append(scale)
+            self.crop0.append((x0, y0))
+            self.paste0.append((px, py))
         self.trails: dict[int, deque] = {i: deque(maxlen=50) for i in env_ids}
         r = sim.cfg.n_rays
         self.ray_dirs = np.stack([np.cos(2 * np.pi * np.arange(r) / r),
                                   np.sin(2 * np.pi * np.arange(r) / r)], axis=1).astype(np.float32)
 
     def _to_px(self, s: int, xy: np.ndarray) -> np.ndarray:
-        return ((xy - self.origin[s]) / self.cell * self.scale).astype(np.int32)
+        g = (xy - self.origin[s]) / self.cell
+        g = g - np.array(self.crop0[s])
+        return (g * self.scales[s] + np.array(self.paste0[s])).astype(np.int32)
 
     def ego_tile(self, lidar_row: np.ndarray, rel_goal: np.ndarray, size: int | None = None) -> np.ndarray:
         """What the policy sees: lidar ranges + relative goal, agent-centered.
@@ -83,7 +102,7 @@ class MosaicRenderer:
                 a = j / len(self.trails[i])
                 cv2.circle(img, self._to_px(s, tp), 1, (140 + int(60 * a), 190, 140), -1)
             cv2.circle(img, self._to_px(s, goal[i]), 5, (50, 50, 230), -1)
-            cv2.circle(img, ppx, max(2, int(self.sim.cfg.robot_radius / self.cell * self.scale)),
+            cv2.circle(img, ppx, max(2, int(self.sim.cfg.robot_radius / self.cell * self.scales[s])),
                        (60, 160, 30), -1)
             if highlight is not None and highlight[i]:
                 cv2.rectangle(img, (0, 0), (self.tile_w - 1, self.tile_h - 1), (60, 60, 220), 3)
