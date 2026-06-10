@@ -38,6 +38,9 @@ def main():
     ap.add_argument("--video-every", type=int, default=800)
     ap.add_argument("--noise", type=float, default=0.0,
                     help="sim2real noise level in training rollouts (1.0 = realistic)")
+    ap.add_argument("--collision-penalty", type=float, default=0.25)
+    ap.add_argument("--clear-coef", type=float, default=0.05)
+    ap.add_argument("--clear-margin", type=float, default=0.10)
     args = ap.parse_args()
 
     train_pack = ScenePack.load_dir(args.scenes, include=args.train_include, max_cells=args.max_cells)
@@ -49,7 +52,9 @@ def main():
     train_cfg = noisy_config(scfg, args.noise) if args.noise > 0 else scfg
     sim = Sim(train_pack, num_envs=args.envs, cfg=train_cfg, seed=args.seed)
     sim.reset()
-    pcfg = PPOConfig(lr=args.lr, entropy_coef=args.entropy_coef, init_std=args.init_std)
+    pcfg = PPOConfig(lr=args.lr, entropy_coef=args.entropy_coef, init_std=args.init_std,
+                     collision_penalty=args.collision_penalty, clear_coef=args.clear_coef,
+                     clear_margin=args.clear_margin)
     init = args.init if args.init and Path(args.init).exists() else None
     trainer = PPOTrainer(sim, pcfg, seed=args.seed, init_weights=init)
     n_params = sum(v.size for _, v in tree_flatten(trainer.policy.parameters()))
