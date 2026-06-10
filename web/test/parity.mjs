@@ -9,12 +9,14 @@ import { Sim } from '../js/sim.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const fixture = JSON.parse(readFileSync(join(here, 'fixture.json'), 'utf8'));
-const manifest = JSON.parse(readFileSync(join(here, '../policy.json'), 'utf8'));
-const bin = readFileSync(join(here, '../policy.bin'));
+const manifest = JSON.parse(readFileSync(join(here, '../policies.json'), 'utf8'));
+const entry = manifest.policies.find((p) => p.id === 'ppo-clean');
+const bin = readFileSync(join(here, '..', entry.file));
 
 const occ = new Uint8Array(Buffer.from(fixture.occupancy_b64, 'base64'));
 const sim = new Sim(occ, fixture.h, fixture.w, fixture.cell, fixture.origin, manifest.sim);
-const policy = new Policy(manifest, bin.buffer.slice(bin.byteOffset, bin.byteOffset + bin.byteLength));
+const policy = new Policy({ ...entry, sim: manifest.sim, val_scale: manifest.val_scale },
+  bin.buffer.slice(bin.byteOffset, bin.byteOffset + bin.byteLength));
 
 // 1. EDF parity vs scipy (row 128 of the training-time field)
 const refBuf = Buffer.from(fixture.edf_row128_b64, 'base64');

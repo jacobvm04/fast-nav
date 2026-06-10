@@ -96,10 +96,13 @@ export class Policy {
   }
 }
 
-export async function loadPolicy(baseUrl = '.') {
-  const [manifest, bin] = await Promise.all([
-    fetch(`${baseUrl}/policy.json`).then((r) => r.json()),
-    fetch(`${baseUrl}/policy.bin`).then((r) => r.arrayBuffer()),
-  ]);
-  return new Policy(manifest, bin);
+// policies.json holds shared sim config + per-policy tensor manifests.
+export async function loadManifest(baseUrl = '.') {
+  return fetch(`${baseUrl}/policies.json`).then((r) => r.json());
+}
+
+export async function loadPolicy(manifest, id, baseUrl = '.') {
+  const entry = manifest.policies.find((p) => p.id === id) || manifest.policies[0];
+  const bin = await fetch(`${baseUrl}/${entry.file}`).then((r) => r.arrayBuffer());
+  return new Policy({ ...entry, sim: manifest.sim, val_scale: manifest.val_scale }, bin);
 }

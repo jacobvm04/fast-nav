@@ -30,6 +30,12 @@ MAX_CELLS = 500_000  # same filter as training eval packs
 POLICY_TENSORS = ["enc.weight", "enc.bias", "gru.Wx", "gru.Wh", "gru.b", "gru.bhn",
                   "head.weight", "head.bias", "vhead.weight", "vhead.bias"]
 
+# (id, label, checkpoint) — exported in order; first existing one is the app default
+POLICIES = [
+    ("ppo-clean", "PPO · clean-trained", "checkpoints/ppo/policy_best.safetensors"),
+    ("ppo-noisy", "PPO · noise-trained (DR 1.5)", "checkpoints/ppo_noisy/policy_best.safetensors"),
+]
+
 
 def export_scenes(scenes_dir: Path, out: Path) -> None:
     out_scenes = out / "scenes"
@@ -58,33 +64,51 @@ def export_scenes(scenes_dir: Path, out: Path) -> None:
     print(f"exported {len(index)} scenes -> {out_scenes}")
 
 
-def export_policy(ckpt: Path, out: Path) -> None:
+def export_policies(out: Path) -> None:
+    import dataclasses
+
     import mlx.core as mx
 
-    from fastnav.sim import SimConfig
+    from fastnav.sim import SimConfig, noisy_config
 
-    weights = mx.load(str(ckpt))
+    out_pol = out / "policies"
+    out_pol.mkdir(parents=True, exist_ok=True)
     cfg = SimConfig()
-    blob = bytearray()
-    tensors = {}
-    for name in POLICY_TENSORS:
-        a = np.array(weights[name], dtype=np.float32)
-        tensors[name] = {"shape": list(a.shape), "offset": len(blob) // 4}
-        blob += a.tobytes()  # little-endian on every platform we care about
-    (out / "policy.bin").write_bytes(bytes(blob))
+    entries = []
+    for pid, label, ckpt in POLICIES:
+        if not Path(ckpt).exists():
+            print(f"skipping {pid}: {ckpt} not found")
+            continue
+        weights = mx.load(ckpt)
+        blob = bytearray()
+        tensors = {}
+        for name in POLICY_TENSORS:
+            a = np.array(weights[name], dtype=np.float32)
+            tensors[name] = {"shape": list(a.shape), "offset": len(blob) // 4}
+            blob += a.tobytes()  # little-endian on every platform we care about
+        (out_pol / f"{pid}.bin").write_bytes(bytes(blob))
+        entries.append({
+            "id": pid, "label": label, "checkpoint": ckpt,
+            "file": f"policies/{pid}.bin", "tensors": tensors,
+            "arch": {"hidden": 256, "enc": 256, "use_pos": False},
+        })
+        print(f"exported {pid} ({len(blob) / 1e6:.1f} MB) <- {ckpt}")
+
+    # per-step/per-episode noise sigmas at level 1.0 (the sim2real stack)
+    noise = {f.name: getattr(noisy_config(cfg, 1.0), f.name)
+             for f in dataclasses.fields(cfg)
+             if f.name.startswith(("lidar_", "odom_", "head_", "act_")) and "goal" not in f.name}
     manifest = {
-        "checkpoint": str(ckpt),
-        "tensors": tensors,
-        "arch": {"hidden": 256, "enc": 256, "use_pos": False},
+        "policies": entries,
         "sim": {
             "n_rays": cfg.n_rays, "max_range": cfg.max_range, "dt": cfg.dt,
             "v_max": cfg.v_max, "robot_radius": cfg.robot_radius,
             "goal_radius": cfg.goal_radius, "max_steps": cfg.max_steps,
         },
+        "noise_stack": noise,  # multiply by UI level (1.0 = realistic)
         "val_scale": 20.0,  # value head output * this = est. cost-to-go in meters
     }
-    (out / "policy.json").write_text(json.dumps(manifest, indent=1))
-    print(f"exported policy ({len(blob) // 4} floats, {len(blob) / 1e6:.1f} MB) -> {out / 'policy.bin'}")
+    (out / "policies.json").write_text(json.dumps(manifest, indent=1))
 
 
 def export_fixture(scenes_dir: Path, ckpt: Path, out: Path, scene_name: str, steps: int) -> None:
@@ -167,7 +191,7 @@ def main() -> None:
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     export_scenes(Path(args.scenes), out)
-    export_policy(Path(args.ckpt), out)
+    export_policies(out)
     if args.fixture:
         export_fixture(Path(args.scenes), Path(args.ckpt), out,
                        args.fixture_scene, args.fixture_steps)

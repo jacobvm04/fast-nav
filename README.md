@@ -115,6 +115,45 @@ under the policy's own information state.
 uv run python scripts/train_ppo.py --init checkpoints/gru256_bc/policy.safetensors
 ```
 
+## Sim2real noise model
+
+In-kernel sensor/actuator noise (`SimConfig`, all default 0): lidar range noise +
+dropouts; SE(2) **odometry drift** (distance-scaled random walk + per-episode
+calibration bias/scale — observations use the believed pose only); **heading drift**
+(rotates the executed command and the reported lidar ring coherently); actuation
+scale/additive noise. Expert and PPO reward stay privileged (asymmetric training).
+
+Zero-shot, the clean-trained policy holds 94.5% under the full realistic stack
+(98.0% at 0.5 m radius — most strict-radius loss is the physical drift floor, not
+navigation failure). Odometry drift is the only component that materially bites;
+heading drift is largely neutralized by the dihedral augmentation, and lidar /
+actuation noise are free. PPO fine-tuning with 1.5x noise in rollouts
+(`scripts/train_ppo.py --noise 1.5`) buys +1.6 at realistic and +8.4 at severe
+levels for -1.3 clean. `scripts/noise_sweep.py` reproduces the grid.
+
+## Browser demo (held-out scenes, click-to-navigate)
+
+`web/` is a dependency-free static app: pick any held-out scene (ReplicaCAD sc2/sc3 +
+ProcTHOR Val/Test), click to set a goal, and watch the PPO policy navigate live.
+Shift-click teleports the robot; speed up to 8× real time. The sim is a 1:1 JS port of
+the Metal kernels (the browser recomputes the signed EDF from a 1-bit occupancy PNG with
+an exact Felzenszwalb EDT), and the GRU-256 policy runs in plain JS at ~1 ms/step — no
+WASM/WebGPU needed at one robot. The HUD shows the policy's own distance-to-go estimate,
+recovered by inverting the critic (progress reward + discounted success bonus).
+
+The sim2real noise stack is in the browser too — a noise control scales `noisy_config`
+(off/½×/1×/2×), and with noise on the policy navigates on its believed odometry pose,
+drawn as a dashed ghost ring with a live drift readout. At 2× you can watch the
+dominant failure mode live: the robot parks at where it *believes* the goal is. A
+policy picker switches between the clean-trained and noise-trained (`--noise 1.5`)
+checkpoints to compare robustness.
+
+```bash
+uv run python scripts/export_web.py   # scenes + policy -> web/ (add --fixture for parity data)
+node web/test/parity.mjs              # JS sim+policy vs MLX: EDF exact, same trajectory
+python3 -m http.server -d web 8473    # -> http://localhost:8473
+```
+
 ## Next steps (not yet built)
 
 - Reward design + PPO via pufferlib (3.0 trainer takes the env instance directly;

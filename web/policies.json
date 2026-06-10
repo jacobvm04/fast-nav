@@ -1,0 +1,181 @@
+{
+ "policies": [
+  {
+   "id": "ppo-clean",
+   "label": "PPO \u00b7 clean-trained",
+   "checkpoint": "checkpoints/ppo/policy_best.safetensors",
+   "file": "policies/ppo-clean.bin",
+   "tensors": {
+    "enc.weight": {
+     "shape": [
+      256,
+      70
+     ],
+     "offset": 0
+    },
+    "enc.bias": {
+     "shape": [
+      256
+     ],
+     "offset": 17920
+    },
+    "gru.Wx": {
+     "shape": [
+      768,
+      256
+     ],
+     "offset": 18176
+    },
+    "gru.Wh": {
+     "shape": [
+      768,
+      256
+     ],
+     "offset": 214784
+    },
+    "gru.b": {
+     "shape": [
+      768
+     ],
+     "offset": 411392
+    },
+    "gru.bhn": {
+     "shape": [
+      256
+     ],
+     "offset": 412160
+    },
+    "head.weight": {
+     "shape": [
+      2,
+      256
+     ],
+     "offset": 412416
+    },
+    "head.bias": {
+     "shape": [
+      2
+     ],
+     "offset": 412928
+    },
+    "vhead.weight": {
+     "shape": [
+      1,
+      256
+     ],
+     "offset": 412930
+    },
+    "vhead.bias": {
+     "shape": [
+      1
+     ],
+     "offset": 413186
+    }
+   },
+   "arch": {
+    "hidden": 256,
+    "enc": 256,
+    "use_pos": false
+   }
+  },
+  {
+   "id": "ppo-noisy",
+   "label": "PPO \u00b7 noise-trained (DR 1.0)",
+   "checkpoint": "checkpoints/ppo_noisy/policy_best.safetensors",
+   "file": "policies/ppo-noisy.bin",
+   "tensors": {
+    "enc.weight": {
+     "shape": [
+      256,
+      70
+     ],
+     "offset": 0
+    },
+    "enc.bias": {
+     "shape": [
+      256
+     ],
+     "offset": 17920
+    },
+    "gru.Wx": {
+     "shape": [
+      768,
+      256
+     ],
+     "offset": 18176
+    },
+    "gru.Wh": {
+     "shape": [
+      768,
+      256
+     ],
+     "offset": 214784
+    },
+    "gru.b": {
+     "shape": [
+      768
+     ],
+     "offset": 411392
+    },
+    "gru.bhn": {
+     "shape": [
+      256
+     ],
+     "offset": 412160
+    },
+    "head.weight": {
+     "shape": [
+      2,
+      256
+     ],
+     "offset": 412416
+    },
+    "head.bias": {
+     "shape": [
+      2
+     ],
+     "offset": 412928
+    },
+    "vhead.weight": {
+     "shape": [
+      1,
+      256
+     ],
+     "offset": 412930
+    },
+    "vhead.bias": {
+     "shape": [
+      1
+     ],
+     "offset": 413186
+    }
+   },
+   "arch": {
+    "hidden": 256,
+    "enc": 256,
+    "use_pos": false
+   }
+  }
+ ],
+ "sim": {
+  "n_rays": 64,
+  "max_range": 6.0,
+  "dt": 0.1,
+  "v_max": 1.5,
+  "robot_radius": 0.18,
+  "goal_radius": 0.25,
+  "max_steps": 512
+ },
+ "noise_stack": {
+  "lidar_sigma": 0.02,
+  "lidar_dropout": 0.02,
+  "odom_rw": 0.03,
+  "odom_bias": 0.02,
+  "odom_scale": 0.02,
+  "head_rw": 0.005,
+  "head_bias": 0.003,
+  "act_noise": 0.1,
+  "act_scale": 0.05
+ },
+ "val_scale": 20.0
+}

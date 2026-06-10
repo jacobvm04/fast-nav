@@ -106,6 +106,16 @@
   <h1>fast-<span>nav</span> · held-out scenes, live policy</h1>
   <select id="scene"></select>
   <button id="shuffle" title="random held-out scene">⚄ random</button>
+  <select id="policy" title="which checkpoint drives the robot"></select>
+  <div class="ctl" title="sim2real noise: lidar noise+dropout, odometry/heading drift, actuation error (1× = realistic)">
+    noise
+    <div class="seg" id="noise">
+      <button data-x="0" class="on">off</button>
+      <button data-x="0.5">½×</button>
+      <button data-x="1">1×</button>
+      <button data-x="2">2×</button>
+    </div>
+  </div>
   <div class="ctl">
     speed
     <div class="seg" id="speed">
@@ -120,6 +130,7 @@
   <div id="stats">
     <span>goals <b id="s-succ">0/0</b></span>
     <span>steps <b id="s-steps">–</b></span>
+    <span>drift <b id="s-drift">–</b></span>
     <span>policy est. <b id="s-val">–</b></span>
     <span>compute <b id="s-ms">–</b></span>
   </div>
@@ -128,6 +139,7 @@
   <canvas id="canvas"></canvas>
   <div id="status">loading…</div>
   <div id="hint">click — set goal · shift-click — teleport robot<br>
+    with noise on, the hollow ring is where the robot <i>believes</i> it is<br>
     GRU-256 PPO policy (~98% held-out success) · sim + inference in plain JS</div>
   <div id="loading">loading policy + scenes…</div>
 </div>

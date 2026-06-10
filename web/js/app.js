@@ -2,7 +2,7 @@
 // policy navigate. Physics is the exact training sim (sim.js) at dt = 0.1 s;
 // rendering interpolates between physics states at display refresh rate.
 
-import { loadPolicy } from './policy.js';
+import { loadManifest, loadPolicy } from './policy.js';
 import { Sim } from './sim.js';
 
 const $ = (id) => document.getElementById(id);
@@ -10,7 +10,10 @@ const canvas = $('canvas');
 const ctx = canvas.getContext('2d');
 
 const state = {
+  manifest: null,
   policy: null,
+  policyBins: {},      // id -> Policy (loaded lazily)
+  noiseLevel: 0,
   index: [],
   sim: null,
   comp: null,          // Int32Array component label per cell (-1 = blocked)
@@ -123,7 +126,8 @@ async function setScene(name) {
   const meta = state.index.find((m) => m.name === name);
   $('status').textContent = `loading ${meta.name}…`;
   const occ = await loadOccupancy(meta);
-  const sim = new Sim(occ, meta.h, meta.w, meta.cell, meta.origin, state.policy.simCfg);
+  const sim = new Sim(occ, meta.h, meta.w, meta.cell, meta.origin, state.manifest.sim);
+  sim.setNoise(state.manifest.noise_stack, state.noiseLevel);
   state.sim = sim;
   Object.assign(state, labelComponents(sim));
   state.mapCanvas = renderMapBitmap(sim);
@@ -197,6 +201,8 @@ function physicsStep() {
   state.trail.push([...sim.pos]);
   if (state.trail.length > 8192) state.trail.shift();
   $('s-steps').textContent = `${sim.stepCount}`;
+  $('s-drift').textContent = state.noiseLevel > 0
+    ? `${Math.hypot(sim.pos[0] - sim.odom[0], sim.pos[1] - sim.odom[1]).toFixed(2)} m` : '–';
   $('s-val').textContent = `${criticToMeters(policy.value).toFixed(1)} m to go`;
   $('s-ms').textContent = `${state.stepMs.toFixed(2)} ms/step`;
   if (reached) {
@@ -250,7 +256,7 @@ function draw(now) {
   if (state.mode === 'running' || state.mode === 'success') {
     ctx.lineWidth = 1;
     for (let r = 0; r < sim.cfg.n_rays; r++) {
-      const th = (2 * Math.PI * r) / sim.cfg.n_rays;
+      const th = (2 * Math.PI * r) / sim.cfg.n_rays + sim.odom[2];
       const d = sim.lidar[r];
       const [hx, hy] = W2S(rx + Math.cos(th) * d, ry + Math.sin(th) * d);
       ctx.strokeStyle = 'rgba(76, 201, 240, 0.07)';
@@ -303,8 +309,30 @@ function draw(now) {
     }
   }
 
-  // robot
+  // believed pose (odometry) ghost — only meaningful with noise on
   const rr = Math.max(sim.cfg.robot_radius * s, 4);
+  if (state.noiseLevel > 0 && state.mode !== 'idle') {
+    const [bx, by] = W2S(sim.odom[0], sim.odom[1]);
+    if (Math.hypot(bx - prx, by - pry) > 2) {
+      ctx.strokeStyle = 'rgba(200, 160, 255, 0.35)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 4]);
+      ctx.beginPath();
+      ctx.moveTo(prx, pry);
+      ctx.lineTo(bx, by);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    ctx.strokeStyle = 'rgba(200, 160, 255, 0.85)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4, 3]);
+    ctx.beginPath();
+    ctx.arc(bx, by, rr, 0, 7);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // robot
   ctx.fillStyle = 'rgba(76, 201, 240, 0.18)';
   ctx.beginPath();
   ctx.arc(prx, pry, rr * 1.8, 0, 7);
@@ -379,7 +407,7 @@ function onClick(ev) {
     return;
   }
   sim.goal = [wx, wy];
-  sim.stepCount = 0;
+  sim.newEpisode();       // re-anchor odometry, resample per-episode noise
   state.policy.reset();   // new episode: hidden state + prev action reset
   state.acc = 0;
   state.mode = 'running';
@@ -389,13 +417,40 @@ function onClick(ev) {
 }
 
 async function main() {
-  const [policy, index] = await Promise.all([
-    loadPolicy('.'),
+  const [manifest, index] = await Promise.all([
+    loadManifest('.'),
     fetch('scene_index.json').then((r) => r.json()),
   ]);
-  state.policy = policy;
+  state.manifest = manifest;
+  state.policy = await loadPolicy(manifest, manifest.policies[0].id, '.');
+  state.policyBins[manifest.policies[0].id] = state.policy;
   state.index = index;
-  state.obsBuf = new Float32Array(policy.obsDim);
+  state.obsBuf = new Float32Array(state.policy.obsDim);
+
+  const psel = $('policy');
+  for (const p of manifest.policies) {
+    const o = document.createElement('option');
+    o.value = p.id;
+    o.textContent = p.label;
+    psel.appendChild(o);
+  }
+  psel.onchange = async () => {
+    if (!state.policyBins[psel.value]) {
+      state.policyBins[psel.value] = await loadPolicy(manifest, psel.value, '.');
+    }
+    state.policy = state.policyBins[psel.value];
+    state.policy.reset();
+    if (state.sim && state.mode === 'running') state.sim.newEpisode(); // restart episode cleanly
+  };
+
+  for (const b of $('noise').querySelectorAll('button')) {
+    b.onclick = () => {
+      state.noiseLevel = parseFloat(b.dataset.x);
+      $('noise').querySelectorAll('button').forEach((x) => x.classList.toggle('on', x === b));
+      if (state.sim) state.sim.setNoise(manifest.noise_stack, state.noiseLevel);
+      $('s-drift').textContent = state.noiseLevel > 0 ? '0.00 m' : '–';
+    };
+  }
 
   const sel = $('scene');
   for (const group of [...new Set(index.map((m) => m.group))]) {
