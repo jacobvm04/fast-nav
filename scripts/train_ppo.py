@@ -41,6 +41,8 @@ def main():
     ap.add_argument("--collision-penalty", type=float, default=0.25)
     ap.add_argument("--clear-coef", type=float, default=0.05)
     ap.add_argument("--clear-margin", type=float, default=0.10)
+    ap.add_argument("--train-contact-margin", type=float, default=None,
+                    help="inflated contact-terminal margin during training (eval stays at default)")
     args = ap.parse_args()
 
     train_pack = ScenePack.load_dir(args.scenes, include=args.train_include, max_cells=args.max_cells)
@@ -48,8 +50,12 @@ def main():
     eval2_pack = ScenePack.load_dir(args.scenes, include=args.eval2_include, max_cells=args.max_cells)
     print(f"train {len(train_pack.scenes)} / eval {len(eval_pack.scenes)} / eval2 {len(eval2_pack.scenes)} scenes")
 
+    import dataclasses
+
     scfg = SimConfig()
     train_cfg = noisy_config(scfg, args.noise) if args.noise > 0 else scfg
+    if args.train_contact_margin is not None:
+        train_cfg = dataclasses.replace(train_cfg, contact_margin=args.train_contact_margin)
     sim = Sim(train_pack, num_envs=args.envs, cfg=train_cfg, seed=args.seed)
     sim.reset()
     pcfg = PPOConfig(lr=args.lr, entropy_coef=args.entropy_coef, init_std=args.init_std,
