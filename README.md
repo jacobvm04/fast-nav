@@ -148,6 +148,12 @@ dominant failure mode live: the robot parks at where it *believes* the goal is. 
 policy picker switches between the clean-trained and noise-trained (`--noise 1.5`)
 checkpoints to compare robustness.
 
+Obstacle brushes make the generalization case directly: paint walls (or erase them)
+while the robot drives — the EDF, lidar, and reachability are rebuilt live (~15 ms
+exact EDT recompute), so you can block its route mid-run and watch it replan around
+geometry that exists in no training scene. Sealing the goal off entirely raises a
+live warning; "reset map" restores the original scene.
+
 ```bash
 uv run python scripts/export_web.py   # scenes + policy -> web/ (add --fixture for parity data)
 node web/test/parity.mjs              # JS sim+policy vs MLX: EDF exact, same trajectory

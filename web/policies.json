@@ -80,7 +80,7 @@
   },
   {
    "id": "ppo-noisy",
-   "label": "PPO \u00b7 noise-trained (DR 1.0)",
+   "label": "PPO \u00b7 noise-trained (DR 1.5)",
    "checkpoint": "checkpoints/ppo_noisy/policy_best.safetensors",
    "file": "policies/ppo-noisy.bin",
    "tensors": {

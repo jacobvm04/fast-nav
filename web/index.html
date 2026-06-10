@@ -81,6 +81,36 @@
   #status.success { border-color: rgba(122, 229, 130, 0.5); color: var(--green); }
   #status.warn { border-color: rgba(255, 209, 102, 0.5); color: var(--amber); }
   #status.error { border-color: rgba(255, 107, 107, 0.5); color: var(--red); }
+  #tools {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(13, 18, 32, 0.92);
+    border: 1px solid var(--edge);
+    border-radius: 10px;
+    padding: 8px 10px;
+  }
+  #tools .lbl { color: var(--dim); font-size: 11.5px; }
+  #brush { width: 80px; accent-color: var(--cyan); }
+  #scanpanel {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 250px;
+    background: rgba(13, 18, 32, 0.92);
+    border: 1px solid var(--edge);
+    border-radius: 10px;
+    padding: 10px 12px 8px;
+    pointer-events: none;
+  }
+  #scanpanel .label { color: var(--text); font-weight: 600; margin-bottom: 2px; }
+  #scanpanel .sub { color: var(--dim); font-size: 10.5px; line-height: 1.5; }
+  #scanpanel .sub i { font-style: normal; }
+  #scan { position: static; display: block; width: 226px; height: 226px; cursor: default; }
+  @media (max-width: 980px) { #scanpanel { display: none; } }
   #hint {
     position: absolute;
     right: 14px;
@@ -105,7 +135,7 @@
 <header>
   <h1>fast-<span>nav</span> · held-out scenes, live policy</h1>
   <select id="scene"></select>
-  <button id="shuffle" title="random held-out scene">⚄ random</button>
+  <button id="shuffle" title="random held-out scene">🎲 random</button>
   <select id="policy" title="which checkpoint drives the robot"></select>
   <div class="ctl" title="sim2real noise: lidar noise+dropout, odometry/heading drift, actuation error (1× = realistic)">
     noise
@@ -137,8 +167,25 @@
 </header>
 <div id="stage">
   <canvas id="canvas"></canvas>
+  <div id="tools">
+    <div class="seg" id="tool">
+      <button data-t="nav" class="on" title="click to set goals">navigate</button>
+      <button data-t="wall" title="drag to paint obstacles">+ wall</button>
+      <button data-t="erase" title="drag to erase obstacles">− erase</button>
+    </div>
+    <span class="lbl">size</span>
+    <input id="brush" type="range" min="0.1" max="0.8" step="0.05" value="0.3"
+           title="brush radius (meters)">
+    <button id="resetmap" title="restore the original scene geometry">reset map</button>
+  </div>
+  <div id="scanpanel">
+    <div class="label">what the robot sees</div>
+    <canvas id="scan"></canvas>
+    <div class="sub">the policy's entire input: 64 lidar ranges (6 m max), in its believed frame<br>
+      <i style="color:#ffd166">●</i> goal vector · <i style="color:#4cc9f0">●</i> previous action</div>
+  </div>
   <div id="status">loading…</div>
-  <div id="hint">click — set goal · shift-click — teleport robot<br>
+  <div id="hint">click — set goal · shift-click — teleport robot · brushes — redraw the scene mid-run<br>
     with noise on, the hollow ring is where the robot <i>believes</i> it is<br>
     GRU-256 PPO policy (~98% held-out success) · sim + inference in plain JS</div>
   <div id="loading">loading policy + scenes…</div>

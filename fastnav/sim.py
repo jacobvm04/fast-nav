@@ -136,6 +136,9 @@ _STEP_SRC = """
         ep4 = p_f[13] * rnd_n[i * 10 + 9];
     }
 
+    float fgx = (px - ox) * inv_cell, fgy = (py - oy) * inv_cell;
+    clear_out[i] = bilin(edf, ebase, H, W, fgx, fgy) - radius;
+
     odom_out[i * 3] = odx;
     odom_out[i * 3 + 1] = ody;
     odom_out[i * 3 + 2] = oth;
@@ -237,7 +240,7 @@ _step_kernel = mx.fast.metal_kernel(
                  "starts", "goals_all", "pool", "pool_cnt", "odom_st", "ep_n", "rnd",
                  "rnd_n", "force_reset", "p_f", "p_i"],
     output_names=["pos_out", "goal_out", "goal_k_out", "step_out", "term_out", "trunc_out",
-                  "dist_out", "odom_out", "ep_out"],
+                  "dist_out", "odom_out", "ep_out", "clear_out"],
     source=_STEP_SRC,
     header=_HEADER,
 )
@@ -386,14 +389,14 @@ class Sim:
                     self.edf, self.origin, self.starts, self.goals_all, self.pool,
                     self.pool_cnt, self.odom, self.ep_noise, rnd, rnd_n, force_reset,
                     self.p_f, self.p_i],
-            output_shapes=[(n, 2), (n, 2), (n,), (n,), (n,), (n,), (n,), (n, 3), (n, 5)],
+            output_shapes=[(n, 2), (n, 2), (n,), (n,), (n,), (n,), (n,), (n, 3), (n, 5), (n,)],
             output_dtypes=[mx.float32, mx.float32, mx.int32, mx.int32, mx.uint8, mx.uint8,
-                           mx.float32, mx.float32, mx.float32],
+                           mx.float32, mx.float32, mx.float32, mx.float32],
             grid=(n, 1, 1),
             threadgroup=(256, 1, 1),
         )
         (self.pos, self.goal, self.goal_k, self.step_ct, self.term, self.trunc,
-         self.dist_goal, self.odom, self.ep_noise) = outs
+         self.dist_goal, self.odom, self.ep_noise, self.clearance) = outs
         self.lidar = _lidar_kernel(
             inputs=[self.pos, self.scene, self.odom, self.edf, self.origin,
                     mx.random.normal(shape=(n, r)), mx.random.uniform(shape=(n, r)),

@@ -89,6 +89,11 @@ export class Sim {
     return this.sampleEDF((x - this.ox) / this.cell, (y - this.oy) / this.cell);
   }
 
+  // Recompute the EDF after this.occ has been edited (obstacle painting).
+  rebuildEDF() {
+    this.edf = signedEDF(this.occ, this.h, this.w, this.cell);
+  }
+
   // _LIDAR_SRC: sphere tracing through the EDF. Rays are indexed by believed
   // angle; the heading error rotates them in the true frame. Range noise and
   // per-ray dropout applied to the traced distance.

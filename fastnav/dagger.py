@@ -355,6 +355,7 @@ def evaluate(sim: Sim, policy) -> dict:
     succeeded = mx.zeros((n,), dtype=mx.bool_)
     finished = mx.zeros((n,), dtype=mx.bool_)
     steps_taken = mx.zeros((n,), dtype=mx.int32)
+    min_clear = mx.full((n,), 9.0)
     for t in range(sim.cfg.max_steps + 1):
         obs = sim.obs()
         if recurrent:
@@ -362,6 +363,7 @@ def evaluate(sim: Sim, policy) -> dict:
         else:
             act = policy(obs)
         obs, term, trunc = sim.step(act)
+        min_clear = mx.where(finished, min_clear, mx.minimum(min_clear, sim.clearance))
         if recurrent:
             live = 1.0 - mx.maximum(term, trunc).astype(mx.float32)[:, None]
             h = h * live
@@ -375,11 +377,13 @@ def evaluate(sim: Sim, policy) -> dict:
             mx.eval(finished)
             if bool(mx.all(finished)):
                 break
-    mx.eval(succeeded, finished, steps_taken)
+    mx.eval(succeeded, finished, steps_taken, min_clear)
     n_fin = int(mx.sum(finished))
     n_suc = int(mx.sum(succeeded))
+    safe = mx.logical_and(succeeded, min_clear > 0.03)  # never within 3cm of contact
     return {
         "success": n_suc / max(n_fin, 1),
+        "safe_success": int(mx.sum(safe)) / max(n_fin, 1),
         "episodes": n_fin,
         "steps_per_episode": float(mx.sum(steps_taken)) / max(n_fin, 1),
     }

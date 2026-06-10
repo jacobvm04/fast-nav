@@ -66,6 +66,8 @@ class PPOConfig:
     init_std: float = 0.3
     max_grad_norm: float = 1.0
     geo_clip: float = 50.0  # meters; padded/obstacle geo regions are huge outliers
+    clear_margin: float = 0.10  # penalize clearance below this (m)
+    clear_coef: float = 0.05    # penalty weight (max penalty = coef * margin per step)
     hidden: int = 256
     use_pos: bool = False
 
@@ -128,7 +130,7 @@ class PPOTrainer:
         vs = type(self.policy).VAL_SCALE
         std = mx.exp(self.policy.log_std)
         h0 = self.h
-        obs_l, act_l, logp_l, val_l, geo_l, done_l, reach_l = [], [], [], [], [], [], []
+        obs_l, act_l, logp_l, val_l, geo_l, done_l, reach_l, pen_l = [], [], [], [], [], [], [], []
         obs = sim.obs()
         for _ in range(cfg.chunk):
             geo_l.append(self._geo())
@@ -140,6 +142,8 @@ class PPOTrainer:
             act_l.append(a)
             val_l.append(v)
             obs, term, trunc = sim.step(a)
+            pen_l.append(cfg.clear_coef *
+                         mx.maximum(cfg.clear_margin - sim.clearance, 0.0))
             done = mx.maximum(term, trunc).astype(mx.float32)
             done_l.append(done)
             reach_l.append(term.astype(mx.float32))
@@ -163,7 +167,7 @@ class PPOTrainer:
             done, reach = done_l[t], reach_l[t]
             run_r = (geo_l[t] - next_geo) * vs
             term_r = geo_l[t] * vs + cfg.success_bonus
-            r = mx.where(done > 0.5, mx.where(reach > 0.5, term_r, 0.0), run_r)
+            r = mx.where(done > 0.5, mx.where(reach > 0.5, term_r, 0.0), run_r) - pen_l[t]
             r_l[t] = r
             live = 1.0 - done
             delta = r + cfg.gamma * next_v * live - val_l[t]
