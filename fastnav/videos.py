@@ -25,17 +25,20 @@ from fastnav.sim import Sim, SimConfig
 def _policy_stepper(policy, n: int):
     recurrent = isinstance(policy, RecurrentNavPolicy)
     h = mx.zeros((n, policy.hidden), dtype=mx.float32) if recurrent else None
+    prev = mx.zeros((n, 2), dtype=mx.float32)
 
     def step(sim: Sim):
-        nonlocal h
+        nonlocal h, prev
         obs = sim.obs()
         if recurrent:
-            act, h_new = policy.step(obs, h)
+            act, h_new = policy.step(mx.concatenate([obs, prev], axis=1), h)
         else:
             act, h_new = policy(obs), None
         _, term, trunc = sim.step(act)
         if recurrent:
-            h = h_new * (1.0 - mx.maximum(term, trunc).astype(mx.float32)[:, None])
+            live = 1.0 - mx.maximum(term, trunc).astype(mx.float32)[:, None]
+            h = h_new * live
+            prev = act * live
         return term, trunc
 
     return step

@@ -94,11 +94,10 @@ _STEP_SRC = """
     if (done) {
         float u0 = rnd[i * 4], u1 = rnd[i * 4 + 1], u2 = rnd[i * 4 + 2], u3 = rnd[i * 4 + 3];
         int nk = metal::min(K - 1, (int)(u0 * (float)K));
-        long rb = ((long)s * K + nk) * 2;
-        int lo = range_tab[rb], hi = range_tab[rb + 1];
-        int span = metal::max(hi - lo, 1);
-        int ii = lo + metal::min(span - 1, (int)(u1 * (float)span));
-        long sb = (((long)s * K + nk) * M + ii) * 2;
+        int cnt = metal::max(pool_cnt[(long)s * K + nk], 1);
+        int ii = metal::min(cnt - 1, (int)(u1 * (float)cnt));
+        int si = pool[((long)s * K + nk) * M + ii];
+        long sb = (((long)s * K + nk) * M + si) * 2;
         px = starts[sb] + (u2 - 0.5f) * 0.04f;
         py = starts[sb + 1] + (u3 - 0.5f) * 0.04f;
         gx = goals_all[((long)s * K + nk) * 2];
@@ -166,6 +165,7 @@ _EXPERT_SRC = """
     float dgx = bilin(geo, base, Hg, Wg, gx + 1.0f, gy) - bilin(geo, base, Hg, Wg, gx - 1.0f, gy);
     float dgy = bilin(geo, base, Hg, Wg, gx, gy + 1.0f) - bilin(geo, base, Hg, Wg, gx, gy - 1.0f);
     float gl = metal::sqrt(dgx * dgx + dgy * dgy);
+    val_out[i] = bilin(geo, base, Hg, Wg, gx, gy);
 
     float tx = goal[i * 2] - px, ty = goal[i * 2 + 1] - py;
     float dist = metal::sqrt(tx * tx + ty * ty);
@@ -192,7 +192,7 @@ _EXPERT_SRC = """
 _step_kernel = mx.fast.metal_kernel(
     name="nav_step",
     input_names=["pos", "vel", "goal", "goal_k", "step_ct", "scene", "edf", "origin",
-                 "starts", "goals_all", "range_tab", "rnd", "force_reset", "p_f", "p_i"],
+                 "starts", "goals_all", "pool", "pool_cnt", "rnd", "force_reset", "p_f", "p_i"],
     output_names=["pos_out", "goal_out", "goal_k_out", "step_out", "term_out", "trunc_out", "dist_out"],
     source=_STEP_SRC,
     header=_HEADER,
@@ -209,7 +209,7 @@ _lidar_kernel = mx.fast.metal_kernel(
 _expert_kernel = mx.fast.metal_kernel(
     name="nav_expert",
     input_names=["pos", "goal", "goal_k", "scene", "prev", "geo", "geo_origin", "pe_f", "pe_i"],
-    output_names=["act"],
+    output_names=["act", "val_out"],
     source=_EXPERT_SRC,
     header=_HEADER,
 )
@@ -226,6 +226,7 @@ class SimConfig:
     max_steps: int = 512
     min_goal_dist: float = 2.0   # episode geodesic length range
     max_goal_dist: float = 14.0
+    detour_min: float = 0.0      # min geodesic/euclidean ratio for episode starts (curriculum)
     expert_slow_radius: float = 0.6
     expert_beta: float = 0.35
     expert_blend_radius: float = 0.5
@@ -256,7 +257,7 @@ class Sim:
         self.geo_origin = mx.array(pack.geo_origin)
         self.starts = mx.array(pack.starts_xy)
         self.goals_all = mx.array(pack.goals_xy)
-        self.range_tab = mx.array(pack.start_range_for(cfg.min_goal_dist, cfg.max_goal_dist))
+        self.pool, self.pool_cnt = self._build_start_pools(pack, cfg)
 
         self.p_f = mx.array([cfg.dt, cfg.v_max, cfg.robot_radius, cfg.goal_radius,
                              pack.cell, 1.0 / pack.cell, cfg.max_range], dtype=mx.float32)
@@ -282,13 +283,37 @@ class Sim:
         self.trunc = mx.zeros((n,), dtype=mx.uint8)
         self.dist_goal = mx.zeros((n,), dtype=mx.float32)
 
+    @staticmethod
+    def _build_start_pools(pack: ScenePack, cfg: SimConfig) -> tuple[mx.array, mx.array]:
+        """Per (scene, goal): indices into the start table satisfying the geodesic
+        range and detour-ratio filter. Falls back to range-only, then to all."""
+        s, k, m = pack.starts_geo.shape
+        pool = np.zeros((s, k, m), dtype=np.int32)
+        cnt = np.zeros((s, k), dtype=np.int32)
+        euclid = np.linalg.norm(pack.starts_xy - pack.goals_xy[:, :, None, :], axis=-1)
+        ratio = pack.starts_geo / np.maximum(euclid, 1e-6)
+        for i in range(s):
+            for j in range(k):
+                n = pack.start_counts[i, j]
+                geo = pack.starts_geo[i, j, :n]
+                in_range = (geo >= cfg.min_goal_dist) & (geo <= cfg.max_goal_dist)
+                ok = in_range & (ratio[i, j, :n] >= cfg.detour_min)
+                idx = np.nonzero(ok)[0]
+                if len(idx) < 16:
+                    idx = np.nonzero(in_range)[0]
+                if len(idx) == 0:
+                    idx = np.arange(max(n, 1))
+                pool[i, j, : len(idx)] = idx
+                cnt[i, j] = len(idx)
+        return mx.array(pool), mx.array(cnt)
+
     def _step_raw(self, actions: mx.array, force_reset: mx.array) -> None:
         n = self.num_envs
         rnd = mx.random.uniform(shape=(n, 4))
         outs = _step_kernel(
             inputs=[self.pos, actions, self.goal, self.goal_k, self.step_ct, self.scene,
-                    self.edf, self.origin, self.starts, self.goals_all, self.range_tab,
-                    rnd, force_reset, self.p_f, self.p_i],
+                    self.edf, self.origin, self.starts, self.goals_all, self.pool,
+                    self.pool_cnt, rnd, force_reset, self.p_f, self.p_i],
             output_shapes=[(n, 2), (n, 2), (n,), (n,), (n,), (n,), (n,)],
             output_dtypes=[mx.float32, mx.float32, mx.int32, mx.int32, mx.uint8, mx.uint8, mx.float32],
             grid=(n, 1, 1),
@@ -342,14 +367,17 @@ class Sim:
         mx.eval(self.pos, self.lidar)
 
     def expert_actions(self) -> mx.array:
+        """Expert velocity command; also stores the geodesic cost-to-go (m) at the
+        current positions in self.expert_geo_val (oracle for value distillation)."""
         prev = self.expert_prev * (1.0 - self.last_done)
-        act = _expert_kernel(
+        act, val = _expert_kernel(
             inputs=[self.pos, self.goal, self.goal_k, self.scene, prev,
                     self.geo, self.geo_origin, self.pe_f, self.pe_i],
-            output_shapes=[(self.num_envs, 2)],
-            output_dtypes=[mx.float32],
+            output_shapes=[(self.num_envs, 2), (self.num_envs,)],
+            output_dtypes=[mx.float32, mx.float32],
             grid=(self.num_envs, 1, 1),
             threadgroup=(256, 1, 1),
-        )[0]
+        )
         self.expert_prev = act
+        self.expert_geo_val = val
         return act

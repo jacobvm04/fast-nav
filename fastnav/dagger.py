@@ -36,6 +36,8 @@ class DaggerConfig:
     lidar_noise: float = 0.0     # gaussian range noise sigma (m), train-time
     ray_dropout: float = 0.0     # per-ray prob of a missed return (-> max_range)
     use_pos: bool = True         # feed absolute position to the policy
+    burn_in: int = 0             # BPTT steps that warm the hidden without loss (recurrent)
+    value_weight: float = 0.5    # cost-to-go distillation loss weight (recurrent)
 
 
 class DaggerTrainer:
@@ -187,26 +189,36 @@ class RecurrentDaggerTrainer:
         self.opt = optim.Adam(learning_rate=cfg.lr)
         mx.eval(self.policy.parameters())
 
-        d = sim.cfg.obs_dim
+        d = sim.cfg.obs_dim + 2  # obs | prev action
         self.cap = cfg.buffer_size // cfg.chunk
         self.buf_obs = mx.zeros((self.cap, cfg.chunk, d), dtype=mx.float32)
         self.buf_act = mx.zeros((self.cap, cfg.chunk, 2), dtype=mx.float32)
+        self.buf_val = mx.zeros((self.cap, cfg.chunk), dtype=mx.float32)
         self.buf_done = mx.zeros((self.cap, cfg.chunk, 1), dtype=mx.float32)
         self.buf_h0 = mx.zeros((self.cap, cfg.hidden), dtype=mx.float32)
         self.h = mx.zeros((sim.num_envs, cfg.hidden), dtype=mx.float32)
+        self.prev_act = mx.zeros((sim.num_envs, 2), dtype=mx.float32)
         self.buf_ptr = 0
         self.buf_full = False
         self.iter = 0
 
-        def loss_fn(model, obs, h0, done, act):
-            return nn.losses.mse_loss(model(obs, h0, done), act)
+        # loss masked over burn-in: those steps only warm the hidden state
+        mask = mx.array([0.0 if t < cfg.burn_in else 1.0 for t in range(cfg.chunk)])
+        mask = mask / mx.maximum(mx.sum(mask), 1.0)
+        vs = type(self.policy).VAL_SCALE
+
+        def loss_fn(model, obs, h0, done, act, val):
+            pred_a, pred_v = model(obs, h0, done)
+            loss_a = mx.sum(mx.mean(mx.square(pred_a - act), axis=(0, 2)) * mask)
+            loss_v = mx.sum(mx.mean(mx.square(pred_v - val * vs), axis=0) * mask)
+            return loss_a + cfg.value_weight * loss_v
 
         loss_and_grad = nn.value_and_grad(self.policy, loss_fn)
         state = [self.policy.state, self.opt.state]
 
         @partial(mx.compile, inputs=state, outputs=state)
-        def update(obs, h0, done, act):
-            loss, grads = loss_and_grad(self.policy, obs, h0, done, act)
+        def update(obs, h0, done, act, val):
+            loss, grads = loss_and_grad(self.policy, obs, h0, done, act, val)
             self.opt.update(self.policy, grads)
             return loss
 
@@ -218,18 +230,17 @@ class RecurrentDaggerTrainer:
     def buf_count(self) -> int:
         return self.cap if self.buf_full else self.buf_ptr
 
-    def _append_rows(self, obs, act, done, h0) -> None:
+    def _append_rows(self, obs, act, val, done, h0) -> None:
         n = obs.shape[0]
         p = self.buf_ptr
+        bufs = ((self.buf_obs, obs), (self.buf_act, act), (self.buf_val, val),
+                (self.buf_done, done), (self.buf_h0, h0))
         if p + n <= self.cap:
-            self.buf_obs[p:p + n] = obs
-            self.buf_act[p:p + n] = act
-            self.buf_done[p:p + n] = done
-            self.buf_h0[p:p + n] = h0
+            for buf, x in bufs:
+                buf[p:p + n] = x
         else:
             k = self.cap - p
-            for buf, x in ((self.buf_obs, obs), (self.buf_act, act),
-                           (self.buf_done, done), (self.buf_h0, h0)):
+            for buf, x in bufs:
                 buf[p:] = x[:k]
                 buf[: n - k] = x[k:]
             self.buf_full = True
@@ -241,12 +252,14 @@ class RecurrentDaggerTrainer:
         sim, beta, cfg = self.sim, self.beta, self.cfg
         obs = sim.obs()
         h0 = self.h
-        obs_l, act_l, done_l = [], [], []
+        obs_l, act_l, val_l, done_l = [], [], [], []
         for _ in range(cfg.chunk):
             expert = sim.expert_actions()
-            pol_act, self.h = self.policy.step(obs, self.h)
-            obs_l.append(obs)
+            obs_in = mx.concatenate([obs, self.prev_act], axis=1)
+            pol_act, self.h = self.policy.step(obs_in, self.h)
+            obs_l.append(obs_in)
             act_l.append(expert)
+            val_l.append(sim.expert_geo_val)
             if beta >= 1.0:
                 act = expert
             elif beta > 0.0:
@@ -258,8 +271,9 @@ class RecurrentDaggerTrainer:
             done = mx.maximum(term, trunc).astype(mx.float32)[:, None]
             done_l.append(done)
             self.h = self.h * (1.0 - done)
+            self.prev_act = act * (1.0 - done)
         self._append_rows(mx.stack(obs_l, axis=1), mx.stack(act_l, axis=1),
-                          mx.stack(done_l, axis=1), h0)
+                          mx.stack(val_l, axis=1), mx.stack(done_l, axis=1), h0)
         mx.eval(obs, self.h, self.buf_obs)
 
     def _augment_seq(self, obs, act):
@@ -271,6 +285,7 @@ class RecurrentDaggerTrainer:
         obs = obs.reshape(b * t_len, d)
         act = act.reshape(b * t_len, 2)
         lidar, rel_goal, pos = obs[:, :r], obs[:, r:r + 2], obs[:, r + 2:r + 4]
+        prev = obs[:, r + 4:r + 6]
 
         refl = mx.repeat(mx.random.uniform(shape=(b, 1)) < 0.5, t_len, axis=0)
         ridx = (-mx.arange(r)) % r
@@ -288,13 +303,14 @@ class RecurrentDaggerTrainer:
             return mx.stack([c * x - s * y, s * x + c * y], axis=1)
 
         rel_goal, pos, act = xform(rel_goal), xform(pos), xform(act)
+        prev = xform(prev)
         if self.cfg.lidar_noise > 0:
             lidar = lidar + self.cfg.lidar_noise * mx.random.normal(lidar.shape)
         if self.cfg.ray_dropout > 0:
             miss = mx.random.uniform(shape=lidar.shape) < self.cfg.ray_dropout
             lidar = mx.where(miss, self.sim.cfg.max_range, lidar)
         lidar = mx.clip(lidar, 0.0, self.sim.cfg.max_range)
-        obs = mx.concatenate([lidar, rel_goal, pos], axis=1)
+        obs = mx.concatenate([lidar, rel_goal, pos, prev], axis=1)
         return obs.reshape(b, t_len, d), act.reshape(b, t_len, 2)
 
     def train(self) -> float:
@@ -304,11 +320,11 @@ class RecurrentDaggerTrainer:
         for _ in range(self.cfg.updates_per_iter):
             idx = mx.random.randint(0, n, shape=(b_seq,))
             obs, act = self.buf_obs[idx], self.buf_act[idx]
-            done, h0 = self.buf_done[idx], self.buf_h0[idx]
+            val, done, h0 = self.buf_val[idx], self.buf_done[idx], self.buf_h0[idx]
             if self.cfg.augment:
                 obs, act = self._augment_seq(obs, act)
                 h0 = mx.zeros_like(h0)
-            loss = self._update(obs, h0, done, act)
+            loss = self._update(obs, h0, done, act, val)
         mx.eval(loss, self.policy.state, self.opt.state)
         return float(loss)
 
@@ -328,18 +344,21 @@ def evaluate(sim: Sim, policy) -> dict:
     n = sim.num_envs
     recurrent = isinstance(policy, RecurrentNavPolicy)
     h = mx.zeros((n, policy.hidden), dtype=mx.float32) if recurrent else None
+    prev = mx.zeros((n, 2), dtype=mx.float32)
     succeeded = mx.zeros((n,), dtype=mx.bool_)
     finished = mx.zeros((n,), dtype=mx.bool_)
     steps_taken = mx.zeros((n,), dtype=mx.int32)
     for t in range(sim.cfg.max_steps + 1):
         obs = sim.obs()
         if recurrent:
-            act, h = policy.step(obs, h)
+            act, h = policy.step(mx.concatenate([obs, prev], axis=1), h)
         else:
             act = policy(obs)
         obs, term, trunc = sim.step(act)
         if recurrent:
-            h = h * (1.0 - mx.maximum(term, trunc).astype(mx.float32)[:, None])
+            live = 1.0 - mx.maximum(term, trunc).astype(mx.float32)[:, None]
+            h = h * live
+            prev = act * live
         done = mx.logical_or(term.astype(mx.bool_), trunc.astype(mx.bool_))
         first = mx.logical_and(done, mx.logical_not(finished))
         succeeded = mx.logical_or(succeeded, mx.logical_and(first, term.astype(mx.bool_)))

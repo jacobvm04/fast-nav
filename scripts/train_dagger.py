@@ -48,32 +48,39 @@ def main():
     ap.add_argument("--wandb-project", default="fast-nav")
     ap.add_argument("--video-every", type=int, default=0,
                     help="log random + failure mosaic videos to wandb every N iters (0=off)")
+    ap.add_argument("--chunk", type=int, default=16, help="rollout chunk / BPTT length")
+    ap.add_argument("--burn-in", type=int, default=0, help="BPTT warmup steps without loss")
+    ap.add_argument("--value-weight", type=float, default=0.5)
+    ap.add_argument("--detour-min", type=float, default=0.0,
+                    help="min geodesic/euclidean ratio for episode starts")
     args = ap.parse_args()
 
     train_pack = ScenePack.load_dir(args.scenes, include=args.train_include, max_cells=args.max_cells)
     eval_pack = ScenePack.load_dir(args.scenes, include=args.eval_include, max_cells=args.max_cells)
     print(f"train scenes: {len(train_pack.scenes)}  eval scenes (held out): {len(eval_pack.scenes)}")
 
-    scfg = SimConfig()
+    scfg = SimConfig(detour_min=args.detour_min)
     sim = Sim(train_pack, num_envs=args.envs, cfg=scfg, seed=args.seed)
     sim.reset()
     dcfg = DaggerConfig(hidden=args.hidden, depth=args.depth, augment=args.augment,
                         lidar_noise=args.lidar_noise, ray_dropout=args.ray_dropout,
                         use_pos=not args.no_pos, lr=args.lr, batch_size=args.batch_size,
-                        updates_per_iter=args.updates_per_iter)
+                        updates_per_iter=args.updates_per_iter, chunk=args.chunk,
+                        burn_in=args.burn_in, value_weight=args.value_weight)
     cls = RecurrentDaggerTrainer if args.recurrent else DaggerTrainer
     trainer = cls(sim, dcfg, seed=args.seed)
     n_params = sum(v.size for _, v in tree_flatten(trainer.policy.parameters()))
     print(f"policy params: {n_params:,}")
 
-    sim_train_eval = Sim(train_pack, num_envs=args.eval_envs, cfg=scfg, seed=args.seed + 1)
-    sim_eval = Sim(eval_pack, num_envs=args.eval_envs, cfg=scfg, seed=args.seed + 2)
+    eval_cfg = SimConfig()  # evals keep the standard episode distribution (no curriculum)
+    sim_train_eval = Sim(train_pack, num_envs=args.eval_envs, cfg=eval_cfg, seed=args.seed + 1)
+    sim_eval = Sim(eval_pack, num_envs=args.eval_envs, cfg=eval_cfg, seed=args.seed + 2)
     sim_eval2 = None
     video_pack = eval_pack
     if args.eval2_include:
         eval2_pack = ScenePack.load_dir(args.scenes, include=args.eval2_include, max_cells=args.max_cells)
         print(f"second held-out set: {len(eval2_pack.scenes)} scenes")
-        sim_eval2 = Sim(eval2_pack, num_envs=args.eval_envs, cfg=scfg, seed=args.seed + 3)
+        sim_eval2 = Sim(eval2_pack, num_envs=args.eval_envs, cfg=eval_cfg, seed=args.seed + 3)
         video_pack = eval2_pack
 
     out = Path(args.out)
@@ -144,7 +151,7 @@ def main():
 
             from fastnav.videos import policy_mosaic_video
             for fail, tag in ((False, "video/random"), (True, "video/failures")):
-                path = policy_mosaic_video(video_pack, trainer.policy, cfg=scfg, failures=fail)
+                path = policy_mosaic_video(video_pack, trainer.policy, cfg=eval_cfg, failures=fail)
                 if path:
                     run.log({tag: wandb.Video(path, format="mp4")}, step=it)
 
