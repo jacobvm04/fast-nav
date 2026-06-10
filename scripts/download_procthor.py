@@ -31,6 +31,7 @@ def main():
     ap.add_argument("--rooms", nargs="+", default=["1", "2", "3", "4", "5"],
                     help="room-count buckets (1-9, a=10, b=11, c=12)")
     ap.add_argument("--per-room", type=int, default=8)
+    ap.add_argument("--offset", type=int, default=0, help="skip the first N scenes per bucket")
     ap.add_argument("--split", default="Train", choices=["Train", "Val", "Test"])
     ap.add_argument("--out", default="data/ai2thor-hab")
     args = ap.parse_args()
@@ -42,7 +43,7 @@ def main():
         cands = sorted(f for f in files if f.startswith(prefix) and f"-{args.split}-" in f)
         if not cands:
             cands = sorted(f for f in files if f.startswith(prefix))
-        picked.extend(cands[: args.per_room])
+        picked.extend(cands[args.offset: args.offset + args.per_room])
     print(f"selected {len(picked)} scene configs")
 
     from concurrent.futures import ThreadPoolExecutor, as_completed

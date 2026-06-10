@@ -44,11 +44,41 @@ def main():
     ap.add_argument("--clear-margin", type=float, default=0.10)
     ap.add_argument("--train-contact-margin", type=float, default=None,
                     help="inflated contact-terminal margin during training (eval stays at default)")
+    ap.add_argument("--rotate-every", type=int, default=0,
+                    help="resample a fresh train-scene subset every N iters (0 = off)")
+    ap.add_argument("--rotate-size", type=int, default=800, help="scenes per rotated pack")
     args = ap.parse_args()
+
+    import fnmatch
+    import random
+
+    import numpy as np
+
+    from fastnav.scene import Scene
+
+    def sample_pack(pool: list, k: int, seed: int) -> ScenePack:
+        rng = random.Random(seed)
+        return ScenePack([Scene.load(f) for f in rng.sample(pool, min(k, len(pool)))])
 
     # train pack may use a tighter size cap (GPU memory); evals stay at the
     # established 500k protocol for comparability across runs
-    train_pack = ScenePack.load_dir(args.scenes, include=args.train_include, max_cells=args.max_cells)
+    def edf_cells(path: Path) -> int:
+        import zipfile
+
+        from numpy.lib import format as npfmt
+        with zipfile.ZipFile(path) as z, z.open("edf.npy") as fh:
+            shape, _, _ = npfmt._read_array_header(fh, npfmt.read_magic(fh))
+        return int(np.prod(shape))
+
+    pool = None
+    if args.rotate_every:
+        cand = [f for f in sorted(Path(args.scenes).glob("*.npz"))
+                if any(fnmatch.fnmatch(f.stem, p) for p in args.train_include)]
+        pool = [f for f in cand if edf_cells(f) <= args.max_cells]
+        print(f"rotation pool: {len(pool)} of {len(cand)} scenes (size cap {args.max_cells})")
+        train_pack = sample_pack(pool, args.rotate_size, args.seed)
+    else:
+        train_pack = ScenePack.load_dir(args.scenes, include=args.train_include, max_cells=args.max_cells)
     eval_pack = ScenePack.load_dir(args.scenes, include=args.eval_include, max_cells=500000)
     eval2_pack = ScenePack.load_dir(args.scenes, include=args.eval2_include, max_cells=500000)
     print(f"train {len(train_pack.scenes)} / eval {len(eval_pack.scenes)} / eval2 {len(eval2_pack.scenes)} scenes")
@@ -89,6 +119,11 @@ def main():
     best = 0.0
     t0 = time.perf_counter()
     for it in range(1, args.iters + 1):
+        if pool and it > 1 and it % args.rotate_every == 1:
+            trainer.sim = None  # free the old pack before loading the next (memory spike)
+            train_pack = sample_pack(pool, args.rotate_size, args.seed + it)
+            trainer.swap_sim(Sim(train_pack, num_envs=args.envs, cfg=train_cfg, seed=args.seed + it))
+            print(f"rotated train pack at it {it} ({len(train_pack.scenes)} scenes)")
         stats = trainer.step()
         frames += args.envs * trainer.cfg.chunk
         if run:

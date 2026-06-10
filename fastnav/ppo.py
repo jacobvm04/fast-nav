@@ -116,6 +116,14 @@ class PPOTrainer:
 
         self._update = update
 
+    def swap_sim(self, sim: Sim) -> None:
+        """Replace the rollout sim (pack rotation); recurrent state restarts."""
+        self.sim = sim
+        sim.reset()
+        n = sim.num_envs
+        self.h = mx.zeros((n, self.cfg.hidden), dtype=mx.float32)
+        self.prev_act = mx.zeros((n, 2), dtype=mx.float32)
+
     def _clamp(self, a: mx.array) -> mx.array:
         """Same speed clamp the sim applies, so prev-action input matches reality."""
         vmax = self.sim.cfg.v_max

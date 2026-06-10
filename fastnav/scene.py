@@ -46,7 +46,11 @@ class Scene:
     start_counts: np.ndarray  # [K] int32 valid entries in starts_xy
 
     def save(self, path: str | Path) -> None:
-        np.savez_compressed(path, **{f.name: getattr(self, f.name) for f in dataclasses.fields(self)})
+        d = {f.name: getattr(self, f.name) for f in dataclasses.fields(self)}
+        # geo fields dominate file size; fp16 on disk (cast back to f32 on load)
+        for k in ("geo", "starts_xy", "starts_geo"):
+            d[k] = np.nan_to_num(d[k], posinf=6.5e4).astype(np.float16)
+        np.savez_compressed(path, **d)
 
     @staticmethod
     def load(path: str | Path) -> "Scene":
@@ -55,6 +59,9 @@ class Scene:
         kw["name"] = str(kw["name"])
         kw["cell"] = float(kw["cell"])
         kw["geo_cell"] = float(kw["geo_cell"])
+        for k in ("geo", "starts_xy", "starts_geo"):
+            if kw[k].dtype == np.float16:
+                kw[k] = kw[k].astype(np.float32)
         return Scene(**kw)
 
 
