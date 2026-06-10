@@ -47,6 +47,7 @@ def main():
     ap.add_argument("--rotate-every", type=int, default=0,
                     help="resample a fresh train-scene subset every N iters (0 = off)")
     ap.add_argument("--rotate-size", type=int, default=800, help="scenes per rotated pack")
+    ap.add_argument("--rays", type=int, default=64, help="lidar rays (policy obs dim follows)")
     args = ap.parse_args()
 
     import fnmatch
@@ -85,7 +86,7 @@ def main():
 
     import dataclasses
 
-    scfg = SimConfig()
+    scfg = SimConfig(n_rays=args.rays)
     train_cfg = noisy_config(scfg, args.noise) if args.noise > 0 else scfg
     if args.train_contact_margin is not None:
         train_cfg = dataclasses.replace(train_cfg, contact_margin=args.train_contact_margin)
