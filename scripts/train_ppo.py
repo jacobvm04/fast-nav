@@ -96,7 +96,8 @@ def main():
             print(f"it {it:4d}  frames {frames / 1e6:7.1f}M  R {stats['reward_mean']:+.4f}  "
                   f"std {stats['std']:.3f}  roll-succ {stats['rollout_success'] * 100:5.1f}%  "
                   f"train {ev_tr['success'] * 100:5.1f}%  HELD-OUT {ev_he['success'] * 100:5.1f}%  "
-                  f"HELD-OUT2 {ev_h2['success'] * 100:5.1f}%")
+                  f"HELD-OUT2 {ev_h2['success'] * 100:5.1f}%  "
+                  f"safe {ev_he['safe_success'] * 100:5.1f}%/{ev_h2['safe_success'] * 100:5.1f}%")
             combined = ev_he["success"] + ev_h2["success"]
             if combined > best:
                 best = combined
