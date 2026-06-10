@@ -33,6 +33,7 @@ def main():
     ap.add_argument("--include", nargs="+", default=["Baked_sc2_*", "Baked_sc3_*"])
     ap.add_argument("--checkpoint", default="checkpoints/ppo/policy_best.safetensors")
     ap.add_argument("--failures", action="store_true")
+    ap.add_argument("--collisions-only", action="store_true")
     ap.add_argument("--tiles", type=int, default=16)
     ap.add_argument("--cols", type=int, default=4)
     ap.add_argument("--frames", type=int, default=600)
@@ -43,6 +44,7 @@ def main():
     cfg = SimConfig()
     policy = load_policy(args.checkpoint, cfg)
     path = policy_mosaic_video(pack, policy, cfg=cfg, failures=args.failures,
+                               collisions_only=args.collisions_only,
                                n_tiles=args.tiles, cols=args.cols, frames=args.frames,
                                out_path=args.out)
     print(f"wrote {path}" if path else "no failures found")

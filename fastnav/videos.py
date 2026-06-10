@@ -55,27 +55,33 @@ def hunt_failures(pack: ScenePack, policy, cfg: SimConfig, n_envs: int = 2048, s
     step = _policy_stepper(policy, n_envs)
     succeeded = np.zeros(n_envs, dtype=bool)
     finished = np.zeros(n_envs, dtype=bool)
+    collided = np.zeros(n_envs, dtype=bool)
     for _ in range(cfg.max_steps + 1):
         term, trunc = step(sim)
         term = np.array(term).astype(bool)
         trunc = np.array(trunc).astype(bool)
         first = (term | trunc) & ~finished
         succeeded |= first & term
+        collided |= first & np.array(sim.hit).astype(bool)
         finished |= term | trunc
         if finished.all():
             break
     failed = np.nonzero(finished & ~succeeded)[0]
-    return init_pos[failed], init_goal[failed], init_k[failed], scenes[failed]
+    coll = collided[failed]
+    print(f"  failures: {len(failed)} ({coll.sum()} collisions, {len(failed) - coll.sum()} timeouts)")
+    return init_pos[failed], init_goal[failed], init_k[failed], scenes[failed], coll
 
 
 def policy_mosaic_video(pack: ScenePack, policy, cfg: SimConfig | None = None,
-                        failures: bool = False, n_tiles: int = 16, cols: int = 4,
-                        frames: int = 240, seed: int = 7,
+                        failures: bool = False, collisions_only: bool = False,
+                        n_tiles: int = 16, cols: int = 4, frames: int = 240, seed: int = 7,
                         out_path: str | None = None) -> str | None:
     """Render a mosaic mp4; returns the path (None if failures requested but none found)."""
     cfg = cfg or SimConfig()
     if failures:
-        pos, goal, gk, scenes = hunt_failures(pack, policy, cfg)
+        pos, goal, gk, scenes, coll = hunt_failures(pack, policy, cfg)
+        if collisions_only:
+            pos, goal, gk, scenes = pos[coll], goal[coll], gk[coll], scenes[coll]
         if len(pos) == 0:
             return None
         k = min(n_tiles, len(pos))
