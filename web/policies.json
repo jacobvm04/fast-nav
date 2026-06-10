@@ -1,10 +1,88 @@
 {
  "policies": [
   {
-   "id": "ppo-clean",
-   "label": "PPO \u00b7 clean-trained",
-   "checkpoint": "checkpoints/ppo/policy_best.safetensors",
-   "file": "policies/ppo-clean.bin",
+   "id": "ppo-careful",
+   "label": "PPO \u00b7 contact-safe (careful)",
+   "checkpoint": "checkpoints/ppo_careful/policy_best.safetensors",
+   "file": "policies/ppo-careful.bin",
+   "tensors": {
+    "enc.weight": {
+     "shape": [
+      256,
+      70
+     ],
+     "offset": 0
+    },
+    "enc.bias": {
+     "shape": [
+      256
+     ],
+     "offset": 17920
+    },
+    "gru.Wx": {
+     "shape": [
+      768,
+      256
+     ],
+     "offset": 18176
+    },
+    "gru.Wh": {
+     "shape": [
+      768,
+      256
+     ],
+     "offset": 214784
+    },
+    "gru.b": {
+     "shape": [
+      768
+     ],
+     "offset": 411392
+    },
+    "gru.bhn": {
+     "shape": [
+      256
+     ],
+     "offset": 412160
+    },
+    "head.weight": {
+     "shape": [
+      2,
+      256
+     ],
+     "offset": 412416
+    },
+    "head.bias": {
+     "shape": [
+      2
+     ],
+     "offset": 412928
+    },
+    "vhead.weight": {
+     "shape": [
+      1,
+      256
+     ],
+     "offset": 412930
+    },
+    "vhead.bias": {
+     "shape": [
+      1
+     ],
+     "offset": 413186
+    }
+   },
+   "arch": {
+    "hidden": 256,
+    "enc": 256,
+    "use_pos": false
+   }
+  },
+  {
+   "id": "ppo-contact",
+   "label": "PPO \u00b7 contact-safe",
+   "checkpoint": "checkpoints/ppo_contact2/policy_best.safetensors",
+   "file": "policies/ppo-contact.bin",
    "tensors": {
     "enc.weight": {
      "shape": [
@@ -83,6 +161,84 @@
    "label": "PPO \u00b7 noise-trained (DR 1.5)",
    "checkpoint": "checkpoints/ppo_noisy/policy_best.safetensors",
    "file": "policies/ppo-noisy.bin",
+   "tensors": {
+    "enc.weight": {
+     "shape": [
+      256,
+      70
+     ],
+     "offset": 0
+    },
+    "enc.bias": {
+     "shape": [
+      256
+     ],
+     "offset": 17920
+    },
+    "gru.Wx": {
+     "shape": [
+      768,
+      256
+     ],
+     "offset": 18176
+    },
+    "gru.Wh": {
+     "shape": [
+      768,
+      256
+     ],
+     "offset": 214784
+    },
+    "gru.b": {
+     "shape": [
+      768
+     ],
+     "offset": 411392
+    },
+    "gru.bhn": {
+     "shape": [
+      256
+     ],
+     "offset": 412160
+    },
+    "head.weight": {
+     "shape": [
+      2,
+      256
+     ],
+     "offset": 412416
+    },
+    "head.bias": {
+     "shape": [
+      2
+     ],
+     "offset": 412928
+    },
+    "vhead.weight": {
+     "shape": [
+      1,
+      256
+     ],
+     "offset": 412930
+    },
+    "vhead.bias": {
+     "shape": [
+      1
+     ],
+     "offset": 413186
+    }
+   },
+   "arch": {
+    "hidden": 256,
+    "enc": 256,
+    "use_pos": false
+   }
+  },
+  {
+   "id": "ppo-clean",
+   "label": "PPO \u00b7 clean-trained",
+   "checkpoint": "checkpoints/ppo/policy_best.safetensors",
+   "file": "policies/ppo-clean.bin",
    "tensors": {
     "enc.weight": {
      "shape": [
