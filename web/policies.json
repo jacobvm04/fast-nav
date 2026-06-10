@@ -1,9 +1,89 @@
 {
  "policies": [
   {
+   "id": "ppo-128",
+   "label": "PPO \u00b7 128-beam (noise champion)",
+   "checkpoint": "checkpoints/ppo_big_128init.safetensors",
+   "n_rays": 128,
+   "file": "policies/ppo-128.bin",
+   "tensors": {
+    "enc.weight": {
+     "shape": [
+      256,
+      134
+     ],
+     "offset": 0
+    },
+    "enc.bias": {
+     "shape": [
+      256
+     ],
+     "offset": 34304
+    },
+    "gru.Wx": {
+     "shape": [
+      768,
+      256
+     ],
+     "offset": 34560
+    },
+    "gru.Wh": {
+     "shape": [
+      768,
+      256
+     ],
+     "offset": 231168
+    },
+    "gru.b": {
+     "shape": [
+      768
+     ],
+     "offset": 427776
+    },
+    "gru.bhn": {
+     "shape": [
+      256
+     ],
+     "offset": 428544
+    },
+    "head.weight": {
+     "shape": [
+      2,
+      256
+     ],
+     "offset": 428800
+    },
+    "head.bias": {
+     "shape": [
+      2
+     ],
+     "offset": 429312
+    },
+    "vhead.weight": {
+     "shape": [
+      1,
+      256
+     ],
+     "offset": 429314
+    },
+    "vhead.bias": {
+     "shape": [
+      1
+     ],
+     "offset": 429570
+    }
+   },
+   "arch": {
+    "hidden": 256,
+    "enc": 256,
+    "use_pos": false
+   }
+  },
+  {
    "id": "ppo-big",
-   "label": "PPO \u00b7 3k-scene contact-safe (latest)",
+   "label": "PPO \u00b7 3k-scene contact-safe",
    "checkpoint": "checkpoints/ppo_big/policy_best.safetensors",
+   "n_rays": 64,
    "file": "policies/ppo-big.bin",
    "tensors": {
     "enc.weight": {
@@ -82,6 +162,7 @@
    "id": "ppo-careful",
    "label": "PPO \u00b7 contact-safe (careful)",
    "checkpoint": "checkpoints/ppo_careful2/policy_best.safetensors",
+   "n_rays": 64,
    "file": "policies/ppo-careful.bin",
    "tensors": {
     "enc.weight": {
@@ -160,6 +241,7 @@
    "id": "ppo-contact",
    "label": "PPO \u00b7 contact-safe",
    "checkpoint": "checkpoints/ppo_contact2/policy_best.safetensors",
+   "n_rays": 64,
    "file": "policies/ppo-contact.bin",
    "tensors": {
     "enc.weight": {
@@ -238,6 +320,7 @@
    "id": "ppo-noisy",
    "label": "PPO \u00b7 noise-trained (DR 1.5)",
    "checkpoint": "checkpoints/ppo_noisy/policy_best.safetensors",
+   "n_rays": 64,
    "file": "policies/ppo-noisy.bin",
    "tensors": {
     "enc.weight": {
@@ -316,6 +399,7 @@
    "id": "ppo-clean",
    "label": "PPO \u00b7 clean-trained",
    "checkpoint": "checkpoints/ppo/policy_best.safetensors",
+   "n_rays": 64,
    "file": "policies/ppo-clean.bin",
    "tensors": {
     "enc.weight": {

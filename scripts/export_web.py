@@ -32,7 +32,8 @@ POLICY_TENSORS = ["enc.weight", "enc.bias", "gru.Wx", "gru.Wh", "gru.b", "gru.bh
 
 # (id, label, checkpoint) — exported in order; first existing one is the app default
 POLICIES = [
-    ("ppo-big", "PPO · 3k-scene contact-safe (latest)", "checkpoints/ppo_big/policy_best.safetensors"),
+    ("ppo-128", "PPO · 128-beam (noise champion)", "checkpoints/ppo_big_128init.safetensors"),
+    ("ppo-big", "PPO · 3k-scene contact-safe", "checkpoints/ppo_big/policy_best.safetensors"),
     ("ppo-careful", "PPO · contact-safe (careful)", "checkpoints/ppo_careful2/policy_best.safetensors"),
     ("ppo-contact", "PPO · contact-safe", "checkpoints/ppo_contact2/policy_best.safetensors"),
     ("ppo-noisy", "PPO · noise-trained (DR 1.5)", "checkpoints/ppo_noisy/policy_best.safetensors"),
@@ -90,8 +91,9 @@ def export_policies(out: Path) -> None:
             tensors[name] = {"shape": list(a.shape), "offset": len(blob) // 4}
             blob += a.tobytes()  # little-endian on every platform we care about
         (out_pol / f"{pid}.bin").write_bytes(bytes(blob))
+        n_rays = tensors["enc.weight"]["shape"][1] - 6  # in = rays | rel_goal 2 | pos 2 | prev 2
         entries.append({
-            "id": pid, "label": label, "checkpoint": ckpt,
+            "id": pid, "label": label, "checkpoint": ckpt, "n_rays": n_rays,
             "file": f"policies/{pid}.bin", "tensors": tensors,
             "arch": {"hidden": 256, "enc": 256, "use_pos": False},
         })
@@ -114,7 +116,8 @@ def export_policies(out: Path) -> None:
     (out / "policies.json").write_text(json.dumps(manifest, indent=1))
 
 
-def export_fixture(scenes_dir: Path, ckpt: Path, out: Path, scene_name: str, steps: int) -> None:
+def export_fixture(scenes_dir: Path, ckpt: Path, out: Path, scene_name: str, steps: int,
+                   n_rays: int = 64) -> None:
     """Run the MLX sim + policy from a fixed state; dump everything the JS port
     needs to replay it (occupancy, state, per-step pos/action/lidar)."""
     import mlx.core as mx
@@ -125,7 +128,7 @@ def export_fixture(scenes_dir: Path, ckpt: Path, out: Path, scene_name: str, ste
 
     scene = Scene.load(scenes_dir / f"{scene_name}.npz")
     pack = ScenePack([scene])
-    cfg = SimConfig()
+    cfg = SimConfig(n_rays=n_rays)
     sim = Sim(pack, num_envs=1, cfg=cfg, seed=0)
     sim.reset()
 
@@ -133,39 +136,50 @@ def export_fixture(scenes_dir: Path, ckpt: Path, out: Path, scene_name: str, ste
     policy.load_weights(str(ckpt), strict=False)  # ignore log_std from PPO wrapper
     mx.eval(policy.parameters())
 
-    # pick a far start/goal pair from the precomputed tables (goal 0, hardest start)
+    # pick a far start/goal pair from the precomputed tables (goal 0). The episode
+    # must end in a clean goal-reach: any trunc (timeout OR contact-terminal) would
+    # auto-reset the MLX sim mid-fixture and corrupt the reference trajectory.
     k = 0
     n_starts = int(scene.start_counts[k])
-    start = scene.starts_xy[k, n_starts - 1]
     goal = scene.goals_xy[k]
-    sim.set_state(start[None].astype(np.float32), goal[None].astype(np.float32),
-                  np.array([k], dtype=np.int32))
-
-    h = mx.zeros((1, 256))
-    prev = mx.zeros((1, 2))
     traj = []
-    for _ in range(steps):
-        obs = sim.obs()
-        act, h = policy.step(mx.concatenate([obs, prev], axis=1), h)
-        mx.eval(act, h)
-        traj.append({
-            "pos": np.array(sim.pos)[0].tolist(),
-            "lidar": np.array(sim.lidar)[0].tolist(),
-            "act": np.array(act)[0].tolist(),
-        })
-        _, term, trunc = sim.step(act)
-        mx.eval(term)
-        live = 1.0 - mx.maximum(term, trunc).astype(mx.float32)[:, None]
-        h = h * live
-        prev = act * live
-        if bool(term[0]):
-            print(f"fixture: goal reached at step {len(traj)}")
+    for attempt in range(20):
+        start = scene.starts_xy[k, n_starts - 1 - attempt * 37]
+        sim.set_state(start[None].astype(np.float32), goal[None].astype(np.float32),
+                      np.array([k], dtype=np.int32))
+        h = mx.zeros((1, 256))
+        prev = mx.zeros((1, 2))
+        traj = []
+        clean = False
+        for _ in range(steps):
+            obs = sim.obs()
+            act, h = policy.step(mx.concatenate([obs, prev], axis=1), h)
+            mx.eval(act, h)
+            traj.append({
+                "pos": np.array(sim.pos)[0].tolist(),
+                "lidar": np.array(sim.lidar)[0].tolist(),
+                "act": np.array(act)[0].tolist(),
+            })
+            _, term, trunc = sim.step(act)
+            mx.eval(term, trunc)
+            if bool(trunc[0]):
+                break  # contact or timeout: discard, try another start
+            if bool(term[0]):
+                clean = True
+                break
+            prev = act
+        if clean:
+            print(f"fixture: goal reached at step {len(traj)} (start attempt {attempt})")
             break
+    else:
+        raise RuntimeError("no clean fixture episode found in 20 attempts")
 
     out_test = out / "test"
     out_test.mkdir(parents=True, exist_ok=True)
     fixture = {
         "scene": scene_name,
+        "n_rays": cfg.n_rays,
+        "ckpt": str(ckpt),
         "h": scene.occupancy.shape[0], "w": scene.occupancy.shape[1],
         "cell": float(scene.cell),
         "origin": [float(scene.origin[0]), float(scene.origin[1])],
@@ -189,6 +203,7 @@ def main() -> None:
     ap.add_argument("--fixture", action="store_true")
     ap.add_argument("--fixture-scene", default="Baked_sc3_staging_01")
     ap.add_argument("--fixture-steps", type=int, default=300)
+    ap.add_argument("--fixture-rays", type=int, default=64)
     args = ap.parse_args()
 
     out = Path(args.out)
@@ -197,7 +212,7 @@ def main() -> None:
     export_policies(out)
     if args.fixture:
         export_fixture(Path(args.scenes), Path(args.ckpt), out,
-                       args.fixture_scene, args.fixture_steps)
+                       args.fixture_scene, args.fixture_steps, n_rays=args.fixture_rays)
 
 
 if __name__ == "__main__":

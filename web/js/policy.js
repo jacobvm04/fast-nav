@@ -29,15 +29,16 @@ export class Policy {
     const cfg = manifest.sim;
     this.H = manifest.arch.hidden;
     this.E = manifest.arch.enc;
-    this.obsDim = cfg.n_rays + 4;
+    this.nRays = manifest.n_rays ?? cfg.n_rays; // per-policy lidar resolution
+    this.obsDim = this.nRays + 4;
     this.inDim = this.obsDim + 2; // obs | prev action
 
     // observation normalization baked into the policy (policy.py)
     const scale = new Float32Array(this.inDim);
-    for (let i = 0; i < cfg.n_rays + 2; i++) scale[i] = 1 / cfg.max_range;
+    for (let i = 0; i < this.nRays + 2; i++) scale[i] = 1 / cfg.max_range;
     const posScale = manifest.arch.use_pos ? 0.1 : 0.0;
-    scale[cfg.n_rays + 2] = posScale;
-    scale[cfg.n_rays + 3] = posScale;
+    scale[this.nRays + 2] = posScale;
+    scale[this.nRays + 3] = posScale;
     scale[this.obsDim] = 1 / cfg.v_max;
     scale[this.obsDim + 1] = 1 / cfg.v_max;
     this.scale = scale;

@@ -10,13 +10,18 @@ import { Sim } from '../js/sim.js';
 const here = dirname(fileURLToPath(import.meta.url));
 const fixture = JSON.parse(readFileSync(join(here, 'fixture.json'), 'utf8'));
 const manifest = JSON.parse(readFileSync(join(here, '../policies.json'), 'utf8'));
-const entry = manifest.policies.find((p) => p.id === 'ppo-clean');
+const rays = fixture.n_rays ?? manifest.sim.n_rays;
+const entry = manifest.policies.find((p) => fixture.ckpt
+  ? p.checkpoint === fixture.ckpt
+  : p.id === 'ppo-clean') || manifest.policies.find((p) => (p.n_rays ?? 64) === rays);
+console.log(`fixture: ${rays} rays, policy ${entry.id}`);
 const bin = readFileSync(join(here, '..', entry.file));
 
 const occ = new Uint8Array(Buffer.from(fixture.occupancy_b64, 'base64'));
 const sim = new Sim(occ, fixture.h, fixture.w, fixture.cell, fixture.origin, manifest.sim);
 const policy = new Policy({ ...entry, sim: manifest.sim, val_scale: manifest.val_scale },
   bin.buffer.slice(bin.byteOffset, bin.byteOffset + bin.byteLength));
+sim.setRays(policy.nRays);
 
 // 1. EDF parity vs scipy (row 128 of the training-time field)
 const refBuf = Buffer.from(fixture.edf_row128_b64, 'base64');
@@ -33,7 +38,7 @@ sim.setState(fixture.start, fixture.goal);
 sim.goal = [fixture.goal[0], fixture.goal[1]];
 policy.reset();
 
-const obs = new Float32Array(manifest.sim.n_rays + 4);
+const obs = new Float32Array(rays + 4);
 let maxLidarErr0 = 0;
 let maxPosErr = 0;
 let reachedAt = -1;
@@ -42,7 +47,7 @@ for (let t = 0; t < fixture.steps; t++) {
   const posErr = Math.hypot(sim.pos[0] - ref.pos[0], sim.pos[1] - ref.pos[1]);
   maxPosErr = Math.max(maxPosErr, posErr);
   if (t === 0) {
-    for (let r = 0; r < manifest.sim.n_rays; r++) {
+    for (let r = 0; r < rays; r++) {
       maxLidarErr0 = Math.max(maxLidarErr0, Math.abs(sim.lidar[r] - ref.lidar[r]));
     }
   }

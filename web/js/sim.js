@@ -188,6 +188,15 @@ export class Sim {
     return { reached, truncated, dist };
   }
 
+  // Lidar resolution follows the selected policy. The cfg object is copied,
+  // not mutated — the manifest's sim config is shared across sims.
+  setRays(n) {
+    if (n === this.cfg.n_rays) return;
+    this.cfg = { ...this.cfg, n_rays: n };
+    this.lidar = new Float32Array(n);
+    this.updateLidar();
+  }
+
   // obs = [lidar (R) | goal - odom (2) | odom (2)]: the policy sees the
   // believed (odometry) pose, never the true pose — as in Sim.obs().
   obs(out) {

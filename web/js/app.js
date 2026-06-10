@@ -136,6 +136,7 @@ async function setScene(name) {
   $('status').textContent = `loading ${meta.name}…`;
   const occ = await loadOccupancy(meta);
   const sim = new Sim(occ, meta.h, meta.w, meta.cell, meta.origin, state.manifest.sim);
+  if (state.policy) sim.setRays(state.policy.nRays);
   sim.setNoise(state.manifest.noise_stack, state.noiseLevel);
   state.sim = sim;
   state.occBase = occ.slice();
@@ -829,7 +830,11 @@ async function main() {
     }
     state.policy = state.policyBins[psel.value];
     state.policy.reset();
-    if (state.sim && state.mode === 'running') state.sim.newEpisode(); // restart episode cleanly
+    state.obsBuf = new Float32Array(state.policy.obsDim);
+    if (state.sim) {
+      state.sim.setRays(state.policy.nRays);
+      if (state.mode === 'running') state.sim.newEpisode(); // restart episode cleanly
+    }
   };
 
   for (const b of $('noise').querySelectorAll('button')) {
