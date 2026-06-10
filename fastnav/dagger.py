@@ -65,6 +65,7 @@ class DaggerTrainer:
         @partial(mx.compile, inputs=state, outputs=state)
         def update(obs, act):
             loss, grads = loss_and_grad(self.policy, obs, act)
+            grads, _ = optim.clip_grad_norm(grads, max_norm=1.0)
             self.opt.update(self.policy, grads)
             return loss
 
@@ -219,6 +220,7 @@ class RecurrentDaggerTrainer:
         @partial(mx.compile, inputs=state, outputs=state)
         def update(obs, h0, done, act, val):
             loss, grads = loss_and_grad(self.policy, obs, h0, done, act, val)
+            grads, _ = optim.clip_grad_norm(grads, max_norm=1.0)  # long BPTT explodes without this
             self.opt.update(self.policy, grads)
             return loss
 
