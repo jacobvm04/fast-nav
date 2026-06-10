@@ -123,6 +123,7 @@ class PPOTrainer:
         n = sim.num_envs
         self.h = mx.zeros((n, self.cfg.hidden), dtype=mx.float32)
         self.prev_act = mx.zeros((n, 2), dtype=mx.float32)
+        mx.clear_cache()  # return the old pack's buffers to the OS (else swap ratchets)
 
     def _clamp(self, a: mx.array) -> mx.array:
         """Same speed clamp the sim applies, so prev-action input matches reality."""
