@@ -211,7 +211,12 @@ class RecurrentDaggerTrainer:
         def loss_fn(model, obs, h0, done, act, val):
             pred_a, pred_v = model(obs, h0, done)
             loss_a = mx.sum(mx.mean(mx.square(pred_a - act), axis=(0, 2)) * mask)
-            loss_v = mx.sum(mx.mean(mx.square(pred_v - val * vs), axis=0) * mask)
+            # clip + huber: padded/obstacle-filled geo regions produce rare huge
+            # cost-to-go targets that otherwise poison whole batches
+            val_t = mx.clip(val * vs, 0.0, 2.5)
+            err = pred_v - val_t
+            hub = mx.where(mx.abs(err) < 1.0, 0.5 * mx.square(err), mx.abs(err) - 0.5)
+            loss_v = mx.sum(mx.mean(hub, axis=0) * mask)
             return loss_a + cfg.value_weight * loss_v
 
         loss_and_grad = nn.value_and_grad(self.policy, loss_fn)
