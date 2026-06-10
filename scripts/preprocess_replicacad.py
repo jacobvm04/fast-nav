@@ -14,7 +14,15 @@ import cv2
 import numpy as np
 import trimesh
 
+from fastnav.compose import instance_transform, rasterize_band
 from fastnav.scene import FieldConfig, ScenePack, build_scene
+
+
+def load_triangles(path: Path) -> np.ndarray:
+    from fastnav.compose import load_triangles as _lt
+
+    return _lt(str(path))
+
 
 # articulated template_name -> urdf (relative to urdf_uncompressed/)
 URDF_FILES = {
@@ -25,25 +33,6 @@ URDF_FILES = {
     "chestOfDrawers_01": "chest_of_drawers/chestOfDrawers_01.urdf",
 }
 SKIP_PREFIXES = ("door",)  # doors treated as open (no leaf geometry)
-
-BAND_LO, BAND_HI = 0.10, 1.30  # robot height band (m, Y-up)
-
-
-def load_triangles(path: Path) -> np.ndarray:
-    """All world-space triangles of a GLB as [T, 3, 3]."""
-    scene = trimesh.load(path, force="scene", process=False)
-    mesh = scene.to_geometry() if hasattr(scene, "to_geometry") else scene.dump(concatenate=True)
-    return mesh.vertices[mesh.faces]
-
-
-def instance_transform(inst: dict) -> np.ndarray:
-    t = np.array(inst.get("translation", [0, 0, 0]), dtype=np.float64)
-    w, x, y, z = inst.get("rotation", [1, 0, 0, 0])
-    m = trimesh.transformations.quaternion_matrix([w, x, y, z])
-    m[:3, 3] = t
-    s = inst.get("uniform_scale", 1.0)
-    m[:3, :3] *= s
-    return m
 
 
 def urdf_triangles(urdf_path: Path) -> np.ndarray:
@@ -111,29 +100,6 @@ def scene_triangles(stage_glb: Path, instance_json: Path, urdf_dir: Path) -> np.
         t = t @ m[:3, :3].T + m[:3, 3]
         tris.append(t)
     return np.concatenate(tris, axis=0)
-
-
-def rasterize_band(tris: np.ndarray, cell: float, pad: float = 0.15):
-    """Triangles intersecting the height band -> 2D occupancy grid in XZ."""
-    ymin = tris[:, :, 1].min(axis=1)
-    ymax = tris[:, :, 1].max(axis=1)
-    band = tris[(ymax > BAND_LO) & (ymin < BAND_HI)]
-    pts2 = band[:, :, [0, 2]]  # XZ projection
-
-    lo = pts2.reshape(-1, 2).min(axis=0) - pad
-    hi = pts2.reshape(-1, 2).max(axis=0) + pad
-    w = int(np.ceil((hi[0] - lo[0]) / cell))
-    h = int(np.ceil((hi[1] - lo[1]) / cell))
-    occ = np.zeros((h, w), dtype=np.uint8)
-
-    shift = 4
-    pix = np.round((pts2 - lo) / cell * (1 << shift)).astype(np.int32)
-    polys = list(pix)  # one [3, 2] int array per triangle
-    cv2.fillPoly(occ, polys, 1, lineType=cv2.LINE_8, shift=shift)
-    # vertical faces project to zero-area polys; catch them with edges
-    cv2.polylines(occ, polys, isClosed=True, color=1, thickness=1, lineType=cv2.LINE_8, shift=shift)
-    origin = (lo + cell / 2).astype(np.float32)
-    return occ, origin
 
 
 def debug_png(scene, path: Path):
