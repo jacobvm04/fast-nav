@@ -259,6 +259,15 @@ _expert_kernel = mx.fast.metal_kernel(
 )
 
 
+def noisy_config(cfg: "SimConfig", level: float) -> "SimConfig":
+    """Scale the realistic sim2real noise stack by `level` (1.0 = realistic)."""
+    return dataclasses.replace(
+        cfg, lidar_sigma=0.02 * level, lidar_dropout=0.02 * level,
+        odom_rw=0.03 * level, odom_bias=0.02 * level, odom_scale=0.02 * level,
+        head_rw=0.005 * level, head_bias=0.003 * level,
+        act_noise=0.1 * level, act_scale=0.05 * level)
+
+
 @dataclasses.dataclass
 class SimConfig:
     n_rays: int = 64

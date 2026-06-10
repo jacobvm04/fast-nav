@@ -428,6 +428,7 @@ async function main() {
   canvas.addEventListener('pointerdown', onClick);
   new ResizeObserver(fitView).observe($('stage'));
 
+  window.fastnav = state; // debug/test hook
   $('loading').remove();
   const first = index[(Math.random() * index.length) | 0];
   sel.value = first.name;

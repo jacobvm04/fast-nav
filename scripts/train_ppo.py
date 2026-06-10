@@ -11,7 +11,7 @@ from mlx.utils import tree_flatten
 from fastnav.dagger import evaluate
 from fastnav.ppo import PPOConfig, PPOTrainer
 from fastnav.scene import ScenePack
-from fastnav.sim import Sim, SimConfig
+from fastnav.sim import Sim, SimConfig, noisy_config
 
 
 def main():
@@ -36,6 +36,8 @@ def main():
     ap.add_argument("--wandb", dest="use_wandb", action=argparse.BooleanOptionalAction, default=True)
     ap.add_argument("--wandb-project", default="fast-nav")
     ap.add_argument("--video-every", type=int, default=800)
+    ap.add_argument("--noise", type=float, default=0.0,
+                    help="sim2real noise level in training rollouts (1.0 = realistic)")
     args = ap.parse_args()
 
     train_pack = ScenePack.load_dir(args.scenes, include=args.train_include, max_cells=args.max_cells)
@@ -44,7 +46,8 @@ def main():
     print(f"train {len(train_pack.scenes)} / eval {len(eval_pack.scenes)} / eval2 {len(eval2_pack.scenes)} scenes")
 
     scfg = SimConfig()
-    sim = Sim(train_pack, num_envs=args.envs, cfg=scfg, seed=args.seed)
+    train_cfg = noisy_config(scfg, args.noise) if args.noise > 0 else scfg
+    sim = Sim(train_pack, num_envs=args.envs, cfg=train_cfg, seed=args.seed)
     sim.reset()
     pcfg = PPOConfig(lr=args.lr, entropy_coef=args.entropy_coef, init_std=args.init_std)
     init = args.init if args.init and Path(args.init).exists() else None
