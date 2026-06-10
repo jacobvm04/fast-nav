@@ -146,6 +146,9 @@ def main():
             print(f"it {it:4d}  frames {frames / 1e6:7.1f}M  loss {loss:.4f}  beta {trainer.beta:.2f}  "
                   f"train {ev_tr['success'] * 100:5.1f}%  HELD-OUT {ev_he['success'] * 100:5.1f}%{extra}  "
                   f"({frames / el / 1e6:.1f}M fps)")
+            mx.save_safetensors(str(out / "policy.safetensors"),
+                                dict(tree_flatten(trainer.policy.parameters())))
+            (out / "history.json").write_text(json.dumps(history, indent=1))
         if run and args.video_every and (it % args.video_every == 0 or it == args.iters):
             import wandb
 
