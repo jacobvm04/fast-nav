@@ -1,6 +1,84 @@
 {
  "policies": [
   {
+   "id": "ppo-big",
+   "label": "PPO \u00b7 3k-scene contact-safe (latest)",
+   "checkpoint": "checkpoints/ppo_big/policy_best.safetensors",
+   "file": "policies/ppo-big.bin",
+   "tensors": {
+    "enc.weight": {
+     "shape": [
+      256,
+      70
+     ],
+     "offset": 0
+    },
+    "enc.bias": {
+     "shape": [
+      256
+     ],
+     "offset": 17920
+    },
+    "gru.Wx": {
+     "shape": [
+      768,
+      256
+     ],
+     "offset": 18176
+    },
+    "gru.Wh": {
+     "shape": [
+      768,
+      256
+     ],
+     "offset": 214784
+    },
+    "gru.b": {
+     "shape": [
+      768
+     ],
+     "offset": 411392
+    },
+    "gru.bhn": {
+     "shape": [
+      256
+     ],
+     "offset": 412160
+    },
+    "head.weight": {
+     "shape": [
+      2,
+      256
+     ],
+     "offset": 412416
+    },
+    "head.bias": {
+     "shape": [
+      2
+     ],
+     "offset": 412928
+    },
+    "vhead.weight": {
+     "shape": [
+      1,
+      256
+     ],
+     "offset": 412930
+    },
+    "vhead.bias": {
+     "shape": [
+      1
+     ],
+     "offset": 413186
+    }
+   },
+   "arch": {
+    "hidden": 256,
+    "enc": 256,
+    "use_pos": false
+   }
+  },
+  {
    "id": "ppo-careful",
    "label": "PPO \u00b7 contact-safe (careful)",
    "checkpoint": "checkpoints/ppo_careful2/policy_best.safetensors",
