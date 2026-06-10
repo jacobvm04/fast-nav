@@ -46,9 +46,11 @@ def main():
                     help="inflated contact-terminal margin during training (eval stays at default)")
     args = ap.parse_args()
 
+    # train pack may use a tighter size cap (GPU memory); evals stay at the
+    # established 500k protocol for comparability across runs
     train_pack = ScenePack.load_dir(args.scenes, include=args.train_include, max_cells=args.max_cells)
-    eval_pack = ScenePack.load_dir(args.scenes, include=args.eval_include, max_cells=args.max_cells)
-    eval2_pack = ScenePack.load_dir(args.scenes, include=args.eval2_include, max_cells=args.max_cells)
+    eval_pack = ScenePack.load_dir(args.scenes, include=args.eval_include, max_cells=500000)
+    eval2_pack = ScenePack.load_dir(args.scenes, include=args.eval2_include, max_cells=500000)
     print(f"train {len(train_pack.scenes)} / eval {len(eval_pack.scenes)} / eval2 {len(eval2_pack.scenes)} scenes")
 
     import dataclasses
