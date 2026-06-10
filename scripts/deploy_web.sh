@@ -21,7 +21,9 @@ rsync -a --delete \
   "$ROOT/web/" "$DEMO/"
 
 cd "$DEMO"
-if git status --porcelain | grep -q .; then
+# NB: not `git status --porcelain | grep -q .` — grep -q exits at first match,
+# git gets SIGPIPE, and pipefail reports the successful check as failed.
+if [[ -n "$(git status --porcelain)" ]]; then
   git add -A
   git commit -m "Sync demo from fast-nav web/ ($(git -C "$ROOT" rev-parse --short HEAD 2>/dev/null || echo local))"
   git push
