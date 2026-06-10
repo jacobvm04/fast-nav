@@ -32,7 +32,7 @@ POLICY_TENSORS = ["enc.weight", "enc.bias", "gru.Wx", "gru.Wh", "gru.b", "gru.bh
 
 # (id, label, checkpoint) — exported in order; first existing one is the app default
 POLICIES = [
-    ("ppo-careful", "PPO · contact-safe (careful)", "checkpoints/ppo_careful/policy_best.safetensors"),
+    ("ppo-careful", "PPO · contact-safe (careful)", "checkpoints/ppo_careful2/policy_best.safetensors"),
     ("ppo-contact", "PPO · contact-safe", "checkpoints/ppo_contact2/policy_best.safetensors"),
     ("ppo-noisy", "PPO · noise-trained (DR 1.5)", "checkpoints/ppo_noisy/policy_best.safetensors"),
     ("ppo-clean", "PPO · clean-trained", "checkpoints/ppo/policy_best.safetensors"),

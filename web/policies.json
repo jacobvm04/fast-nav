@@ -3,7 +3,7 @@
   {
    "id": "ppo-careful",
    "label": "PPO \u00b7 contact-safe (careful)",
-   "checkpoint": "checkpoints/ppo_careful/policy_best.safetensors",
+   "checkpoint": "checkpoints/ppo_careful2/policy_best.safetensors",
    "file": "policies/ppo-careful.bin",
    "tensors": {
     "enc.weight": {
