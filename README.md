@@ -131,6 +131,18 @@ actuation noise are free. PPO fine-tuning with 1.5x noise in rollouts
 (`scripts/train_ppo.py --noise 1.5`) buys +1.6 at realistic and +8.4 at severe
 levels for -1.3 clean. `scripts/noise_sweep.py` reproduces the grid.
 
+## Contact-safe navigation
+
+Contact is a **terminal failure** (`SimConfig.contact_margin`, 1cm default): the
+constraint-projection sim otherwise lets policies lean on walls for free — the original
+PPO champion touched geometry in >50% of episodes. Under the honest rule the expert
+still scores 99.98%, prior checkpoints drop to 53-67%, and retraining with collision
+terminals + clearance shaping (`checkpoints/ppo_contact2`) reaches **92.9% contact-free
+success clean / 86.0% under realistic noise** on ReplicaCAD held-out (82.8/77.5 on
+ProcTHOR, whose furniture gaps are tighter). Training note: collision terminals sharpen
+the optimization landscape — the first run peaked then slid for 2000 iters; resuming
+from the peak at 3x lower lr with a restored exploration floor fixed it.
+
 ## Browser demo (held-out scenes, click-to-navigate)
 
 `web/` is a dependency-free static app: pick any held-out scene (ReplicaCAD sc2/sc3 +
