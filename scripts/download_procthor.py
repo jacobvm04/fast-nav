@@ -45,14 +45,17 @@ def main():
         picked.extend(cands[: args.per_room])
     print(f"selected {len(picked)} scene configs")
 
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
     fileset = set(files)
     stages, objects = set(), set()
-    for cfg_file in picked:
-        cfg = json.loads(get(cfg_file, args.out).read_text())
-        st = cfg["stage_instance"]["template_name"]  # 'stages/ProcTHOR/1/X'
-        stages.add(st.split("stages/")[-1])
-        for inst in cfg.get("object_instances", []):
-            objects.add(inst["template_name"].split("/")[-1])
+    with ThreadPoolExecutor(max_workers=12) as pool:
+        for fut in as_completed([pool.submit(get, c, args.out) for c in picked]):
+            cfg = json.loads(fut.result().read_text())
+            st = cfg["stage_instance"]["template_name"]  # 'stages/ProcTHOR/1/X'
+            stages.add(st.split("stages/")[-1])
+            for inst in cfg.get("object_instances", []):
+                objects.add(inst["template_name"].split("/")[-1])
 
     print(f"unique stages: {len(stages)}, unique objects: {len(objects)}", flush=True)
     todo = []
@@ -67,7 +70,6 @@ def main():
             continue
         todo += [cfg_p, glb_p]
 
-    from concurrent.futures import ThreadPoolExecutor, as_completed
     done = 0
     with ThreadPoolExecutor(max_workers=12) as pool:
         futs = [pool.submit(get, p, args.out) for p in todo]

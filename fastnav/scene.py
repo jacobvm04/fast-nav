@@ -272,8 +272,11 @@ class ScenePack:
         self.geo_hw = (hg, wg)
 
     @staticmethod
-    def load_dir(path: str | Path, include: list[str] | None = None) -> "ScenePack":
-        """Load scenes from a directory, optionally filtered by fnmatch patterns on the stem."""
+    def load_dir(path: str | Path, include: list[str] | None = None,
+                 max_cells: int | None = None) -> "ScenePack":
+        """Load scenes from a directory, optionally filtered by fnmatch patterns on the
+        stem and by grid size (max_cells caps H*W; oversized outliers blow up the
+        padded GPU tensors, since all scenes pad to the largest grid)."""
         import fnmatch
 
         files = sorted(Path(path).glob("*.npz"))
@@ -281,7 +284,13 @@ class ScenePack:
             files = [f for f in files if any(fnmatch.fnmatch(f.stem, p) for p in include)]
         if not files:
             raise FileNotFoundError(f"no scene .npz files in {path} (include={include})")
-        return ScenePack([Scene.load(f) for f in files])
+        scenes = [Scene.load(f) for f in files]
+        if max_cells is not None:
+            kept = [s for s in scenes if s.edf.shape[0] * s.edf.shape[1] <= max_cells]
+            if len(kept) < len(scenes):
+                print(f"ScenePack: dropped {len(scenes) - len(kept)} oversized scenes (> {max_cells} cells)")
+            scenes = kept
+        return ScenePack(scenes)
 
     def start_range_for(self, min_geo: float, max_geo: float) -> np.ndarray:
         """Per (scene, goal) index range [lo, hi) into the sorted start table whose

@@ -13,7 +13,7 @@ from pathlib import Path
 import mlx.core as mx
 from mlx.utils import tree_flatten
 
-from fastnav.dagger import DaggerConfig, DaggerTrainer, evaluate
+from fastnav.dagger import DaggerConfig, DaggerTrainer, RecurrentDaggerTrainer, evaluate
 from fastnav.scene import ScenePack
 from fastnav.sim import Sim, SimConfig
 
@@ -35,16 +35,26 @@ def main():
     ap.add_argument("--eval2-include", nargs="+", default=None, help="optional second held-out set")
     ap.add_argument("--hidden", type=int, default=256)
     ap.add_argument("--depth", type=int, default=2)
+    ap.add_argument("--augment", action="store_true")
+    ap.add_argument("--lidar-noise", type=float, default=0.0)
+    ap.add_argument("--ray-dropout", type=float, default=0.0)
+    ap.add_argument("--no-pos", action="store_true")
+    ap.add_argument("--recurrent", action="store_true")
+    ap.add_argument("--max-cells", type=int, default=None, help="drop scenes larger than H*W cells")
     args = ap.parse_args()
 
-    train_pack = ScenePack.load_dir(args.scenes, include=args.train_include)
-    eval_pack = ScenePack.load_dir(args.scenes, include=args.eval_include)
+    train_pack = ScenePack.load_dir(args.scenes, include=args.train_include, max_cells=args.max_cells)
+    eval_pack = ScenePack.load_dir(args.scenes, include=args.eval_include, max_cells=args.max_cells)
     print(f"train scenes: {len(train_pack.scenes)}  eval scenes (held out): {len(eval_pack.scenes)}")
 
     scfg = SimConfig()
     sim = Sim(train_pack, num_envs=args.envs, cfg=scfg, seed=args.seed)
     sim.reset()
-    trainer = DaggerTrainer(sim, DaggerConfig(hidden=args.hidden, depth=args.depth), seed=args.seed)
+    dcfg = DaggerConfig(hidden=args.hidden, depth=args.depth, augment=args.augment,
+                        lidar_noise=args.lidar_noise, ray_dropout=args.ray_dropout,
+                        use_pos=not args.no_pos)
+    cls = RecurrentDaggerTrainer if args.recurrent else DaggerTrainer
+    trainer = cls(sim, dcfg, seed=args.seed)
     n_params = sum(v.size for _, v in tree_flatten(trainer.policy.parameters()))
     print(f"policy params: {n_params:,}")
 
@@ -52,7 +62,7 @@ def main():
     sim_eval = Sim(eval_pack, num_envs=args.eval_envs, cfg=scfg, seed=args.seed + 2)
     sim_eval2 = None
     if args.eval2_include:
-        eval2_pack = ScenePack.load_dir(args.scenes, include=args.eval2_include)
+        eval2_pack = ScenePack.load_dir(args.scenes, include=args.eval2_include, max_cells=args.max_cells)
         print(f"second held-out set: {len(eval2_pack.scenes)} scenes")
         sim_eval2 = Sim(eval2_pack, num_envs=args.eval_envs, cfg=scfg, seed=args.seed + 3)
 
