@@ -58,10 +58,22 @@ _STEP_SRC = """
     bool trunc = false;
     float dist_pre = 0.0f;
 
+    float odx = odom_st[i * 3], ody = odom_st[i * 3 + 1], oth = odom_st[i * 3 + 2];
+    float ep0 = ep_n[i * 5], ep1 = ep_n[i * 5 + 1], ep2 = ep_n[i * 5 + 2];
+    float ep3 = ep_n[i * 5 + 3], ep4 = ep_n[i * 5 + 4];
+
     if (!freset) {
         float vx = vel[i * 2], vy = vel[i * 2 + 1];
         float vn = metal::sqrt(vx * vx + vy * vy);
         if (vn > vmax) { vx *= vmax / vn; vy *= vmax / vn; }
+        // command is in the believed frame; heading error + actuation error
+        // distort what actually gets executed in the true frame
+        float ct = metal::cos(oth), sn = metal::sin(oth);
+        float ascale = 1.0f + ep4;
+        float ex = (ct * vx - sn * vy) * ascale + p_f[12] * rnd_n[i * 10];
+        float ey = (sn * vx + ct * vy) * ascale + p_f[12] * rnd_n[i * 10 + 1];
+        vx = ex; vy = ey;
+        float px0 = px, py0 = py;
         const int SUB = 2;
         for (int sub = 0; sub < SUB; sub++) {
             float sx = px, sy = py;
@@ -83,6 +95,17 @@ _STEP_SRC = """
             }
             if (d < radius) { px = sx; py = sy; }  // projection failed: stay put (start was valid)
         }
+        // integrate odometry: measured displacement = R(-theta) * true, plus
+        // scale error, per-episode bias, and distance-scaled random walk
+        float tdx = px - px0, tdy = py - py0;
+        float dl = metal::sqrt(tdx * tdx + tdy * tdy);
+        float mdx = ct * tdx + sn * tdy;
+        float mdy = -sn * tdx + ct * tdy;
+        float oscale = 1.0f + ep2;
+        odx += mdx * oscale + (ep0 + p_f[7] * rnd_n[i * 10 + 2]) * dl;
+        ody += mdy * oscale + (ep1 + p_f[7] * rnd_n[i * 10 + 3]) * dl;
+        oth += (ep3 + p_f[10] * rnd_n[i * 10 + 4]) * dl;
+
         float ddx = gx - px, ddy = gy - py;
         dist_pre = metal::sqrt(ddx * ddx + ddy * ddy);
         reached = dist_pre < goal_r;
@@ -104,7 +127,23 @@ _STEP_SRC = """
         gy = goals_all[((long)s * K + nk) * 2 + 1];
         gk = nk;
         st = 0;
+        // re-anchor odometry to the new episode start, resample per-episode errors
+        odx = px; ody = py; oth = 0.0f;
+        ep0 = p_f[8] * rnd_n[i * 10 + 5];
+        ep1 = p_f[8] * rnd_n[i * 10 + 6];
+        ep2 = p_f[9] * rnd_n[i * 10 + 7];
+        ep3 = p_f[11] * rnd_n[i * 10 + 8];
+        ep4 = p_f[13] * rnd_n[i * 10 + 9];
     }
+
+    odom_out[i * 3] = odx;
+    odom_out[i * 3 + 1] = ody;
+    odom_out[i * 3 + 2] = oth;
+    ep_out[i * 5] = ep0;
+    ep_out[i * 5 + 1] = ep1;
+    ep_out[i * 5 + 2] = ep2;
+    ep_out[i * 5 + 3] = ep3;
+    ep_out[i * 5 + 4] = ep4;
 
     pos_out[i * 2] = px;
     pos_out[i * 2 + 1] = py;
@@ -128,7 +167,8 @@ _LIDAR_SRC = """
     int s = scene[i];
     long ebase = (long)s * H * W;
     float ox = origin[s * 2], oy = origin[s * 2 + 1];
-    float theta = 6.283185307f * (float)r / (float)R;
+    // ray indexed by believed angle; heading error rotates it in the true frame
+    float theta = 6.283185307f * (float)r / (float)R + odom_st[i * 3 + 2];
     float dx = metal::cos(theta), dy = metal::sin(theta);
     float px = pos[i * 2], py = pos[i * 2 + 1];
 
@@ -143,7 +183,9 @@ _LIDAR_SRC = """
         tt += metal::max(d, minstep);
         if (tt >= max_range) { tt = max_range; break; }
     }
-    lidar[(long)i * R + r] = metal::min(tt, max_range);
+    tt = tt + p_f[14] * nse[(long)i * R + r];
+    if (unif[(long)i * R + r] < p_f[15]) tt = max_range;
+    lidar[(long)i * R + r] = metal::clamp(tt, 0.0f, max_range);
 """
 
 # pe_i: [Hg, Wg, K, N]   pe_f: [geo_cell, inv_geo_cell, vmax, slow_radius, beta, blend_radius]
@@ -192,15 +234,17 @@ _EXPERT_SRC = """
 _step_kernel = mx.fast.metal_kernel(
     name="nav_step",
     input_names=["pos", "vel", "goal", "goal_k", "step_ct", "scene", "edf", "origin",
-                 "starts", "goals_all", "pool", "pool_cnt", "rnd", "force_reset", "p_f", "p_i"],
-    output_names=["pos_out", "goal_out", "goal_k_out", "step_out", "term_out", "trunc_out", "dist_out"],
+                 "starts", "goals_all", "pool", "pool_cnt", "odom_st", "ep_n", "rnd",
+                 "rnd_n", "force_reset", "p_f", "p_i"],
+    output_names=["pos_out", "goal_out", "goal_k_out", "step_out", "term_out", "trunc_out",
+                  "dist_out", "odom_out", "ep_out"],
     source=_STEP_SRC,
     header=_HEADER,
 )
 
 _lidar_kernel = mx.fast.metal_kernel(
     name="nav_lidar",
-    input_names=["pos", "scene", "edf", "origin", "p_f", "p_i"],
+    input_names=["pos", "scene", "odom_st", "edf", "origin", "nse", "unif", "p_f", "p_i"],
     output_names=["lidar"],
     source=_LIDAR_SRC,
     header=_HEADER,
@@ -227,6 +271,17 @@ class SimConfig:
     min_goal_dist: float = 2.0   # episode geodesic length range
     max_goal_dist: float = 14.0
     detour_min: float = 0.0      # min geodesic/euclidean ratio for episode starts (curriculum)
+
+    # --- sim2real noise model (all default 0 = ideal sensors/actuators) ---
+    lidar_sigma: float = 0.0     # per-ray range noise sigma (m)
+    lidar_dropout: float = 0.0   # per-ray prob of no-return (reads max_range)
+    odom_rw: float = 0.0         # odometry random-walk sigma, fraction of distance moved
+    odom_bias: float = 0.0       # per-episode systematic drift sigma (fraction of distance)
+    odom_scale: float = 0.0      # per-episode odometry scale-factor sigma
+    head_rw: float = 0.0         # heading random-walk sigma (rad per meter moved)
+    head_bias: float = 0.0       # per-episode heading drift sigma (rad per meter)
+    act_noise: float = 0.0       # additive actuation noise sigma (m/s)
+    act_scale: float = 0.0       # per-episode actuation scale-factor sigma
     expert_slow_radius: float = 0.6
     expert_beta: float = 0.35
     expert_blend_radius: float = 0.5
@@ -260,7 +315,10 @@ class Sim:
         self.pool, self.pool_cnt = self._build_start_pools(pack, cfg)
 
         self.p_f = mx.array([cfg.dt, cfg.v_max, cfg.robot_radius, cfg.goal_radius,
-                             pack.cell, 1.0 / pack.cell, cfg.max_range], dtype=mx.float32)
+                             pack.cell, 1.0 / pack.cell, cfg.max_range,
+                             cfg.odom_rw, cfg.odom_bias, cfg.odom_scale,
+                             cfg.head_rw, cfg.head_bias, cfg.act_noise, cfg.act_scale,
+                             cfg.lidar_sigma, cfg.lidar_dropout], dtype=mx.float32)
         self.p_i = mx.array([h, w, k, m, cfg.max_steps, n, cfg.n_rays], dtype=mx.int32)
         self.pe_f = mx.array([pack.geo_cell, 1.0 / pack.geo_cell, cfg.v_max,
                               cfg.expert_slow_radius, cfg.expert_beta,
@@ -271,6 +329,8 @@ class Sim:
             scene_assign = np.arange(n, dtype=np.int32) % len(pack.scenes)
         self.scene = mx.array(scene_assign.astype(np.int32))
         self.pos = mx.zeros((n, 2), dtype=mx.float32)
+        self.odom = mx.zeros((n, 3), dtype=mx.float32)   # believed (x, y) + heading error
+        self.ep_noise = mx.zeros((n, 5), dtype=mx.float32)
         self.goal = mx.zeros((n, 2), dtype=mx.float32)
         self.goal_k = mx.zeros((n,), dtype=mx.int32)
         self.step_ct = mx.zeros((n,), dtype=mx.int32)
@@ -309,28 +369,37 @@ class Sim:
 
     def _step_raw(self, actions: mx.array, force_reset: mx.array) -> None:
         n = self.num_envs
+        r = self.cfg.n_rays
         rnd = mx.random.uniform(shape=(n, 4))
+        rnd_n = mx.random.normal(shape=(n, 10))
         outs = _step_kernel(
             inputs=[self.pos, actions, self.goal, self.goal_k, self.step_ct, self.scene,
                     self.edf, self.origin, self.starts, self.goals_all, self.pool,
-                    self.pool_cnt, rnd, force_reset, self.p_f, self.p_i],
-            output_shapes=[(n, 2), (n, 2), (n,), (n,), (n,), (n,), (n,)],
-            output_dtypes=[mx.float32, mx.float32, mx.int32, mx.int32, mx.uint8, mx.uint8, mx.float32],
+                    self.pool_cnt, self.odom, self.ep_noise, rnd, rnd_n, force_reset,
+                    self.p_f, self.p_i],
+            output_shapes=[(n, 2), (n, 2), (n,), (n,), (n,), (n,), (n,), (n, 3), (n, 5)],
+            output_dtypes=[mx.float32, mx.float32, mx.int32, mx.int32, mx.uint8, mx.uint8,
+                           mx.float32, mx.float32, mx.float32],
             grid=(n, 1, 1),
             threadgroup=(256, 1, 1),
         )
-        self.pos, self.goal, self.goal_k, self.step_ct, self.term, self.trunc, self.dist_goal = outs
+        (self.pos, self.goal, self.goal_k, self.step_ct, self.term, self.trunc,
+         self.dist_goal, self.odom, self.ep_noise) = outs
         self.lidar = _lidar_kernel(
-            inputs=[self.pos, self.scene, self.edf, self.origin, self.p_f, self.p_i],
-            output_shapes=[(n, self.cfg.n_rays)],
+            inputs=[self.pos, self.scene, self.odom, self.edf, self.origin,
+                    mx.random.normal(shape=(n, r)), mx.random.uniform(shape=(n, r)),
+                    self.p_f, self.p_i],
+            output_shapes=[(n, r)],
             output_dtypes=[mx.float32],
-            grid=(n * self.cfg.n_rays, 1, 1),
+            grid=(n * r, 1, 1),
             threadgroup=(256, 1, 1),
         )[0]
         self.last_done = mx.maximum(self.term, self.trunc).astype(mx.float32)[:, None]
 
     def obs(self) -> mx.array:
-        return mx.concatenate([self.lidar, self.goal - self.pos, self.pos], axis=1)
+        """Observation uses the believed (odometry) pose, never the true pose."""
+        odom_xy = self.odom[:, :2]
+        return mx.concatenate([self.lidar, self.goal - odom_xy, odom_xy], axis=1)
 
     def reset(self) -> mx.array:
         self._step_raw(mx.zeros((self.num_envs, 2), dtype=mx.float32), self._one)
@@ -357,11 +426,16 @@ class Sim:
         self.expert_prev = mx.zeros((n, 2), dtype=mx.float32)
         self.last_done = mx.zeros((n, 1), dtype=mx.float32)
         self.dist_goal = mx.sqrt(mx.sum(mx.square(self.goal - self.pos), axis=1))
+        self.odom = mx.concatenate([self.pos, mx.zeros((n, 1), dtype=mx.float32)], axis=1)
+        self.ep_noise = mx.zeros((n, 5), dtype=mx.float32)
+        r = self.cfg.n_rays
         self.lidar = _lidar_kernel(
-            inputs=[self.pos, self.scene, self.edf, self.origin, self.p_f, self.p_i],
-            output_shapes=[(n, self.cfg.n_rays)],
+            inputs=[self.pos, self.scene, self.odom, self.edf, self.origin,
+                    mx.random.normal(shape=(n, r)), mx.random.uniform(shape=(n, r)),
+                    self.p_f, self.p_i],
+            output_shapes=[(n, r)],
             output_dtypes=[mx.float32],
-            grid=(n * self.cfg.n_rays, 1, 1),
+            grid=(n * r, 1, 1),
             threadgroup=(256, 1, 1),
         )[0]
         mx.eval(self.pos, self.lidar)

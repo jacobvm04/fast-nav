@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>fast-nav · click-to-navigate demo</title>
+<style>
+  :root {
+    --bg: #07090f;
+    --panel: #0d1220;
+    --edge: #1d2740;
+    --text: #c8d3ee;
+    --dim: #6b7799;
+    --cyan: #4cc9f0;
+    --amber: #ffd166;
+    --green: #7ae582;
+    --red: #ff6b6b;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 13px/1.45 "SF Mono", ui-monospace, Menlo, monospace;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 16px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--edge);
+    flex-wrap: wrap;
+  }
+  header h1 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    color: #fff;
+    letter-spacing: 0.02em;
+  }
+  header h1 span { color: var(--cyan); }
+  select, button {
+    background: #131a2e;
+    color: var(--text);
+    border: 1px solid var(--edge);
+    border-radius: 6px;
+    padding: 5px 9px;
+    font: inherit;
+    cursor: pointer;
+  }
+  select { max-width: 300px; }
+  button:hover, select:hover { border-color: #34436e; }
+  .ctl { display: flex; align-items: center; gap: 6px; color: var(--dim); }
+  .seg { display: flex; }
+  .seg button { border-radius: 0; border-right-width: 0; min-width: 38px; }
+  .seg button:first-child { border-radius: 6px 0 0 6px; }
+  .seg button:last-child { border-radius: 0 6px 6px 0; border-right-width: 1px; }
+  .seg button.on { background: #1d2c52; color: #fff; border-color: #3a4d85; }
+  #stats { margin-left: auto; display: flex; gap: 18px; color: var(--dim); white-space: nowrap; }
+  #stats b { color: var(--text); font-weight: 600; }
+  #stage { position: relative; flex: 1; min-height: 0; }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; }
+  #status {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    background: rgba(13, 18, 32, 0.92);
+    border: 1px solid var(--edge);
+    border-radius: 8px;
+    padding: 7px 14px;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+  }
+  #status.success { border-color: rgba(122, 229, 130, 0.5); color: var(--green); }
+  #status.warn { border-color: rgba(255, 209, 102, 0.5); color: var(--amber); }
+  #status.error { border-color: rgba(255, 107, 107, 0.5); color: var(--red); }
+  #hint {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    color: var(--dim);
+    font-size: 11.5px;
+    text-align: right;
+    pointer-events: none;
+  }
+  #loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dim);
+    background: var(--bg);
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>fast-<span>nav</span> · held-out scenes, live policy</h1>
+  <select id="scene"></select>
+  <button id="shuffle" title="random held-out scene">⚄ random</button>
+  <div class="ctl">
+    speed
+    <div class="seg" id="speed">
+      <button data-x="0.5">½×</button>
+      <button data-x="1" class="on">1×</button>
+      <button data-x="2">2×</button>
+      <button data-x="4">4×</button>
+      <button data-x="8">8×</button>
+    </div>
+  </div>
+  <button id="pause">⏸ pause</button>
+  <div id="stats">
+    <span>goals <b id="s-succ">0/0</b></span>
+    <span>steps <b id="s-steps">–</b></span>
+    <span>policy est. <b id="s-val">–</b></span>
+    <span>compute <b id="s-ms">–</b></span>
+  </div>
+</header>
+<div id="stage">
+  <canvas id="canvas"></canvas>
+  <div id="status">loading…</div>
+  <div id="hint">click — set goal · shift-click — teleport robot<br>
+    GRU-256 PPO policy (~98% held-out success) · sim + inference in plain JS</div>
+  <div id="loading">loading policy + scenes…</div>
+</div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
