@@ -540,6 +540,3570 @@
   ]
  },
  {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-134",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-134.png",
+  "h": 265,
+  "w": 266,
+  "cell": 0.025,
+  "origin": [
+   -6.438000202178955,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-135",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-135.png",
+  "h": 508,
+  "w": 521,
+  "cell": 0.025,
+  "origin": [
+   -12.818131446838379,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-136",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-136.png",
+  "h": 443,
+  "w": 515,
+  "cell": 0.025,
+  "origin": [
+   -12.682125091552734,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-137",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-137.png",
+  "h": 443,
+  "w": 436,
+  "cell": 0.025,
+  "origin": [
+   -10.675126075744629,
+   1.3620479106903076
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-138",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-138.png",
+  "h": 279,
+  "w": 212,
+  "cell": 0.025,
+  "origin": [
+   -5.119999885559082,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-14",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-14.png",
+  "h": 358,
+  "w": 265,
+  "cell": 0.025,
+  "origin": [
+   -6.425000190734863,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-140",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-140.png",
+  "h": 358,
+  "w": 444,
+  "cell": 0.025,
+  "origin": [
+   -10.880000114440918,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-141",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-141.png",
+  "h": 290,
+  "w": 230,
+  "cell": 0.025,
+  "origin": [
+   -5.315000057220459,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-142",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-142.png",
+  "h": 365,
+  "w": 270,
+  "cell": 0.025,
+  "origin": [
+   -6.559999942779541,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-143",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-143.png",
+  "h": 374,
+  "w": 393,
+  "cell": 0.025,
+  "origin": [
+   -9.410951614379883,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-144",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-144.png",
+  "h": 530,
+  "w": 530,
+  "cell": 0.025,
+  "origin": [
+   -13.025152206420898,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-145",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-145.png",
+  "h": 360,
+  "w": 360,
+  "cell": 0.025,
+  "origin": [
+   -8.562999725341797,
+   -0.153494730591774
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-146",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-146.png",
+  "h": 537,
+  "w": 475,
+  "cell": 0.025,
+  "origin": [
+   -11.267000198364258,
+   -0.2556759715080261
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-147",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-147.png",
+  "h": 268,
+  "w": 425,
+  "cell": 0.025,
+  "origin": [
+   -10.34000015258789,
+   1.8880000114440918
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-148",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-148.png",
+  "h": 287,
+  "w": 287,
+  "cell": 0.025,
+  "origin": [
+   -6.995999813079834,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-149",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-149.png",
+  "h": 705,
+  "w": 706,
+  "cell": 0.025,
+  "origin": [
+   -17.459951400756836,
+   -0.2570538818836212
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-150",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-150.png",
+  "h": 192,
+  "w": 276,
+  "cell": 0.025,
+  "origin": [
+   -6.4720001220703125,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-151",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-151.png",
+  "h": 207,
+  "w": 144,
+  "cell": 0.025,
+  "origin": [
+   -3.402125835418701,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-153",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-153.png",
+  "h": 719,
+  "w": 642,
+  "cell": 0.025,
+  "origin": [
+   -15.834125518798828,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-154",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-154.png",
+  "h": 315,
+  "w": 325,
+  "cell": 0.025,
+  "origin": [
+   -7.690999984741211,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-155",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-155.png",
+  "h": 400,
+  "w": 464,
+  "cell": 0.025,
+  "origin": [
+   -11.413151741027832,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-156",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-156.png",
+  "h": 340,
+  "w": 258,
+  "cell": 0.025,
+  "origin": [
+   -6.269000053405762,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-157",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-157.png",
+  "h": 271,
+  "w": 271,
+  "cell": 0.025,
+  "origin": [
+   -6.5960001945495605,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-158",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-158.png",
+  "h": 447,
+  "w": 275,
+  "cell": 0.025,
+  "origin": [
+   -6.657125473022461,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-159",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-159.png",
+  "h": 432,
+  "w": 506,
+  "cell": 0.025,
+  "origin": [
+   -12.428999900817871,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-16",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-16.png",
+  "h": 282,
+  "w": 215,
+  "cell": 0.025,
+  "origin": [
+   -5.192999839782715,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-160",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-160.png",
+  "h": 432,
+  "w": 292,
+  "cell": 0.025,
+  "origin": [
+   -7.0960001945495605,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-161",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-161.png",
+  "h": 316,
+  "w": 240,
+  "cell": 0.025,
+  "origin": [
+   -5.821000099182129,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-162",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-162.png",
+  "h": 427,
+  "w": 437,
+  "cell": 0.025,
+  "origin": [
+   -10.506125450134277,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-163",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-163.png",
+  "h": 253,
+  "w": 397,
+  "cell": 0.025,
+  "origin": [
+   -9.734999656677246,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-164",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-164.png",
+  "h": 420,
+  "w": 423,
+  "cell": 0.025,
+  "origin": [
+   -10.267999649047852,
+   1.5148478746414185
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-165",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-165.png",
+  "h": 623,
+  "w": 626,
+  "cell": 0.025,
+  "origin": [
+   -15.463675498962402,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-166",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-166.png",
+  "h": 595,
+  "w": 518,
+  "cell": 0.025,
+  "origin": [
+   -12.72495174407959,
+   -0.2689630091190338
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-167",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-167.png",
+  "h": 529,
+  "w": 450,
+  "cell": 0.025,
+  "origin": [
+   -11.041952133178711,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-168",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-168.png",
+  "h": 326,
+  "w": 404,
+  "cell": 0.025,
+  "origin": [
+   -9.902000427246094,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-169",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-169.png",
+  "h": 548,
+  "w": 398,
+  "cell": 0.025,
+  "origin": [
+   -9.726125717163086,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-17",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-17.png",
+  "h": 533,
+  "w": 362,
+  "cell": 0.025,
+  "origin": [
+   -8.84112548828125,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-170",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-170.png",
+  "h": 241,
+  "w": 318,
+  "cell": 0.025,
+  "origin": [
+   -7.7611260414123535,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-171",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-171.png",
+  "h": 541,
+  "w": 545,
+  "cell": 0.025,
+  "origin": [
+   -13.192000389099121,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-172",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-172.png",
+  "h": 503,
+  "w": 431,
+  "cell": 0.025,
+  "origin": [
+   -10.550951957702637,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-173",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-173.png",
+  "h": 415,
+  "w": 415,
+  "cell": 0.025,
+  "origin": [
+   -10.177125930786133,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-174",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-174.png",
+  "h": 317,
+  "w": 176,
+  "cell": 0.025,
+  "origin": [
+   -3.974125623703003,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-175",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-175.png",
+  "h": 221,
+  "w": 221,
+  "cell": 0.025,
+  "origin": [
+   -5.327125549316406,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-176",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-176.png",
+  "h": 406,
+  "w": 467,
+  "cell": 0.025,
+  "origin": [
+   -11.467000007629395,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-177",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-177.png",
+  "h": 345,
+  "w": 420,
+  "cell": 0.025,
+  "origin": [
+   -10.083125114440918,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-178",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-178.png",
+  "h": 150,
+  "w": 219,
+  "cell": 0.025,
+  "origin": [
+   -5.299962997436523,
+   -0.17812640964984894
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-179",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-179.png",
+  "h": 502,
+  "w": 372,
+  "cell": 0.025,
+  "origin": [
+   -9.092951774597168,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-18",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-18.png",
+  "h": 530,
+  "w": 531,
+  "cell": 0.025,
+  "origin": [
+   -12.84112548828125,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-180",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-180.png",
+  "h": 182,
+  "w": 172,
+  "cell": 0.025,
+  "origin": [
+   -4.10099983215332,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-181",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-181.png",
+  "h": 367,
+  "w": 226,
+  "cell": 0.025,
+  "origin": [
+   -5.454999923706055,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-183",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-183.png",
+  "h": 225,
+  "w": 156,
+  "cell": 0.025,
+  "origin": [
+   -3.674999952316284,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-184",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-184.png",
+  "h": 469,
+  "w": 339,
+  "cell": 0.025,
+  "origin": [
+   -8.279999732971191,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-185",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-185.png",
+  "h": 476,
+  "w": 474,
+  "cell": 0.025,
+  "origin": [
+   -11.656999588012695,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-187",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-187.png",
+  "h": 669,
+  "w": 671,
+  "cell": 0.025,
+  "origin": [
+   -16.479000091552734,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-188",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-188.png",
+  "h": 616,
+  "w": 711,
+  "cell": 0.025,
+  "origin": [
+   -17.561952590942383,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-189",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-189.png",
+  "h": 352,
+  "w": 268,
+  "cell": 0.025,
+  "origin": [
+   -6.4770002365112305,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-19",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-19.png",
+  "h": 367,
+  "w": 293,
+  "cell": 0.025,
+  "origin": [
+   -7.1491522789001465,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-191",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-191.png",
+  "h": 552,
+  "w": 483,
+  "cell": 0.025,
+  "origin": [
+   -11.891952514648438,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-192",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-192.png",
+  "h": 539,
+  "w": 527,
+  "cell": 0.025,
+  "origin": [
+   -12.968125343322754,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-193",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-193.png",
+  "h": 285,
+  "w": 217,
+  "cell": 0.025,
+  "origin": [
+   -5.247000217437744,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-194",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-194.png",
+  "h": 360,
+  "w": 364,
+  "cell": 0.025,
+  "origin": [
+   -8.79699993133545,
+   -0.16810809075832367
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-195",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-195.png",
+  "h": 484,
+  "w": 494,
+  "cell": 0.025,
+  "origin": [
+   -12.122952461242676,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-196",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-196.png",
+  "h": 265,
+  "w": 181,
+  "cell": 0.025,
+  "origin": [
+   -4.335999965667725,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-197",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-197.png",
+  "h": 444,
+  "w": 444,
+  "cell": 0.025,
+  "origin": [
+   -10.90212631225586,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-198",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-198.png",
+  "h": 357,
+  "w": 375,
+  "cell": 0.025,
+  "origin": [
+   -8.93995189666748,
+   -0.153494730591774
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-2",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-2.png",
+  "h": 621,
+  "w": 603,
+  "cell": 0.025,
+  "origin": [
+   -14.861000061035156,
+   1.4510478973388672
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-20",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-20.png",
+  "h": 375,
+  "w": 232,
+  "cell": 0.025,
+  "origin": [
+   -5.578000068664551,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-200",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-200.png",
+  "h": 399,
+  "w": 463,
+  "cell": 0.025,
+  "origin": [
+   -11.379125595092773,
+   1.4500000476837158
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-201",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-201.png",
+  "h": 416,
+  "w": 578,
+  "cell": 0.025,
+  "origin": [
+   -14.24012565612793,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-202",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-202.png",
+  "h": 224,
+  "w": 215,
+  "cell": 0.025,
+  "origin": [
+   -5.198125839233398,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-203",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-203.png",
+  "h": 236,
+  "w": 309,
+  "cell": 0.025,
+  "origin": [
+   -7.5269999504089355,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-204",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-204.png",
+  "h": 346,
+  "w": 279,
+  "cell": 0.025,
+  "origin": [
+   -6.795000076293945,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-205",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-205.png",
+  "h": 186,
+  "w": 187,
+  "cell": 0.025,
+  "origin": [
+   -4.4961256980896,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-206",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-206.png",
+  "h": 326,
+  "w": 403,
+  "cell": 0.025,
+  "origin": [
+   -9.881999969482422,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-207",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-207.png",
+  "h": 546,
+  "w": 470,
+  "cell": 0.025,
+  "origin": [
+   -11.538999557495117,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-208",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-208.png",
+  "h": 514,
+  "w": 443,
+  "cell": 0.025,
+  "origin": [
+   -10.875406265258789,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-209",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-209.png",
+  "h": 245,
+  "w": 310,
+  "cell": 0.025,
+  "origin": [
+   -7.540999889373779,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-21",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-21.png",
+  "h": 400,
+  "w": 555,
+  "cell": 0.025,
+  "origin": [
+   -13.689126014709473,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-210",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-210.png",
+  "h": 278,
+  "w": 355,
+  "cell": 0.025,
+  "origin": [
+   -8.680108070373535,
+   -0.2689630091190338
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-211",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-211.png",
+  "h": 406,
+  "w": 410,
+  "cell": 0.025,
+  "origin": [
+   -9.950125694274902,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-212",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-212.png",
+  "h": 683,
+  "w": 608,
+  "cell": 0.025,
+  "origin": [
+   -14.76412582397461,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-213",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-213.png",
+  "h": 159,
+  "w": 231,
+  "cell": 0.025,
+  "origin": [
+   -5.590000152587891,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-214",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-214.png",
+  "h": 250,
+  "w": 180,
+  "cell": 0.025,
+  "origin": [
+   -4.083000183105469,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-215",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-215.png",
+  "h": 154,
+  "w": 292,
+  "cell": 0.025,
+  "origin": [
+   -7.104000091552734,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-216",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-216.png",
+  "h": 181,
+  "w": 356,
+  "cell": 0.025,
+  "origin": [
+   -8.707952499389648,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-217",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-217.png",
+  "h": 531,
+  "w": 382,
+  "cell": 0.025,
+  "origin": [
+   -9.368000030517578,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-218",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-218.png",
+  "h": 187,
+  "w": 371,
+  "cell": 0.025,
+  "origin": [
+   -8.653125762939453,
+   -0.2556759715080261
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-22",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-22.png",
+  "h": 169,
+  "w": 231,
+  "cell": 0.025,
+  "origin": [
+   -5.576000213623047,
+   -0.17812640964984894
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-220",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-220.png",
+  "h": 179,
+  "w": 345,
+  "cell": 0.025,
+  "origin": [
+   -8.448125839233398,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-221",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-221.png",
+  "h": 421,
+  "w": 421,
+  "cell": 0.025,
+  "origin": [
+   -10.303000450134277,
+   1.5138741731643677
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-222",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-222.png",
+  "h": 616,
+  "w": 539,
+  "cell": 0.025,
+  "origin": [
+   -13.253952026367188,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-223",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-223.png",
+  "h": 340,
+  "w": 339,
+  "cell": 0.025,
+  "origin": [
+   -8.289999961853027,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-224",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-224.png",
+  "h": 337,
+  "w": 337,
+  "cell": 0.025,
+  "origin": [
+   -8.226125717163086,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-225",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-225.png",
+  "h": 275,
+  "w": 405,
+  "cell": 0.025,
+  "origin": [
+   -9.944999694824219,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-226",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-226.png",
+  "h": 268,
+  "w": 353,
+  "cell": 0.025,
+  "origin": [
+   -8.645126342773438,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-227",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-227.png",
+  "h": 481,
+  "w": 415,
+  "cell": 0.025,
+  "origin": [
+   -10.198951721191406,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-228",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-228.png",
+  "h": 409,
+  "w": 567,
+  "cell": 0.025,
+  "origin": [
+   -13.983125686645508,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-229",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-229.png",
+  "h": 225,
+  "w": 297,
+  "cell": 0.025,
+  "origin": [
+   -7.237125873565674,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-23",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-23.png",
+  "h": 277,
+  "w": 103,
+  "cell": 0.025,
+  "origin": [
+   -6.769182205200195,
+   2.0460000038146973
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-230",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-230.png",
+  "h": 183,
+  "w": 182,
+  "cell": 0.025,
+  "origin": [
+   -4.35099983215332,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-231",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-231.png",
+  "h": 450,
+  "w": 550,
+  "cell": 0.025,
+  "origin": [
+   -13.232999801635742,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-232",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-232.png",
+  "h": 365,
+  "w": 541,
+  "cell": 0.025,
+  "origin": [
+   -13.319000244140625,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-233",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-233.png",
+  "h": 547,
+  "w": 625,
+  "cell": 0.025,
+  "origin": [
+   -15.407999992370605,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-234",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-234.png",
+  "h": 421,
+  "w": 474,
+  "cell": 0.025,
+  "origin": [
+   -11.633999824523926,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-235",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-235.png",
+  "h": 435,
+  "w": 504,
+  "cell": 0.025,
+  "origin": [
+   -12.411999702453613,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-236",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-236.png",
+  "h": 523,
+  "w": 448,
+  "cell": 0.025,
+  "origin": [
+   -10.985952377319336,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-237",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-237.png",
+  "h": 261,
+  "w": 490,
+  "cell": 0.025,
+  "origin": [
+   -12.0600004196167,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-238",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-238.png",
+  "h": 240,
+  "w": 324,
+  "cell": 0.025,
+  "origin": [
+   -7.922952175140381,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-239",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-239.png",
+  "h": 632,
+  "w": 714,
+  "cell": 0.025,
+  "origin": [
+   -17.658676147460938,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-24",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-24.png",
+  "h": 151,
+  "w": 289,
+  "cell": 0.025,
+  "origin": [
+   -7.046999931335449,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-240",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-240.png",
+  "h": 360,
+  "w": 370,
+  "cell": 0.025,
+  "origin": [
+   -9.05295181274414,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-241",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-241.png",
+  "h": 300,
+  "w": 431,
+  "cell": 0.025,
+  "origin": [
+   -10.52612590789795,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-242",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-242.png",
+  "h": 360,
+  "w": 362,
+  "cell": 0.025,
+  "origin": [
+   -8.817999839782715,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-243",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-243.png",
+  "h": 370,
+  "w": 442,
+  "cell": 0.025,
+  "origin": [
+   -10.859126091003418,
+   1.6299999952316284
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-244",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-244.png",
+  "h": 478,
+  "w": 482,
+  "cell": 0.025,
+  "origin": [
+   -11.751999855041504,
+   -0.16810809075832367
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-245",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-245.png",
+  "h": 302,
+  "w": 303,
+  "cell": 0.025,
+  "origin": [
+   -7.361999988555908,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-246",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-246.png",
+  "h": 370,
+  "w": 297,
+  "cell": 0.025,
+  "origin": [
+   -7.247000217437744,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-247",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-247.png",
+  "h": 582,
+  "w": 422,
+  "cell": 0.025,
+  "origin": [
+   -10.354951858520508,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-248",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-248.png",
+  "h": 229,
+  "w": 357,
+  "cell": 0.025,
+  "origin": [
+   -8.746000289916992,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-249",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-249.png",
+  "h": 352,
+  "w": 285,
+  "cell": 0.025,
+  "origin": [
+   -6.915999889373779,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-25",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-25.png",
+  "h": 231,
+  "w": 304,
+  "cell": 0.025,
+  "origin": [
+   -7.401000022888184,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-250",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-250.png",
+  "h": 219,
+  "w": 160,
+  "cell": 0.025,
+  "origin": [
+   -3.8119521141052246,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-251",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-251.png",
+  "h": 333,
+  "w": 495,
+  "cell": 0.025,
+  "origin": [
+   -12.088000297546387,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-252",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-252.png",
+  "h": 238,
+  "w": 386,
+  "cell": 0.025,
+  "origin": [
+   -9.45199966430664,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-253",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-253.png",
+  "h": 313,
+  "w": 388,
+  "cell": 0.025,
+  "origin": [
+   -9.475000381469727,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-254",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-254.png",
+  "h": 658,
+  "w": 730,
+  "cell": 0.025,
+  "origin": [
+   -18.037124633789062,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-255",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-255.png",
+  "h": 348,
+  "w": 350,
+  "cell": 0.025,
+  "origin": [
+   -8.528125762939453,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-256",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-256.png",
+  "h": 287,
+  "w": 218,
+  "cell": 0.025,
+  "origin": [
+   -5.25600004196167,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-257",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-257.png",
+  "h": 155,
+  "w": 155,
+  "cell": 0.025,
+  "origin": [
+   -3.687999963760376,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-258",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-258.png",
+  "h": 515,
+  "w": 428,
+  "cell": 0.025,
+  "origin": [
+   -10.401000022888184,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-259",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-259.png",
+  "h": 334,
+  "w": 254,
+  "cell": 0.025,
+  "origin": [
+   -6.1570000648498535,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-26",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-26.png",
+  "h": 451,
+  "w": 306,
+  "cell": 0.025,
+  "origin": [
+   -7.438000202178955,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-260",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-260.png",
+  "h": 376,
+  "w": 453,
+  "cell": 0.025,
+  "origin": [
+   -11.144000053405762,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-262",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-262.png",
+  "h": 353,
+  "w": 352,
+  "cell": 0.025,
+  "origin": [
+   -8.602999687194824,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-263",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-263.png",
+  "h": 359,
+  "w": 274,
+  "cell": 0.025,
+  "origin": [
+   -6.660126209259033,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-264",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-264.png",
+  "h": 427,
+  "w": 354,
+  "cell": 0.025,
+  "origin": [
+   -8.630951881408691,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-265",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-265.png",
+  "h": 330,
+  "w": 413,
+  "cell": 0.025,
+  "origin": [
+   -10.020125389099121,
+   -0.18118217587471008
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-266",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-266.png",
+  "h": 514,
+  "w": 611,
+  "cell": 0.025,
+  "origin": [
+   -14.979951858520508,
+   1.934999942779541
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-267",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-267.png",
+  "h": 336,
+  "w": 335,
+  "cell": 0.025,
+  "origin": [
+   -8.183125495910645,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-268",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-268.png",
+  "h": 288,
+  "w": 151,
+  "cell": 0.025,
+  "origin": [
+   -3.5820000171661377,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-269",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-269.png",
+  "h": 184,
+  "w": 277,
+  "cell": 0.025,
+  "origin": [
+   -6.501999855041504,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-27",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-27.png",
+  "h": 351,
+  "w": 420,
+  "cell": 0.025,
+  "origin": [
+   -10.270999908447266,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-270",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-270.png",
+  "h": 633,
+  "w": 459,
+  "cell": 0.025,
+  "origin": [
+   -11.267951965332031,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-271",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-271.png",
+  "h": 458,
+  "w": 382,
+  "cell": 0.025,
+  "origin": [
+   -9.35200023651123,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-272",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-272.png",
+  "h": 625,
+  "w": 617,
+  "cell": 0.025,
+  "origin": [
+   -15.201000213623047,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-273",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-273.png",
+  "h": 441,
+  "w": 443,
+  "cell": 0.025,
+  "origin": [
+   -10.859125137329102,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-274",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-274.png",
+  "h": 704,
+  "w": 699,
+  "cell": 0.025,
+  "origin": [
+   -17.291126251220703,
+   1.8826935291290283
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-275",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-275.png",
+  "h": 430,
+  "w": 439,
+  "cell": 0.025,
+  "origin": [
+   -10.553999900817871,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-276",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-276.png",
+  "h": 258,
+  "w": 339,
+  "cell": 0.025,
+  "origin": [
+   -8.293000221252441,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-277",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-277.png",
+  "h": 407,
+  "w": 404,
+  "cell": 0.025,
+  "origin": [
+   -9.890000343322754,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-278",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-278.png",
+  "h": 572,
+  "w": 492,
+  "cell": 0.025,
+  "origin": [
+   -12.00312614440918,
+   -0.18116897344589233
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-279",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-279.png",
+  "h": 297,
+  "w": 225,
+  "cell": 0.025,
+  "origin": [
+   -5.399962902069092,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-28",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-28.png",
+  "h": 182,
+  "w": 182,
+  "cell": 0.025,
+  "origin": [
+   -4.368000030517578,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-280",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-280.png",
+  "h": 244,
+  "w": 396,
+  "cell": 0.025,
+  "origin": [
+   -9.699999809265137,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-281",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-281.png",
+  "h": 348,
+  "w": 193,
+  "cell": 0.025,
+  "origin": [
+   -4.574952125549316,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-282",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-282.png",
+  "h": 474,
+  "w": 398,
+  "cell": 0.025,
+  "origin": [
+   -9.515999794006348,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-283",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-283.png",
+  "h": 280,
+  "w": 280,
+  "cell": 0.025,
+  "origin": [
+   -6.803999900817871,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-284",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-284.png",
+  "h": 324,
+  "w": 401,
+  "cell": 0.025,
+  "origin": [
+   -9.805000305175781,
+   -0.18118217587471008
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-285",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-285.png",
+  "h": 340,
+  "w": 340,
+  "cell": 0.025,
+  "origin": [
+   -8.285614967346191,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-286",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-286.png",
+  "h": 378,
+  "w": 448,
+  "cell": 0.025,
+  "origin": [
+   -10.98799991607666,
+   -0.20055723190307617
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-287",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-287.png",
+  "h": 188,
+  "w": 372,
+  "cell": 0.025,
+  "origin": [
+   -9.1009521484375,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-288",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-288.png",
+  "h": 396,
+  "w": 390,
+  "cell": 0.025,
+  "origin": [
+   -9.569999694824219,
+   -0.2689630091190338
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-289",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-289.png",
+  "h": 349,
+  "w": 270,
+  "cell": 0.025,
+  "origin": [
+   -6.447999954223633,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-29",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-29.png",
+  "h": 276,
+  "w": 449,
+  "cell": 0.025,
+  "origin": [
+   -11.048999786376953,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-290",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-290.png",
+  "h": 435,
+  "w": 515,
+  "cell": 0.025,
+  "origin": [
+   -12.69412612915039,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-291",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-291.png",
+  "h": 222,
+  "w": 153,
+  "cell": 0.025,
+  "origin": [
+   -3.628999948501587,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-292",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-292.png",
+  "h": 516,
+  "w": 516,
+  "cell": 0.025,
+  "origin": [
+   -12.723952293395996,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-293",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-293.png",
+  "h": 367,
+  "w": 365,
+  "cell": 0.025,
+  "origin": [
+   -8.945125579833984,
+   -0.21747377514839172
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-294",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-294.png",
+  "h": 272,
+  "w": 358,
+  "cell": 0.025,
+  "origin": [
+   -8.751999855041504,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-296",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-296.png",
+  "h": 464,
+  "w": 399,
+  "cell": 0.025,
+  "origin": [
+   -9.539863586425781,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-297",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-297.png",
+  "h": 444,
+  "w": 319,
+  "cell": 0.025,
+  "origin": [
+   -7.542952060699463,
+   -0.17812640964984894
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-298",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-298.png",
+  "h": 511,
+  "w": 429,
+  "cell": 0.025,
+  "origin": [
+   -10.546126365661621,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-299",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-299.png",
+  "h": 364,
+  "w": 365,
+  "cell": 0.025,
+  "origin": [
+   -8.9331693649292,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-3",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-3.png",
+  "h": 510,
+  "w": 493,
+  "cell": 0.025,
+  "origin": [
+   -12.036999702453613,
+   -0.2569780945777893
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-30",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-30.png",
+  "h": 428,
+  "w": 428,
+  "cell": 0.025,
+  "origin": [
+   -10.507125854492188,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-300",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-300.png",
+  "h": 366,
+  "w": 370,
+  "cell": 0.025,
+  "origin": [
+   -9.043676376342773,
+   1.6080000400543213
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-301",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-301.png",
+  "h": 338,
+  "w": 258,
+  "cell": 0.025,
+  "origin": [
+   -6.255125522613525,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-302",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-302.png",
+  "h": 436,
+  "w": 435,
+  "cell": 0.025,
+  "origin": [
+   -10.684000015258789,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-303",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-303.png",
+  "h": 277,
+  "w": 211,
+  "cell": 0.025,
+  "origin": [
+   -5.086999893188477,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-304",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-304.png",
+  "h": 188,
+  "w": 188,
+  "cell": 0.025,
+  "origin": [
+   -4.507999897003174,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-305",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-305.png",
+  "h": 441,
+  "w": 527,
+  "cell": 0.025,
+  "origin": [
+   -12.994962692260742,
+   -0.17812640964984894
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-306",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-306.png",
+  "h": 579,
+  "w": 504,
+  "cell": 0.025,
+  "origin": [
+   -12.178182601928711,
+   -0.2689630091190338
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-308",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-308.png",
+  "h": 365,
+  "w": 427,
+  "cell": 0.025,
+  "origin": [
+   -10.496962547302246,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-309",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-309.png",
+  "h": 662,
+  "w": 584,
+  "cell": 0.025,
+  "origin": [
+   -14.372126579284668,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-31",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-31.png",
+  "h": 312,
+  "w": 241,
+  "cell": 0.025,
+  "origin": [
+   -5.73199987411499,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-310",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-310.png",
+  "h": 468,
+  "w": 405,
+  "cell": 0.025,
+  "origin": [
+   -9.933557510375977,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-311",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-311.png",
+  "h": 462,
+  "w": 456,
+  "cell": 0.025,
+  "origin": [
+   -11.104000091552734,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-312",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-312.png",
+  "h": 456,
+  "w": 533,
+  "cell": 0.025,
+  "origin": [
+   -13.110952377319336,
+   1.5478684902191162
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-313",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-313.png",
+  "h": 599,
+  "w": 525,
+  "cell": 0.025,
+  "origin": [
+   -12.919952392578125,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-314",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-314.png",
+  "h": 519,
+  "w": 527,
+  "cell": 0.025,
+  "origin": [
+   -12.989952087402344,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-315",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-315.png",
+  "h": 294,
+  "w": 295,
+  "cell": 0.025,
+  "origin": [
+   -7.190182209014893,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-316",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-316.png",
+  "h": 175,
+  "w": 254,
+  "cell": 0.025,
+  "origin": [
+   -6.1620001792907715,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-317",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-317.png",
+  "h": 542,
+  "w": 553,
+  "cell": 0.025,
+  "origin": [
+   -13.637131690979004,
+   -0.20061880350112915
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-318",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-318.png",
+  "h": 531,
+  "w": 455,
+  "cell": 0.025,
+  "origin": [
+   -11.13595199584961,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-319",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-319.png",
+  "h": 477,
+  "w": 482,
+  "cell": 0.025,
+  "origin": [
+   -11.757125854492188,
+   1.503999948501587
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-320",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-320.png",
+  "h": 585,
+  "w": 595,
+  "cell": 0.025,
+  "origin": [
+   -14.441125869750977,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-321",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-321.png",
+  "h": 364,
+  "w": 445,
+  "cell": 0.025,
+  "origin": [
+   -10.942000389099121,
+   -0.2689630091190338
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-322",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-322.png",
+  "h": 430,
+  "w": 437,
+  "cell": 0.025,
+  "origin": [
+   -10.741951942443848,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-323",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-323.png",
+  "h": 477,
+  "w": 355,
+  "cell": 0.025,
+  "origin": [
+   -8.458126068115234,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-324",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-324.png",
+  "h": 335,
+  "w": 498,
+  "cell": 0.025,
+  "origin": [
+   -12.032999992370605,
+   -0.2569780945777893
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-325",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-325.png",
+  "h": 533,
+  "w": 457,
+  "cell": 0.025,
+  "origin": [
+   -11.221125602722168,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-326",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-326.png",
+  "h": 573,
+  "w": 645,
+  "cell": 0.025,
+  "origin": [
+   -15.909557342529297,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-327",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-327.png",
+  "h": 530,
+  "w": 605,
+  "cell": 0.025,
+  "origin": [
+   -14.920125961303711,
+   -0.18116897344589233
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-328",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-328.png",
+  "h": 157,
+  "w": 300,
+  "cell": 0.025,
+  "origin": [
+   -7.283999919891357,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-329",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-329.png",
+  "h": 367,
+  "w": 361,
+  "cell": 0.025,
+  "origin": [
+   -8.833999633789062,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-33",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-33.png",
+  "h": 305,
+  "w": 296,
+  "cell": 0.025,
+  "origin": [
+   -7.165999889373779,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-330",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-330.png",
+  "h": 336,
+  "w": 400,
+  "cell": 0.025,
+  "origin": [
+   -9.824125289916992,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-331",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-331.png",
+  "h": 338,
+  "w": 408,
+  "cell": 0.025,
+  "origin": [
+   -10.001999855041504,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-332",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-332.png",
+  "h": 328,
+  "w": 251,
+  "cell": 0.025,
+  "origin": [
+   -6.053999900817871,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-333",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-333.png",
+  "h": 334,
+  "w": 187,
+  "cell": 0.025,
+  "origin": [
+   -4.380951881408691,
+   -0.16810809075832367
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-334",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-334.png",
+  "h": 1125,
+  "w": 433,
+  "cell": 0.025,
+  "origin": [
+   -10.30295181274414,
+   1.8329999446868896
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-335",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-335.png",
+  "h": 419,
+  "w": 414,
+  "cell": 0.025,
+  "origin": [
+   -10.0600004196167,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-336",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-336.png",
+  "h": 219,
+  "w": 289,
+  "cell": 0.025,
+  "origin": [
+   -7.013000011444092,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-337",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-337.png",
+  "h": 472,
+  "w": 480,
+  "cell": 0.025,
+  "origin": [
+   -11.819131851196289,
+   -0.2556759715080261
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-338",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-338.png",
+  "h": 497,
+  "w": 579,
+  "cell": 0.025,
+  "origin": [
+   -14.251126289367676,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-34",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-34.png",
+  "h": 633,
+  "w": 715,
+  "cell": 0.025,
+  "origin": [
+   -17.588125228881836,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-340",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-340.png",
+  "h": 551,
+  "w": 635,
+  "cell": 0.025,
+  "origin": [
+   -15.571125984191895,
+   1.811047911643982
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-341",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-341.png",
+  "h": 290,
+  "w": 221,
+  "cell": 0.025,
+  "origin": [
+   -5.338125705718994,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-342",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-342.png",
+  "h": 473,
+  "w": 395,
+  "cell": 0.025,
+  "origin": [
+   -9.659125328063965,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-343",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-343.png",
+  "h": 213,
+  "w": 282,
+  "cell": 0.025,
+  "origin": [
+   -6.767000198364258,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-344",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-344.png",
+  "h": 425,
+  "w": 416,
+  "cell": 0.025,
+  "origin": [
+   -10.194000244140625,
+   1.5240000486373901
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-345",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-345.png",
+  "h": 637,
+  "w": 706,
+  "cell": 0.025,
+  "origin": [
+   -17.432125091552734,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-346",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-346.png",
+  "h": 305,
+  "w": 456,
+  "cell": 0.025,
+  "origin": [
+   -11.099125862121582,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-347",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-347.png",
+  "h": 334,
+  "w": 207,
+  "cell": 0.025,
+  "origin": [
+   -4.983125686645508,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-348",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-348.png",
+  "h": 533,
+  "w": 533,
+  "cell": 0.025,
+  "origin": [
+   -13.121000289916992,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-349",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-349.png",
+  "h": 521,
+  "w": 529,
+  "cell": 0.025,
+  "origin": [
+   -13.039952278137207,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-35",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-35.png",
+  "h": 269,
+  "w": 184,
+  "cell": 0.025,
+  "origin": [
+   -4.4070000648498535,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-350",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-350.png",
+  "h": 483,
+  "w": 475,
+  "cell": 0.025,
+  "origin": [
+   -11.645999908447266,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-351",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-351.png",
+  "h": 612,
+  "w": 773,
+  "cell": 0.025,
+  "origin": [
+   -19.10955810546875,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-352",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-352.png",
+  "h": 431,
+  "w": 432,
+  "cell": 0.025,
+  "origin": [
+   -10.579557418823242,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-353",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-353.png",
+  "h": 442,
+  "w": 528,
+  "cell": 0.025,
+  "origin": [
+   -12.88416862487793,
+   1.860021948814392
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-354",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-354.png",
+  "h": 414,
+  "w": 422,
+  "cell": 0.025,
+  "origin": [
+   -10.132125854492188,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-355",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-355.png",
+  "h": 604,
+  "w": 516,
+  "cell": 0.025,
+  "origin": [
+   -12.689676284790039,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-356",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-356.png",
+  "h": 205,
+  "w": 272,
+  "cell": 0.025,
+  "origin": [
+   -6.616000175476074,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-357",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-357.png",
+  "h": 324,
+  "w": 245,
+  "cell": 0.025,
+  "origin": [
+   -5.941999912261963,
+   -0.20055723190307617
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-358",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-358.png",
+  "h": 467,
+  "w": 346,
+  "cell": 0.025,
+  "origin": [
+   -8.444952011108398,
+   -0.20061880350112915
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-359",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-359.png",
+  "h": 396,
+  "w": 543,
+  "cell": 0.025,
+  "origin": [
+   -13.350125312805176,
+   1.703874111175537
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-36",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-36.png",
+  "h": 425,
+  "w": 587,
+  "cell": 0.025,
+  "origin": [
+   -14.49899959564209,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-360",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-360.png",
+  "h": 206,
+  "w": 207,
+  "cell": 0.025,
+  "origin": [
+   -4.983125686645508,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-361",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-361.png",
+  "h": 422,
+  "w": 499,
+  "cell": 0.025,
+  "origin": [
+   -12.053125381469727,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-362",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-362.png",
+  "h": 179,
+  "w": 271,
+  "cell": 0.025,
+  "origin": [
+   -6.577951908111572,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-363",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-363.png",
+  "h": 269,
+  "w": 354,
+  "cell": 0.025,
+  "origin": [
+   -8.670999526977539,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-364",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-364.png",
+  "h": 481,
+  "w": 476,
+  "cell": 0.025,
+  "origin": [
+   -11.715999603271484,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-365",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-365.png",
+  "h": 284,
+  "w": 362,
+  "cell": 0.025,
+  "origin": [
+   -8.85200023651123,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-366",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-366.png",
+  "h": 178,
+  "w": 260,
+  "cell": 0.025,
+  "origin": [
+   -6.302000045776367,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-367",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-367.png",
+  "h": 355,
+  "w": 344,
+  "cell": 0.025,
+  "origin": [
+   -8.414999961853027,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-368",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-368.png",
+  "h": 772,
+  "w": 630,
+  "cell": 0.025,
+  "origin": [
+   -15.335125923156738,
+   -0.17812640964984894
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-369",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-369.png",
+  "h": 463,
+  "w": 312,
+  "cell": 0.025,
+  "origin": [
+   -7.5879998207092285,
+   -0.20055723190307617
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-37",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-37.png",
+  "h": 662,
+  "w": 572,
+  "cell": 0.025,
+  "origin": [
+   -14.11767578125,
+   -0.4854063391685486
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-370",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-370.png",
+  "h": 521,
+  "w": 606,
+  "cell": 0.025,
+  "origin": [
+   -14.941125869750977,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-371",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-371.png",
+  "h": 177,
+  "w": 255,
+  "cell": 0.025,
+  "origin": [
+   -6.184999942779541,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-372",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-372.png",
+  "h": 410,
+  "w": 568,
+  "cell": 0.025,
+  "origin": [
+   -14.0211820602417,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-373",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-373.png",
+  "h": 343,
+  "w": 413,
+  "cell": 0.025,
+  "origin": [
+   -10.14012622833252,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-374",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-374.png",
+  "h": 181,
+  "w": 190,
+  "cell": 0.025,
+  "origin": [
+   -4.552952289581299,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-375",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-375.png",
+  "h": 269,
+  "w": 446,
+  "cell": 0.025,
+  "origin": [
+   -10.737000465393066,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-376",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-376.png",
+  "h": 351,
+  "w": 284,
+  "cell": 0.025,
+  "origin": [
+   -6.901000022888184,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-377",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-377.png",
+  "h": 231,
+  "w": 241,
+  "cell": 0.025,
+  "origin": [
+   -5.82695198059082,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-378",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-378.png",
+  "h": 577,
+  "w": 573,
+  "cell": 0.025,
+  "origin": [
+   -14.120126724243164,
+   -0.2570538818836212
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-379",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-379.png",
+  "h": 540,
+  "w": 536,
+  "cell": 0.025,
+  "origin": [
+   -13.190999984741211,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-38",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-38.png",
+  "h": 448,
+  "w": 360,
+  "cell": 0.025,
+  "origin": [
+   -8.824125289916992,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-380",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-380.png",
+  "h": 518,
+  "w": 516,
+  "cell": 0.025,
+  "origin": [
+   -12.676125526428223,
+   1.9329999685287476
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-381",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-381.png",
+  "h": 379,
+  "w": 380,
+  "cell": 0.025,
+  "origin": [
+   -9.276000022888184,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-382",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-382.png",
+  "h": 152,
+  "w": 221,
+  "cell": 0.025,
+  "origin": [
+   -5.339000225067139,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-383",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-383.png",
+  "h": 447,
+  "w": 591,
+  "cell": 0.025,
+  "origin": [
+   -14.564000129699707,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-384",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-384.png",
+  "h": 494,
+  "w": 513,
+  "cell": 0.025,
+  "origin": [
+   -12.399951934814453,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-385",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-385.png",
+  "h": 442,
+  "w": 381,
+  "cell": 0.025,
+  "origin": [
+   -9.31595230102539,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-386",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-386.png",
+  "h": 320,
+  "w": 244,
+  "cell": 0.025,
+  "origin": [
+   -5.921125888824463,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-387",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-387.png",
+  "h": 471,
+  "w": 473,
+  "cell": 0.025,
+  "origin": [
+   -11.612126350402832,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-388",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-388.png",
+  "h": 425,
+  "w": 499,
+  "cell": 0.025,
+  "origin": [
+   -12.298962593078613,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-389",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-389.png",
+  "h": 441,
+  "w": 431,
+  "cell": 0.025,
+  "origin": [
+   -10.5600004196167,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-39",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-39.png",
+  "h": 461,
+  "w": 625,
+  "cell": 0.025,
+  "origin": [
+   -15.427000045776367,
+   -0.18116897344589233
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-390",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-390.png",
+  "h": 527,
+  "w": 379,
+  "cell": 0.025,
+  "origin": [
+   -9.27612590789795,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-391",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-391.png",
+  "h": 963,
+  "w": 451,
+  "cell": 0.025,
+  "origin": [
+   -11.090126037597656,
+   -0.2556759715080261
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-392",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-392.png",
+  "h": 165,
+  "w": 241,
+  "cell": 0.025,
+  "origin": [
+   -5.802000045776367,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-393",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-393.png",
+  "h": 256,
+  "w": 337,
+  "cell": 0.025,
+  "origin": [
+   -8.206999778747559,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-394",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-394.png",
+  "h": 288,
+  "w": 356,
+  "cell": 0.025,
+  "origin": [
+   -8.67300033569336,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-395",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-395.png",
+  "h": 278,
+  "w": 278,
+  "cell": 0.025,
+  "origin": [
+   -6.77400016784668,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-396",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-396.png",
+  "h": 543,
+  "w": 464,
+  "cell": 0.025,
+  "origin": [
+   -11.405125617980957,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-397",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-397.png",
+  "h": 486,
+  "w": 407,
+  "cell": 0.025,
+  "origin": [
+   -9.965999603271484,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-398",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-398.png",
+  "h": 328,
+  "w": 249,
+  "cell": 0.025,
+  "origin": [
+   -6.039999961853027,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-399",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-399.png",
+  "h": 508,
+  "w": 598,
+  "cell": 0.025,
+  "origin": [
+   -14.73695182800293,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-4",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-4.png",
+  "h": 430,
+  "w": 370,
+  "cell": 0.025,
+  "origin": [
+   -9.058952331542969,
+   1.5839999914169312
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-40",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-40.png",
+  "h": 492,
+  "w": 476,
+  "cell": 0.025,
+  "origin": [
+   -11.699999809265137,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-400",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-400.png",
+  "h": 270,
+  "w": 142,
+  "cell": 0.025,
+  "origin": [
+   -3.3499999046325684,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-401",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-401.png",
+  "h": 216,
+  "w": 219,
+  "cell": 0.025,
+  "origin": [
+   -5.2846760749816895,
+   -0.1781255304813385
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-402",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-402.png",
+  "h": 162,
+  "w": 237,
+  "cell": 0.025,
+  "origin": [
+   -5.7491254806518555,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-403",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-403.png",
+  "h": 631,
+  "w": 700,
+  "cell": 0.025,
+  "origin": [
+   -17.286182403564453,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-404",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-404.png",
+  "h": 539,
+  "w": 460,
+  "cell": 0.025,
+  "origin": [
+   -11.284000396728516,
+   -0.2689630091190338
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-405",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-405.png",
+  "h": 503,
+  "w": 575,
+  "cell": 0.025,
+  "origin": [
+   -14.152999877929688,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-406",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-406.png",
+  "h": 475,
+  "w": 399,
+  "cell": 0.025,
+  "origin": [
+   -9.79340648651123,
+   -0.3879520893096924
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-407",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-407.png",
+  "h": 665,
+  "w": 578,
+  "cell": 0.025,
+  "origin": [
+   -14.231125831604004,
+   1.3690478801727295
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-408",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-408.png",
+  "h": 519,
+  "w": 438,
+  "cell": 0.025,
+  "origin": [
+   -10.654999732971191,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-409",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-409.png",
+  "h": 537,
+  "w": 468,
+  "cell": 0.025,
+  "origin": [
+   -11.268952369689941,
+   -0.17812588810920715
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-41",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-41.png",
+  "h": 360,
+  "w": 273,
+  "cell": 0.025,
+  "origin": [
+   -6.63100004196167,
+   -0.17115208506584167
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-410",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-410.png",
+  "h": 420,
+  "w": 431,
+  "cell": 0.025,
+  "origin": [
+   -10.549952507019043,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-411",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-411.png",
+  "h": 507,
+  "w": 447,
+  "cell": 0.025,
+  "origin": [
+   -10.639951705932617,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-rc-ProcTHOR-Val-412",
+  "group": "ProcTHOR-Val",
+  "file": "scenes/ProcTHOR-rc-ProcTHOR-Val-412.png",
+  "h": 332,
+  "w": 182,
+  "cell": 0.025,
+  "origin": [
+   -4.13100004196167,
+   -0.15000000596046448
+  ]
+ },
+ {
   "name": "ProcTHOR-r1-ProcTHOR-Test-0",
   "group": "ProcTHOR-Test",
   "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-0.png",
@@ -885,6 +4449,2598 @@
   "origin": [
    -10.776000022888184,
    -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-135",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-135.png",
+  "h": 476,
+  "w": 552,
+  "cell": 0.025,
+  "origin": [
+   -13.59212589263916,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-136",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-136.png",
+  "h": 345,
+  "w": 439,
+  "cell": 0.025,
+  "origin": [
+   -10.515000343322754,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-137",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-137.png",
+  "h": 253,
+  "w": 412,
+  "cell": 0.025,
+  "origin": [
+   -10.119999885559082,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-138",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-138.png",
+  "h": 250,
+  "w": 419,
+  "cell": 0.025,
+  "origin": [
+   -10.0131254196167,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-14",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-14.png",
+  "h": 246,
+  "w": 402,
+  "cell": 0.025,
+  "origin": [
+   -9.86812686920166,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-140",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-140.png",
+  "h": 158,
+  "w": 230,
+  "cell": 0.025,
+  "origin": [
+   -5.573999881744385,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-142",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-142.png",
+  "h": 998,
+  "w": 496,
+  "cell": 0.025,
+  "origin": [
+   -11.941699981689453,
+   1.583726167678833
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-145",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-145.png",
+  "h": 695,
+  "w": 628,
+  "cell": 0.025,
+  "origin": [
+   -15.501126289367676,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-146",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-146.png",
+  "h": 364,
+  "w": 386,
+  "cell": 0.025,
+  "origin": [
+   -9.196273803710938,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-147",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-147.png",
+  "h": 412,
+  "w": 568,
+  "cell": 0.025,
+  "origin": [
+   -14.020999908447266,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-148",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-148.png",
+  "h": 459,
+  "w": 448,
+  "cell": 0.025,
+  "origin": [
+   -10.975000381469727,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-149",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-149.png",
+  "h": 286,
+  "w": 287,
+  "cell": 0.025,
+  "origin": [
+   -6.994112014770508,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-15",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-15.png",
+  "h": 617,
+  "w": 523,
+  "cell": 0.025,
+  "origin": [
+   -12.815999984741211,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-152",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-152.png",
+  "h": 362,
+  "w": 275,
+  "cell": 0.025,
+  "origin": [
+   -6.688000202178955,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-153",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-153.png",
+  "h": 510,
+  "w": 581,
+  "cell": 0.025,
+  "origin": [
+   -14.335000038146973,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-154",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-154.png",
+  "h": 177,
+  "w": 242,
+  "cell": 0.025,
+  "origin": [
+   -5.8520002365112305,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-156",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-156.png",
+  "h": 270,
+  "w": 184,
+  "cell": 0.025,
+  "origin": [
+   -4.420000076293945,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-158",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-158.png",
+  "h": 332,
+  "w": 320,
+  "cell": 0.025,
+  "origin": [
+   -7.802000045776367,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-159",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-159.png",
+  "h": 296,
+  "w": 296,
+  "cell": 0.025,
+  "origin": [
+   -7.203999996185303,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-161",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-161.png",
+  "h": 161,
+  "w": 286,
+  "cell": 0.025,
+  "origin": [
+   -6.958000183105469,
+   1.277726173400879
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-162",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-162.png",
+  "h": 347,
+  "w": 348,
+  "cell": 0.025,
+  "origin": [
+   -8.508125305175781,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-163",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-163.png",
+  "h": 229,
+  "w": 313,
+  "cell": 0.025,
+  "origin": [
+   -7.351125717163086,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-164",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-164.png",
+  "h": 450,
+  "w": 537,
+  "cell": 0.025,
+  "origin": [
+   -13.244000434875488,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-165",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-165.png",
+  "h": 517,
+  "w": 599,
+  "cell": 0.025,
+  "origin": [
+   -14.503000259399414,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-167",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-167.png",
+  "h": 327,
+  "w": 327,
+  "cell": 0.025,
+  "origin": [
+   -7.986999988555908,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-169",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-169.png",
+  "h": 376,
+  "w": 279,
+  "cell": 0.025,
+  "origin": [
+   -6.749000072479248,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-171",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-171.png",
+  "h": 169,
+  "w": 324,
+  "cell": 0.025,
+  "origin": [
+   -7.9019999504089355,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-172",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-172.png",
+  "h": 491,
+  "w": 423,
+  "cell": 0.025,
+  "origin": [
+   -10.369274139404297,
+   1.8389999866485596
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-173",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-173.png",
+  "h": 464,
+  "w": 409,
+  "cell": 0.025,
+  "origin": [
+   -9.751999855041504,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-174",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-174.png",
+  "h": 562,
+  "w": 632,
+  "cell": 0.025,
+  "origin": [
+   -15.50407886505127,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-175",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-175.png",
+  "h": 401,
+  "w": 349,
+  "cell": 0.025,
+  "origin": [
+   -8.501274108886719,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-178",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-178.png",
+  "h": 629,
+  "w": 453,
+  "cell": 0.025,
+  "origin": [
+   -11.138999938964844,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-180",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-180.png",
+  "h": 427,
+  "w": 437,
+  "cell": 0.025,
+  "origin": [
+   -10.740273475646973,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-181",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-181.png",
+  "h": 401,
+  "w": 474,
+  "cell": 0.025,
+  "origin": [
+   -11.653125762939453,
+   -0.26748496294021606
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-182",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-182.png",
+  "h": 429,
+  "w": 264,
+  "cell": 0.025,
+  "origin": [
+   -6.385000228881836,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-183",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-183.png",
+  "h": 568,
+  "w": 500,
+  "cell": 0.025,
+  "origin": [
+   -12.038000106811523,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-184",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-184.png",
+  "h": 169,
+  "w": 247,
+  "cell": 0.025,
+  "origin": [
+   -5.984000205993652,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-185",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-185.png",
+  "h": 364,
+  "w": 363,
+  "cell": 0.025,
+  "origin": [
+   -8.88700008392334,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-186",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-186.png",
+  "h": 402,
+  "w": 326,
+  "cell": 0.025,
+  "origin": [
+   -7.927000045776367,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-187",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-187.png",
+  "h": 336,
+  "w": 273,
+  "cell": 0.025,
+  "origin": [
+   -6.637126445770264,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-188",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-188.png",
+  "h": 336,
+  "w": 256,
+  "cell": 0.025,
+  "origin": [
+   -6.215125560760498,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-189",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-189.png",
+  "h": 396,
+  "w": 384,
+  "cell": 0.025,
+  "origin": [
+   -9.407999992370605,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-19",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-19.png",
+  "h": 603,
+  "w": 518,
+  "cell": 0.025,
+  "origin": [
+   -12.772125244140625,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-190",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-190.png",
+  "h": 220,
+  "w": 289,
+  "cell": 0.025,
+  "origin": [
+   -7.0329999923706055,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-191",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-191.png",
+  "h": 510,
+  "w": 510,
+  "cell": 0.025,
+  "origin": [
+   -12.555000305175781,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-192",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-192.png",
+  "h": 321,
+  "w": 333,
+  "cell": 0.025,
+  "origin": [
+   -7.85312557220459,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-193",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-193.png",
+  "h": 511,
+  "w": 605,
+  "cell": 0.025,
+  "origin": [
+   -14.663999557495117,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-194",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-194.png",
+  "h": 479,
+  "w": 469,
+  "cell": 0.025,
+  "origin": [
+   -11.533125877380371,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-195",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-195.png",
+  "h": 489,
+  "w": 951,
+  "cell": 0.025,
+  "origin": [
+   -23.56298828125,
+   -1.8472660779953003
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-196",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-196.png",
+  "h": 593,
+  "w": 609,
+  "cell": 0.025,
+  "origin": [
+   -14.759273529052734,
+   -0.17812640964984894
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-199",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-199.png",
+  "h": 485,
+  "w": 350,
+  "cell": 0.025,
+  "origin": [
+   -8.554126739501953,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-2",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-2.png",
+  "h": 403,
+  "w": 403,
+  "cell": 0.025,
+  "origin": [
+   -9.859999656677246,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-201",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-201.png",
+  "h": 353,
+  "w": 286,
+  "cell": 0.025,
+  "origin": [
+   -6.9601263999938965,
+   -0.15381944179534912
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-202",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-202.png",
+  "h": 330,
+  "w": 334,
+  "cell": 0.025,
+  "origin": [
+   -8.032999992370605,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-203",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-203.png",
+  "h": 437,
+  "w": 370,
+  "cell": 0.025,
+  "origin": [
+   -9.06443977355957,
+   -0.15207898616790771
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-204",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-204.png",
+  "h": 277,
+  "w": 190,
+  "cell": 0.025,
+  "origin": [
+   -4.5671257972717285,
+   2.0450000762939453
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-209",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-209.png",
+  "h": 184,
+  "w": 355,
+  "cell": 0.025,
+  "origin": [
+   -8.6899995803833,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-21",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-21.png",
+  "h": 277,
+  "w": 192,
+  "cell": 0.025,
+  "origin": [
+   -4.605104446411133,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-210",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-210.png",
+  "h": 335,
+  "w": 466,
+  "cell": 0.025,
+  "origin": [
+   -11.35200023651123,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-211",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-211.png",
+  "h": 468,
+  "w": 478,
+  "cell": 0.025,
+  "origin": [
+   -11.491000175476074,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-212",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-212.png",
+  "h": 513,
+  "w": 513,
+  "cell": 0.025,
+  "origin": [
+   -12.648273468017578,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-213",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-213.png",
+  "h": 364,
+  "w": 438,
+  "cell": 0.025,
+  "origin": [
+   -10.755999565124512,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-214",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-214.png",
+  "h": 516,
+  "w": 432,
+  "cell": 0.025,
+  "origin": [
+   -10.619125366210938,
+   1.9098743200302124
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-216",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-216.png",
+  "h": 152,
+  "w": 214,
+  "cell": 0.025,
+  "origin": [
+   -5.159999847412109,
+   -0.26743945479393005
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-217",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-217.png",
+  "h": 267,
+  "w": 360,
+  "cell": 0.025,
+  "origin": [
+   -8.54699993133545,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-219",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-219.png",
+  "h": 455,
+  "w": 433,
+  "cell": 0.025,
+  "origin": [
+   -10.64799976348877,
+   1.3257261514663696
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-22",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-22.png",
+  "h": 248,
+  "w": 170,
+  "cell": 0.025,
+  "origin": [
+   -4.056713104248047,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-221",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-221.png",
+  "h": 514,
+  "w": 596,
+  "cell": 0.025,
+  "origin": [
+   -14.714273452758789,
+   1.8910000324249268
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-222",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-222.png",
+  "h": 477,
+  "w": 415,
+  "cell": 0.025,
+  "origin": [
+   -10.081274032592773,
+   1.7789210081100464
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-225",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-225.png",
+  "h": 387,
+  "w": 471,
+  "cell": 0.025,
+  "origin": [
+   -11.312999725341797,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-226",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-226.png",
+  "h": 551,
+  "w": 476,
+  "cell": 0.025,
+  "origin": [
+   -11.644000053405762,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-227",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-227.png",
+  "h": 230,
+  "w": 158,
+  "cell": 0.025,
+  "origin": [
+   -3.759000062942505,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-229",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-229.png",
+  "h": 486,
+  "w": 400,
+  "cell": 0.025,
+  "origin": [
+   -9.772000312805176,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-23",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-23.png",
+  "h": 276,
+  "w": 342,
+  "cell": 0.025,
+  "origin": [
+   -8.359999656677246,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-231",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-231.png",
+  "h": 225,
+  "w": 225,
+  "cell": 0.025,
+  "origin": [
+   -5.443999767303467,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-234",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-234.png",
+  "h": 608,
+  "w": 514,
+  "cell": 0.025,
+  "origin": [
+   -12.66100025177002,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-235",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-235.png",
+  "h": 324,
+  "w": 247,
+  "cell": 0.025,
+  "origin": [
+   -5.980000019073486,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-236",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-236.png",
+  "h": 530,
+  "w": 530,
+  "cell": 0.025,
+  "origin": [
+   -13.059126853942871,
+   -0.15044745802879333
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-237",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-237.png",
+  "h": 607,
+  "w": 812,
+  "cell": 0.025,
+  "origin": [
+   -5.150000095367432,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-238",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-238.png",
+  "h": 392,
+  "w": 253,
+  "cell": 0.025,
+  "origin": [
+   -6.097273826599121,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-239",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-239.png",
+  "h": 247,
+  "w": 247,
+  "cell": 0.025,
+  "origin": [
+   -5.723999977111816,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-240",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-240.png",
+  "h": 281,
+  "w": 291,
+  "cell": 0.025,
+  "origin": [
+   -7.083273887634277,
+   -0.17812640964984894
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-241",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-241.png",
+  "h": 489,
+  "w": 993,
+  "cell": 0.025,
+  "origin": [
+   -6.308000087738037,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-245",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-245.png",
+  "h": 247,
+  "w": 385,
+  "cell": 0.025,
+  "origin": [
+   -9.414999961853027,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-246",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-246.png",
+  "h": 483,
+  "w": 494,
+  "cell": 0.025,
+  "origin": [
+   -12.16827392578125,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-247",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-247.png",
+  "h": 388,
+  "w": 316,
+  "cell": 0.025,
+  "origin": [
+   -7.724484920501709,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-248",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-248.png",
+  "h": 367,
+  "w": 300,
+  "cell": 0.025,
+  "origin": [
+   -7.30010461807251,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-249",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-249.png",
+  "h": 448,
+  "w": 617,
+  "cell": 0.025,
+  "origin": [
+   -14.972999572753906,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-251",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-251.png",
+  "h": 276,
+  "w": 406,
+  "cell": 0.025,
+  "origin": [
+   -9.968125343322754,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-252",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-252.png",
+  "h": 534,
+  "w": 459,
+  "cell": 0.025,
+  "origin": [
+   -11.275125503540039,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-253",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-253.png",
+  "h": 455,
+  "w": 598,
+  "cell": 0.025,
+  "origin": [
+   -14.76200008392334,
+   -0.22210468351840973
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-255",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-255.png",
+  "h": 410,
+  "w": 409,
+  "cell": 0.025,
+  "origin": [
+   -10.041000366210938,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-257",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-257.png",
+  "h": 661,
+  "w": 731,
+  "cell": 0.025,
+  "origin": [
+   -18.09127426147461,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-258",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-258.png",
+  "h": 305,
+  "w": 389,
+  "cell": 0.025,
+  "origin": [
+   -9.539274215698242,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-259",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-259.png",
+  "h": 492,
+  "w": 355,
+  "cell": 0.025,
+  "origin": [
+   -8.682000160217285,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-26",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-26.png",
+  "h": 424,
+  "w": 665,
+  "cell": 0.025,
+  "origin": [
+   -16.42027473449707,
+   1.5747262239456177
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-260",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-260.png",
+  "h": 322,
+  "w": 255,
+  "cell": 0.025,
+  "origin": [
+   -6.182273864746094,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-261",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-261.png",
+  "h": 371,
+  "w": 452,
+  "cell": 0.025,
+  "origin": [
+   -11.112274169921875,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-262",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-262.png",
+  "h": 455,
+  "w": 358,
+  "cell": 0.025,
+  "origin": [
+   -8.762999534606934,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-263",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-263.png",
+  "h": 485,
+  "w": 833,
+  "cell": 0.025,
+  "origin": [
+   -7.982273578643799,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-264",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-264.png",
+  "h": 270,
+  "w": 356,
+  "cell": 0.025,
+  "origin": [
+   -8.71399974822998,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-265",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-265.png",
+  "h": 375,
+  "w": 375,
+  "cell": 0.025,
+  "origin": [
+   -9.182273864746094,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-266",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-266.png",
+  "h": 510,
+  "w": 511,
+  "cell": 0.025,
+  "origin": [
+   -12.56627368927002,
+   -0.15207898616790771
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-267",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-267.png",
+  "h": 331,
+  "w": 395,
+  "cell": 0.025,
+  "origin": [
+   -9.692999839782715,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-269",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-269.png",
+  "h": 463,
+  "w": 539,
+  "cell": 0.025,
+  "origin": [
+   -13.263999938964844,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-27",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-27.png",
+  "h": 302,
+  "w": 229,
+  "cell": 0.025,
+  "origin": [
+   -5.547999858856201,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-270",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-270.png",
+  "h": 425,
+  "w": 506,
+  "cell": 0.025,
+  "origin": [
+   -12.436273574829102,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-272",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-272.png",
+  "h": 468,
+  "w": 469,
+  "cell": 0.025,
+  "origin": [
+   -11.512125968933105,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-274",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-274.png",
+  "h": 609,
+  "w": 619,
+  "cell": 0.025,
+  "origin": [
+   -15.017000198364258,
+   -0.17812640964984894
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-275",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-275.png",
+  "h": 178,
+  "w": 343,
+  "cell": 0.025,
+  "origin": [
+   -8.395125389099121,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-276",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-276.png",
+  "h": 419,
+  "w": 475,
+  "cell": 0.025,
+  "origin": [
+   -11.696125984191895,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-277",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-277.png",
+  "h": 252,
+  "w": 317,
+  "cell": 0.025,
+  "origin": [
+   -7.72599983215332,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-278",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-278.png",
+  "h": 580,
+  "w": 429,
+  "cell": 0.025,
+  "origin": [
+   -10.53127384185791,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-279",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-279.png",
+  "h": 196,
+  "w": 356,
+  "cell": 0.025,
+  "origin": [
+   -8.71500015258789,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-280",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-280.png",
+  "h": 162,
+  "w": 305,
+  "cell": 0.025,
+  "origin": [
+   -7.438000202178955,
+   -0.17812640964984894
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-281",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-281.png",
+  "h": 422,
+  "w": 490,
+  "cell": 0.025,
+  "origin": [
+   -12.060999870300293,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-282",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-282.png",
+  "h": 505,
+  "w": 495,
+  "cell": 0.025,
+  "origin": [
+   -12.169078826904297,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-283",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-283.png",
+  "h": 289,
+  "w": 221,
+  "cell": 0.025,
+  "origin": [
+   -5.343125820159912,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-284",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-284.png",
+  "h": 405,
+  "w": 405,
+  "cell": 0.025,
+  "origin": [
+   -9.944999694824219,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-286",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-286.png",
+  "h": 338,
+  "w": 580,
+  "cell": 0.025,
+  "origin": [
+   -14.317000389099121,
+   1.8739999532699585
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-287",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-287.png",
+  "h": 175,
+  "w": 256,
+  "cell": 0.025,
+  "origin": [
+   -6.2230000495910645,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-288",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-288.png",
+  "h": 358,
+  "w": 530,
+  "cell": 0.025,
+  "origin": [
+   -13.064000129699707,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-292",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-292.png",
+  "h": 535,
+  "w": 468,
+  "cell": 0.025,
+  "origin": [
+   -11.242273330688477,
+   -0.17812640964984894
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-293",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-293.png",
+  "h": 211,
+  "w": 156,
+  "cell": 0.025,
+  "origin": [
+   -3.436000108718872,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-294",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-294.png",
+  "h": 465,
+  "w": 542,
+  "cell": 0.025,
+  "origin": [
+   -13.322125434875488,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-295",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-295.png",
+  "h": 189,
+  "w": 342,
+  "cell": 0.025,
+  "origin": [
+   -8.364999771118164,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-296",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-296.png",
+  "h": 444,
+  "w": 516,
+  "cell": 0.025,
+  "origin": [
+   -12.692000389099121,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-299",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-299.png",
+  "h": 443,
+  "w": 541,
+  "cell": 0.025,
+  "origin": [
+   -13.321273803710938,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-3",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-3.png",
+  "h": 359,
+  "w": 359,
+  "cell": 0.025,
+  "origin": [
+   -8.753000259399414,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-300",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-300.png",
+  "h": 341,
+  "w": 273,
+  "cell": 0.025,
+  "origin": [
+   -6.362273693084717,
+   1.8289999961853027
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-301",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-301.png",
+  "h": 323,
+  "w": 313,
+  "cell": 0.025,
+  "origin": [
+   -7.605000019073486,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-302",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-302.png",
+  "h": 626,
+  "w": 637,
+  "cell": 0.025,
+  "origin": [
+   -15.456274032592773,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-303",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-303.png",
+  "h": 469,
+  "w": 544,
+  "cell": 0.025,
+  "origin": [
+   -13.130125999450684,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-304",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-304.png",
+  "h": 180,
+  "w": 247,
+  "cell": 0.025,
+  "origin": [
+   -5.993000030517578,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-305",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-305.png",
+  "h": 272,
+  "w": 357,
+  "cell": 0.025,
+  "origin": [
+   -8.734000205993652,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-306",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-306.png",
+  "h": 302,
+  "w": 378,
+  "cell": 0.025,
+  "origin": [
+   -9.135000228881836,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-307",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-307.png",
+  "h": 422,
+  "w": 434,
+  "cell": 0.025,
+  "origin": [
+   -10.381125450134277,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-308",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-308.png",
+  "h": 384,
+  "w": 302,
+  "cell": 0.025,
+  "origin": [
+   -7.363125801086426,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-309",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-309.png",
+  "h": 387,
+  "w": 314,
+  "cell": 0.025,
+  "origin": [
+   -7.656125545501709,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-31",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-31.png",
+  "h": 523,
+  "w": 521,
+  "cell": 0.025,
+  "origin": [
+   -12.848125457763672,
+   -0.15207898616790771
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-310",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-310.png",
+  "h": 456,
+  "w": 720,
+  "cell": 0.025,
+  "origin": [
+   -17.743000030517578,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-311",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-311.png",
+  "h": 325,
+  "w": 322,
+  "cell": 0.025,
+  "origin": [
+   -7.863999843597412,
+   -0.22211211919784546
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-312",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-312.png",
+  "h": 322,
+  "w": 399,
+  "cell": 0.025,
+  "origin": [
+   -9.784000396728516,
+   1.7732871770858765
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-313",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-313.png",
+  "h": 226,
+  "w": 220,
+  "cell": 0.025,
+  "origin": [
+   -5.306485176086426,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-316",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-316.png",
+  "h": 296,
+  "w": 423,
+  "cell": 0.025,
+  "origin": [
+   -10.32699966430664,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-317",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-317.png",
+  "h": 400,
+  "w": 358,
+  "cell": 0.025,
+  "origin": [
+   -8.477273941040039,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-321",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-321.png",
+  "h": 280,
+  "w": 280,
+  "cell": 0.025,
+  "origin": [
+   -6.796000003814697,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-323",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-323.png",
+  "h": 309,
+  "w": 235,
+  "cell": 0.025,
+  "origin": [
+   -5.664999961853027,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-326",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-326.png",
+  "h": 464,
+  "w": 550,
+  "cell": 0.025,
+  "origin": [
+   -13.541274070739746,
+   -0.17812640964984894
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-327",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-327.png",
+  "h": 514,
+  "w": 594,
+  "cell": 0.025,
+  "origin": [
+   -14.390000343322754,
+   1.8558735847473145
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-328",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-328.png",
+  "h": 416,
+  "w": 406,
+  "cell": 0.025,
+  "origin": [
+   -9.942000389099121,
+   1.4819999933242798
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-329",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-329.png",
+  "h": 249,
+  "w": 405,
+  "cell": 0.025,
+  "origin": [
+   -9.913999557495117,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-330",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-330.png",
+  "h": 486,
+  "w": 575,
+  "cell": 0.025,
+  "origin": [
+   -14.16827392578125,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-333",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-333.png",
+  "h": 302,
+  "w": 371,
+  "cell": 0.025,
+  "origin": [
+   -9.075273513793945,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-335",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-335.png",
+  "h": 491,
+  "w": 502,
+  "cell": 0.025,
+  "origin": [
+   -12.083000183105469,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-337",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-337.png",
+  "h": 322,
+  "w": 312,
+  "cell": 0.025,
+  "origin": [
+   -7.581999778747559,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-338",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-338.png",
+  "h": 363,
+  "w": 278,
+  "cell": 0.025,
+  "origin": [
+   -6.7731122970581055,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-339",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-339.png",
+  "h": 460,
+  "w": 397,
+  "cell": 0.025,
+  "origin": [
+   -9.458819389343262,
+   -0.15207898616790771
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-34",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-34.png",
+  "h": 498,
+  "w": 503,
+  "cell": 0.025,
+  "origin": [
+   -12.268126487731934,
+   -0.15371288359165192
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-340",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-340.png",
+  "h": 358,
+  "w": 353,
+  "cell": 0.025,
+  "origin": [
+   -8.637079238891602,
+   -0.26748496294021606
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-341",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-341.png",
+  "h": 638,
+  "w": 581,
+  "cell": 0.025,
+  "origin": [
+   -14.301273345947266,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-342",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-342.png",
+  "h": 262,
+  "w": 252,
+  "cell": 0.025,
+  "origin": [
+   -6.10912561416626,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-343",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-343.png",
+  "h": 898,
+  "w": 485,
+  "cell": 0.025,
+  "origin": [
+   -11.941699981689453,
+   -0.22210468351840973
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-344",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-344.png",
+  "h": 335,
+  "w": 324,
+  "cell": 0.025,
+  "origin": [
+   -7.918000221252441,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-345",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-345.png",
+  "h": 214,
+  "w": 277,
+  "cell": 0.025,
+  "origin": [
+   -6.705999851226807,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-347",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-347.png",
+  "h": 301,
+  "w": 240,
+  "cell": 0.025,
+  "origin": [
+   -5.543000221252441,
+   -0.15207898616790771
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-348",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-348.png",
+  "h": 190,
+  "w": 276,
+  "cell": 0.025,
+  "origin": [
+   -6.7220001220703125,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-349",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-349.png",
+  "h": 171,
+  "w": 249,
+  "cell": 0.025,
+  "origin": [
+   -6.025000095367432,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-350",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-350.png",
+  "h": 160,
+  "w": 234,
+  "cell": 0.025,
+  "origin": [
+   -5.6519999504089355,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-352",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-352.png",
+  "h": 411,
+  "w": 412,
+  "cell": 0.025,
+  "origin": [
+   -10.112125396728516,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-353",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-353.png",
+  "h": 144,
+  "w": 209,
+  "cell": 0.025,
+  "origin": [
+   -5.025000095367432,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-354",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-354.png",
+  "h": 427,
+  "w": 438,
+  "cell": 0.025,
+  "origin": [
+   -10.486000061035156,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-356",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-356.png",
+  "h": 363,
+  "w": 503,
+  "cell": 0.025,
+  "origin": [
+   -12.394000053405762,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-357",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-357.png",
+  "h": 243,
+  "w": 178,
+  "cell": 0.025,
+  "origin": [
+   -4.245273590087891,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-36",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-36.png",
+  "h": 503,
+  "w": 597,
+  "cell": 0.025,
+  "origin": [
+   -14.700273513793945,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-361",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-361.png",
+  "h": 260,
+  "w": 178,
+  "cell": 0.025,
+  "origin": [
+   -4.264999866485596,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-362",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-362.png",
+  "h": 694,
+  "w": 696,
+  "cell": 0.025,
+  "origin": [
+   -17.20012664794922,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-364",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-364.png",
+  "h": 414,
+  "w": 481,
+  "cell": 0.025,
+  "origin": [
+   -11.829999923706055,
+   1.5227261781692505
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-365",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-365.png",
+  "h": 383,
+  "w": 450,
+  "cell": 0.025,
+  "origin": [
+   -11.040125846862793,
+   1.7477262020111084
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-366",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-366.png",
+  "h": 386,
+  "w": 531,
+  "cell": 0.025,
+  "origin": [
+   -13.06627368927002,
+   1.3817261457443237
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-368",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-368.png",
+  "h": 248,
+  "w": 168,
+  "cell": 0.025,
+  "origin": [
+   -4.023713111877441,
+   -0.17812640964984894
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-369",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-369.png",
+  "h": 480,
+  "w": 394,
+  "cell": 0.025,
+  "origin": [
+   -9.640000343322754,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-370",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-370.png",
+  "h": 282,
+  "w": 335,
+  "cell": 0.025,
+  "origin": [
+   -9.781000137329102,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-372",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-372.png",
+  "h": 419,
+  "w": 420,
+  "cell": 0.025,
+  "origin": [
+   -10.028125762939453,
+   1.489920973777771
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-374",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-374.png",
+  "h": 283,
+  "w": 272,
+  "cell": 0.025,
+  "origin": [
+   -6.611999988555908,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-375",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-375.png",
+  "h": 476,
+  "w": 477,
+  "cell": 0.025,
+  "origin": [
+   -11.735125541687012,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-376",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-376.png",
+  "h": 531,
+  "w": 435,
+  "cell": 0.025,
+  "origin": [
+   -10.687999725341797,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-377",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-377.png",
+  "h": 485,
+  "w": 1019,
+  "cell": 0.025,
+  "origin": [
+   -6.970273971557617,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-379",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-379.png",
+  "h": 980,
+  "w": 432,
+  "cell": 0.025,
+  "origin": [
+   -10.491273880004883,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-38",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-38.png",
+  "h": 485,
+  "w": 888,
+  "cell": 0.025,
+  "origin": [
+   -21.986988067626953,
+   -8.425700187683105
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-380",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-380.png",
+  "h": 936,
+  "w": 343,
+  "cell": 0.025,
+  "origin": [
+   -8.357000350952148,
+   -0.22210468351840973
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-381",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-381.png",
+  "h": 634,
+  "w": 773,
+  "cell": 0.025,
+  "origin": [
+   -19.11199951171875,
+   -0.22210468351840973
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-382",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-382.png",
+  "h": 213,
+  "w": 272,
+  "cell": 0.025,
+  "origin": [
+   -6.620079040527344,
+   -0.17812570929527283
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-383",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-383.png",
+  "h": 348,
+  "w": 350,
+  "cell": 0.025,
+  "origin": [
+   -8.541126251220703,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-385",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-385.png",
+  "h": 315,
+  "w": 240,
+  "cell": 0.025,
+  "origin": [
+   -5.810999870300293,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-386",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-386.png",
+  "h": 149,
+  "w": 149,
+  "cell": 0.025,
+  "origin": [
+   -3.5250000953674316,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-387",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-387.png",
+  "h": 309,
+  "w": 166,
+  "cell": 0.025,
+  "origin": [
+   -3.965484857559204,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-388",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-388.png",
+  "h": 161,
+  "w": 235,
+  "cell": 0.025,
+  "origin": [
+   -5.693999767303467,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-39",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-39.png",
+  "h": 536,
+  "w": 523,
+  "cell": 0.025,
+  "origin": [
+   -12.866999626159668,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-391",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-391.png",
+  "h": 226,
+  "w": 297,
+  "cell": 0.025,
+  "origin": [
+   -7.2270002365112305,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-392",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-392.png",
+  "h": 172,
+  "w": 251,
+  "cell": 0.025,
+  "origin": [
+   -6.098999977111816,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-393",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-393.png",
+  "h": 307,
+  "w": 437,
+  "cell": 0.025,
+  "origin": [
+   -10.741999626159668,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-396",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-396.png",
+  "h": 352,
+  "w": 267,
+  "cell": 0.025,
+  "origin": [
+   -6.4961256980896,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-397",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-397.png",
+  "h": 313,
+  "w": 317,
+  "cell": 0.025,
+  "origin": [
+   -9.527125358581543,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-398",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-398.png",
+  "h": 197,
+  "w": 360,
+  "cell": 0.025,
+  "origin": [
+   -8.823125839233398,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-399",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-399.png",
+  "h": 453,
+  "w": 475,
+  "cell": 0.025,
+  "origin": [
+   -11.412273406982422,
+   -0.15374818444252014
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-4",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-4.png",
+  "h": 492,
+  "w": 361,
+  "cell": 0.025,
+  "origin": [
+   -8.810484886169434,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-40",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-40.png",
+  "h": 319,
+  "w": 319,
+  "cell": 0.025,
+  "origin": [
+   -7.794000148773193,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-401",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-401.png",
+  "h": 478,
+  "w": 477,
+  "cell": 0.025,
+  "origin": [
+   -11.702343940734863,
+   -0.26748496294021606
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-402",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-402.png",
+  "h": 356,
+  "w": 196,
+  "cell": 0.025,
+  "origin": [
+   -4.703273773193359,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-403",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-403.png",
+  "h": 521,
+  "w": 593,
+  "cell": 0.025,
+  "origin": [
+   -14.645999908447266,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-406",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-406.png",
+  "h": 480,
+  "w": 395,
+  "cell": 0.025,
+  "origin": [
+   -9.664125442504883,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-409",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-409.png",
+  "h": 148,
+  "w": 284,
+  "cell": 0.025,
+  "origin": [
+   -6.876999855041504,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-410",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-410.png",
+  "h": 302,
+  "w": 291,
+  "cell": 0.025,
+  "origin": [
+   -7.085999965667725,
+   -0.4242737889289856
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-411",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-411.png",
+  "h": 248,
+  "w": 328,
+  "cell": 0.025,
+  "origin": [
+   -7.938000202178955,
+   -0.15000000596046448
+  ]
+ },
+ {
+  "name": "ProcTHOR-r1-ProcTHOR-Test-412",
+  "group": "ProcTHOR-Test",
+  "file": "scenes/ProcTHOR-r1-ProcTHOR-Test-412.png",
+  "h": 341,
+  "w": 178,
+  "cell": 0.025,
+  "origin": [
+   -4.242000102996826,
+   -0.15000000596046448
   ]
  }
 ]
