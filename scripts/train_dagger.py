@@ -46,6 +46,8 @@ def main():
     ap.add_argument("--updates-per-iter", type=int, default=4)
     ap.add_argument("--wandb", dest="use_wandb", action=argparse.BooleanOptionalAction, default=True)
     ap.add_argument("--wandb-project", default="fast-nav")
+    ap.add_argument("--video-every", type=int, default=0,
+                    help="log random + failure mosaic videos to wandb every N iters (0=off)")
     args = ap.parse_args()
 
     train_pack = ScenePack.load_dir(args.scenes, include=args.train_include, max_cells=args.max_cells)
@@ -67,10 +69,12 @@ def main():
     sim_train_eval = Sim(train_pack, num_envs=args.eval_envs, cfg=scfg, seed=args.seed + 1)
     sim_eval = Sim(eval_pack, num_envs=args.eval_envs, cfg=scfg, seed=args.seed + 2)
     sim_eval2 = None
+    video_pack = eval_pack
     if args.eval2_include:
         eval2_pack = ScenePack.load_dir(args.scenes, include=args.eval2_include, max_cells=args.max_cells)
         print(f"second held-out set: {len(eval2_pack.scenes)} scenes")
         sim_eval2 = Sim(eval2_pack, num_envs=args.eval_envs, cfg=scfg, seed=args.seed + 3)
+        video_pack = eval2_pack
 
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -135,6 +139,14 @@ def main():
             print(f"it {it:4d}  frames {frames / 1e6:7.1f}M  loss {loss:.4f}  beta {trainer.beta:.2f}  "
                   f"train {ev_tr['success'] * 100:5.1f}%  HELD-OUT {ev_he['success'] * 100:5.1f}%{extra}  "
                   f"({frames / el / 1e6:.1f}M fps)")
+        if run and args.video_every and (it % args.video_every == 0 or it == args.iters):
+            import wandb
+
+            from fastnav.videos import policy_mosaic_video
+            for fail, tag in ((False, "video/random"), (True, "video/failures")):
+                path = policy_mosaic_video(video_pack, trainer.policy, cfg=scfg, failures=fail)
+                if path:
+                    run.log({tag: wandb.Video(path, format="mp4")}, step=it)
 
     weights = dict(tree_flatten(trainer.policy.parameters()))
     mx.save_safetensors(str(out / "policy.safetensors"), weights)

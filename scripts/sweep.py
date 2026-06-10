@@ -36,9 +36,10 @@ def run_config(cfg: dict, args) -> dict:
     name = cfg["name"]
     out = Path(args.out) / name
     cmd = [sys.executable, "scripts/train_dagger.py",
-           "--iters", str(args.iters), "--eval-every", str(args.iters),
+           "--iters", str(args.iters), "--eval-every", str(args.iters // 2),
            "--envs", str(args.envs), "--eval-envs", "2048",
            "--augment", "--no-pos", "--max-cells", "250000",
+           "--video-every", str(args.iters // 2),
            "--out", str(out)]
     for pats, flag in ((TRAIN, "--train-include"), (EVAL, "--eval-include"), (EVAL2, "--eval2-include")):
         cmd += [flag, *pats]
