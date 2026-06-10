@@ -354,6 +354,7 @@ def evaluate(sim: Sim, policy) -> dict:
     prev = mx.zeros((n, 2), dtype=mx.float32)
     succeeded = mx.zeros((n,), dtype=mx.bool_)
     finished = mx.zeros((n,), dtype=mx.bool_)
+    collided = mx.zeros((n,), dtype=mx.bool_)
     steps_taken = mx.zeros((n,), dtype=mx.int32)
     min_clear = mx.full((n,), 9.0)
     for t in range(sim.cfg.max_steps + 1):
@@ -371,6 +372,7 @@ def evaluate(sim: Sim, policy) -> dict:
         done = mx.logical_or(term.astype(mx.bool_), trunc.astype(mx.bool_))
         first = mx.logical_and(done, mx.logical_not(finished))
         succeeded = mx.logical_or(succeeded, mx.logical_and(first, term.astype(mx.bool_)))
+        collided = mx.logical_or(collided, mx.logical_and(first, sim.hit.astype(mx.bool_)))
         steps_taken = mx.where(first, t + 1, steps_taken)
         finished = mx.logical_or(finished, done)
         if t % 64 == 0:
@@ -384,6 +386,7 @@ def evaluate(sim: Sim, policy) -> dict:
     return {
         "success": n_suc / max(n_fin, 1),
         "safe_success": int(mx.sum(safe)) / max(n_fin, 1),
+        "collision_rate": int(mx.sum(collided)) / max(n_fin, 1),
         "episodes": n_fin,
         "steps_per_episode": float(mx.sum(steps_taken)) / max(n_fin, 1),
     }

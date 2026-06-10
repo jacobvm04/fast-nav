@@ -265,22 +265,70 @@ function rebuildDerived() {
 
 // ------------------------------------------------------------------- view
 
-function fitView() {
+// preserve=true keeps the user's zoom level and view center across resizes
+// (mobile browsers fire resize constantly as the address bar collapses).
+function fitView(preserve = false) {
   const { sim } = state;
   if (!sim) return;
   const dpr = devicePixelRatio || 1;
+  const old = { w: canvas.width, h: canvas.height, ...state.view, fitS: state.fitS };
   const cw = canvas.clientWidth * dpr;
   const ch = canvas.clientHeight * dpr;
   canvas.width = cw;
   canvas.height = ch;
   const wm = sim.w * sim.cell;
   const hm = sim.h * sim.cell;
-  const s = Math.min(cw / wm, ch / hm) * 0.94;
-  state.view = {
-    s,
-    x0: (cw - wm * s) / 2 - (sim.ox - sim.cell / 2) * s,
-    y0: (ch - hm * s) / 2 - (sim.oy - sim.cell / 2) * s,
-  };
+  const fitS = Math.min(cw / wm, ch / hm) * 0.94;
+  state.fitS = fitS;
+  if (preserve && old.fitS && old.w) {
+    const z = old.s / old.fitS;
+    const wcx = (old.w / 2 - old.x0) / old.s; // world point at old view center
+    const wcy = (old.h / 2 - old.y0) / old.s;
+    const s = fitS * z;
+    state.view = { s, x0: cw / 2 - wcx * s, y0: ch / 2 - wcy * s };
+    clampView();
+  } else {
+    state.view = {
+      s: fitS,
+      x0: (cw - wm * fitS) / 2 - (sim.ox - sim.cell / 2) * fitS,
+      y0: (ch - hm * fitS) / 2 - (sim.oy - sim.cell / 2) * fitS,
+    };
+  }
+}
+
+// keep at least a fifth of the viewport covered by the scene in each axis
+function clampView() {
+  const { sim, view } = state;
+  if (!sim) return;
+  const left = sim.ox - sim.cell / 2;
+  const top = sim.oy - sim.cell / 2;
+  const sl = view.x0 + left * view.s;
+  const sr = sl + sim.w * sim.cell * view.s;
+  if (sr < canvas.width * 0.2) view.x0 += canvas.width * 0.2 - sr;
+  else if (sl > canvas.width * 0.8) view.x0 -= sl - canvas.width * 0.8;
+  const st = view.y0 + top * view.s;
+  const sb = st + sim.h * sim.cell * view.s;
+  if (sb < canvas.height * 0.2) view.y0 += canvas.height * 0.2 - sb;
+  else if (st > canvas.height * 0.8) view.y0 -= st - canvas.height * 0.8;
+}
+
+function panBy(dxCss, dyCss) {
+  const dpr = devicePixelRatio || 1;
+  state.view.x0 += dxCss * dpr;
+  state.view.y0 += dyCss * dpr;
+  clampView();
+}
+
+// zoom by `factor` keeping the canvas point (cxCss, cyCss) fixed
+function applyZoom(factor, cxCss, cyCss) {
+  const v = state.view;
+  const dpr = devicePixelRatio || 1;
+  const s = Math.min(Math.max(v.s * factor, state.fitS * 0.8), state.fitS * 14);
+  factor = s / v.s;
+  v.x0 = cxCss * dpr - (cxCss * dpr - v.x0) * factor;
+  v.y0 = cyCss * dpr - (cyCss * dpr - v.y0) * factor;
+  v.s = s;
+  clampView();
 }
 
 const W2S = (x, y) => [state.view.x0 + x * state.view.s, state.view.y0 + y * state.view.s];
@@ -479,7 +527,7 @@ function draw(now) {
   }
 
   // brush preview
-  if (state.tool !== 'nav' && state.hover) {
+  if ((state.tool === 'wall' || state.tool === 'erase') && state.hover) {
     const [hx, hy] = W2S(state.hover[0], state.hover[1]);
     ctx.strokeStyle = state.tool === 'wall' ? 'rgba(255, 209, 102, 0.8)' : 'rgba(255, 107, 107, 0.8)';
     ctx.lineWidth = 1.5;
@@ -621,23 +669,111 @@ function eventWorld(ev) {
   return S2W(ev.clientX - rect.left, ev.clientY - rect.top);
 }
 
-function onPointerDown(ev) {
-  const { sim } = state;
-  if (!sim) return;
-  const [wx, wy] = eventWorld(ev);
+// Gestures: tap = act (goal / teleport), one-finger drag = pan (nav/move) or
+// paint (brushes), two fingers = pinch zoom + pan, wheel = zoom.
+const pointers = new Map(); // pointerId -> [clientX, clientY]
+let tapStart = null;        // {x, y, shift, lastX, lastY}
+let panning = false;
+let pinchPrev = null;       // {d, cx, cy}
 
-  if (state.tool !== 'nav' && !ev.shiftKey) {
+function pinchState() {
+  const [a, b] = [...pointers.values()];
+  return { d: Math.hypot(a[0] - b[0], a[1] - b[1]), cx: (a[0] + b[0]) / 2, cy: (a[1] + b[1]) / 2 };
+}
+
+function endStroke() {
+  if (!state.painting) return;
+  state.painting = false;
+  state.lastPaint = null;
+  rebuildDerived();
+}
+
+function onPointerDown(ev) {
+  if (!state.sim) return;
+  try { canvas.setPointerCapture(ev.pointerId); } catch { /* synthetic events */ }
+  pointers.set(ev.pointerId, [ev.clientX, ev.clientY]);
+  if (pointers.size === 2) {
+    endStroke();          // second finger: whatever was happening becomes a pinch
+    tapStart = null;
+    panning = false;
+    pinchPrev = pinchState();
+    return;
+  }
+  if (pointers.size > 2) return;
+  if ((state.tool === 'wall' || state.tool === 'erase') && !ev.shiftKey) {
+    const [wx, wy] = eventWorld(ev);
     state.painting = true;
     state.lastPaint = [wx, wy];
-    canvas.setPointerCapture(ev.pointerId);
     paintDisk(wx, wy, state.tool === 'wall');
     return;
   }
+  tapStart = { x: ev.clientX, y: ev.clientY, shift: ev.shiftKey, lastX: ev.clientX, lastY: ev.clientY };
+  panning = false;
+}
 
+function onPointerMove(ev) {
+  if (!state.sim) return;
+  state.hover = eventWorld(ev);
+  if (!pointers.has(ev.pointerId)) return;
+  pointers.set(ev.pointerId, [ev.clientX, ev.clientY]);
+
+  if (pointers.size === 2 && pinchPrev) {
+    const rect = canvas.getBoundingClientRect();
+    const cur = pinchState();
+    applyZoom(cur.d / Math.max(pinchPrev.d, 1e-6), cur.cx - rect.left, cur.cy - rect.top);
+    panBy(cur.cx - pinchPrev.cx, cur.cy - pinchPrev.cy);
+    pinchPrev = cur;
+    return;
+  }
+
+  if (state.painting) {
+    const [wx, wy] = eventWorld(ev);
+    paintSegment(state.lastPaint, [wx, wy], state.tool === 'wall');
+    state.lastPaint = [wx, wy];
+    // keep physics honest during long strokes without re-running EDT every event
+    if (performance.now() - state.lastRebuild > Math.max(120, 3 * state.rebuildMs)) {
+      rebuildDerived();
+    }
+    return;
+  }
+
+  if (tapStart) {
+    if (panning || Math.hypot(ev.clientX - tapStart.x, ev.clientY - tapStart.y) > 8) {
+      panning = true;
+      panBy(ev.clientX - tapStart.lastX, ev.clientY - tapStart.lastY);
+      tapStart.lastX = ev.clientX;
+      tapStart.lastY = ev.clientY;
+    }
+  }
+}
+
+function onPointerUp(ev) {
+  pointers.delete(ev.pointerId);
+  if (pointers.size < 2) pinchPrev = null;
+  if (pointers.size === 1) {
+    // pinch ended with one finger still down: treat the remainder as a pan
+    const [x, y] = [...pointers.values()][0];
+    tapStart = { x, y, shift: false, lastX: x, lastY: y };
+    panning = true;
+    return;
+  }
+  if (pointers.size > 0) return;
+  if (state.painting) {
+    endStroke();
+  } else if (tapStart && !panning) {
+    actOnTap(ev, tapStart.shift);
+  }
+  tapStart = null;
+  panning = false;
+}
+
+function actOnTap(ev, shift) {
+  const { sim } = state;
+  const [wx, wy] = eventWorld(ev);
   const c = compAt(wx, wy);
   const clear = sim.edfAt(wx, wy);
 
-  if (ev.shiftKey) {
+  if (shift || state.tool === 'move') {
     if (c === -1 || clear < sim.cfg.robot_radius + 0.02) {
       setStatus('cannot teleport there — blocked', 'error');
       return;
@@ -647,9 +783,10 @@ function onPointerDown(ev) {
     state.trail = [];
     state.policy.reset();
     state.mode = 'idle';
-    setStatus('robot moved — click to set a goal');
+    setStatus('robot moved — set a goal with navigate');
     return;
   }
+  if (state.tool !== 'nav') return;
 
   const robotComp = compAt(sim.pos[0], sim.pos[1]);
   if (c !== robotComp || clear < sim.cfg.robot_radius + 0.02) {
@@ -666,26 +803,6 @@ function onPointerDown(ev) {
   state.tries++;
   updateScore();
   setStatus('navigating…');
-}
-
-function onPointerMove(ev) {
-  if (!state.sim) return;
-  const [wx, wy] = eventWorld(ev);
-  state.hover = [wx, wy];
-  if (!state.painting) return;
-  paintSegment(state.lastPaint, [wx, wy], state.tool === 'wall');
-  state.lastPaint = [wx, wy];
-  // keep physics honest during long strokes without re-running EDT every event
-  if (performance.now() - state.lastRebuild > Math.max(120, 3 * state.rebuildMs)) {
-    rebuildDerived();
-  }
-}
-
-function onPointerUp() {
-  if (!state.painting) return;
-  state.painting = false;
-  state.lastPaint = null;
-  rebuildDerived();
 }
 
 async function main() {
@@ -757,6 +874,12 @@ async function main() {
   canvas.addEventListener('pointerup', onPointerUp);
   canvas.addEventListener('pointercancel', onPointerUp);
   canvas.addEventListener('pointerleave', () => { state.hover = null; });
+  canvas.addEventListener('contextmenu', (ev) => ev.preventDefault()); // long-press
+  canvas.addEventListener('wheel', (ev) => {
+    ev.preventDefault();
+    const rect = canvas.getBoundingClientRect();
+    applyZoom(Math.exp(-ev.deltaY * 0.0015), ev.clientX - rect.left, ev.clientY - rect.top);
+  }, { passive: false });
 
   for (const b of $('tool').querySelectorAll('button')) {
     b.onclick = () => {
@@ -772,7 +895,7 @@ async function main() {
     setStatus('scene restored');
   };
 
-  new ResizeObserver(fitView).observe($('stage'));
+  new ResizeObserver(() => fitView(true)).observe($('stage'));
 
   window.fastnav = state; // debug/test hook
   $('loading').remove();

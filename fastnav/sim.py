@@ -56,6 +56,7 @@ _STEP_SRC = """
     bool freset = force_reset[0] > 0.5f;
     bool reached = false;
     bool trunc = false;
+    bool hit = false;
     float dist_pre = 0.0f;
 
     float odx = odom_st[i * 3], ody = odom_st[i * 3 + 1], oth = odom_st[i * 3 + 2];
@@ -106,14 +107,18 @@ _STEP_SRC = """
         ody += mdy * oscale + (ep1 + p_f[7] * rnd_n[i * 10 + 3]) * dl;
         oth += (ep3 + p_f[10] * rnd_n[i * 10 + 4]) * dl;
 
+        // contact check: touching geometry ends the episode as a failure
+        float cnow = bilin(edf, ebase, H, W, (px - ox) * inv_cell, (py - oy) * inv_cell) - radius;
+        hit = (p_f[16] > 0.0f) && (cnow < p_f[16]);
+
         float ddx = gx - px, ddy = gy - py;
         dist_pre = metal::sqrt(ddx * ddx + ddy * ddy);
-        reached = dist_pre < goal_r;
+        reached = (dist_pre < goal_r) && !hit;
         st += 1;
-        trunc = (st >= max_steps) && !reached;
+        trunc = (st >= max_steps) && !reached && !hit;
     }
 
-    bool done = freset || reached || trunc;
+    bool done = freset || reached || trunc || hit;
     if (done) {
         float u0 = rnd[i * 4], u1 = rnd[i * 4 + 1], u2 = rnd[i * 4 + 2], u3 = rnd[i * 4 + 3];
         int nk = metal::min(K - 1, (int)(u0 * (float)K));
@@ -155,7 +160,8 @@ _STEP_SRC = """
     goal_k_out[i] = gk;
     step_out[i] = st;
     term_out[i] = reached ? (uint8_t)1 : (uint8_t)0;
-    trunc_out[i] = trunc ? (uint8_t)1 : (uint8_t)0;
+    trunc_out[i] = (trunc || hit) ? (uint8_t)1 : (uint8_t)0;  // any non-success terminal
+    hit_out[i] = hit ? (uint8_t)1 : (uint8_t)0;
     dist_out[i] = dist_pre;
 """
 
@@ -240,7 +246,7 @@ _step_kernel = mx.fast.metal_kernel(
                  "starts", "goals_all", "pool", "pool_cnt", "odom_st", "ep_n", "rnd",
                  "rnd_n", "force_reset", "p_f", "p_i"],
     output_names=["pos_out", "goal_out", "goal_k_out", "step_out", "term_out", "trunc_out",
-                  "dist_out", "odom_out", "ep_out", "clear_out"],
+                  "hit_out", "dist_out", "odom_out", "ep_out", "clear_out"],
     source=_STEP_SRC,
     header=_HEADER,
 )
@@ -294,6 +300,7 @@ class SimConfig:
     head_bias: float = 0.0       # per-episode heading drift sigma (rad per meter)
     act_noise: float = 0.0       # additive actuation noise sigma (m/s)
     act_scale: float = 0.0       # per-episode actuation scale-factor sigma
+    contact_margin: float = 0.01  # clearance below this = contact -> terminal FAILURE (0 disables)
     expert_slow_radius: float = 0.6
     expert_beta: float = 0.35
     expert_blend_radius: float = 0.5
@@ -330,7 +337,7 @@ class Sim:
                              pack.cell, 1.0 / pack.cell, cfg.max_range,
                              cfg.odom_rw, cfg.odom_bias, cfg.odom_scale,
                              cfg.head_rw, cfg.head_bias, cfg.act_noise, cfg.act_scale,
-                             cfg.lidar_sigma, cfg.lidar_dropout], dtype=mx.float32)
+                             cfg.lidar_sigma, cfg.lidar_dropout, cfg.contact_margin], dtype=mx.float32)
         self.p_i = mx.array([h, w, k, m, cfg.max_steps, n, cfg.n_rays], dtype=mx.int32)
         self.pe_f = mx.array([pack.geo_cell, 1.0 / pack.geo_cell, cfg.v_max,
                               cfg.expert_slow_radius, cfg.expert_beta,
@@ -389,14 +396,14 @@ class Sim:
                     self.edf, self.origin, self.starts, self.goals_all, self.pool,
                     self.pool_cnt, self.odom, self.ep_noise, rnd, rnd_n, force_reset,
                     self.p_f, self.p_i],
-            output_shapes=[(n, 2), (n, 2), (n,), (n,), (n,), (n,), (n,), (n, 3), (n, 5), (n,)],
+            output_shapes=[(n, 2), (n, 2), (n,), (n,), (n,), (n,), (n,), (n,), (n, 3), (n, 5), (n,)],
             output_dtypes=[mx.float32, mx.float32, mx.int32, mx.int32, mx.uint8, mx.uint8,
-                           mx.float32, mx.float32, mx.float32, mx.float32],
+                           mx.uint8, mx.float32, mx.float32, mx.float32, mx.float32],
             grid=(n, 1, 1),
             threadgroup=(256, 1, 1),
         )
         (self.pos, self.goal, self.goal_k, self.step_ct, self.term, self.trunc,
-         self.dist_goal, self.odom, self.ep_noise, self.clearance) = outs
+         self.hit, self.dist_goal, self.odom, self.ep_noise, self.clearance) = outs
         self.lidar = _lidar_kernel(
             inputs=[self.pos, self.scene, self.odom, self.edf, self.origin,
                     mx.random.normal(shape=(n, r)), mx.random.uniform(shape=(n, r)),
