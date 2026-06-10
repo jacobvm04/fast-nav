@@ -66,8 +66,9 @@ class PPOConfig:
     init_std: float = 0.3
     max_grad_norm: float = 1.0
     geo_clip: float = 50.0  # meters; padded/obstacle geo regions are huge outliers
-    clear_margin: float = 0.10  # penalize clearance below this (m)
-    clear_coef: float = 0.05    # penalty weight (max penalty = coef * margin per step)
+    clear_margin: float = 0.10  # proximity = (margin - clearance)/margin below this (m)
+    clear_coef: float = 0.012   # quadratic barrier: coef * proximity^2 per step
+    speed_prox_coef: float = 0.012  # in-loop governor: coef * proximity * (speed/vmax)
     collision_penalty: float = 0.25  # terminal penalty when contact ends the episode
     hidden: int = 256
     use_pos: bool = False
@@ -144,8 +145,12 @@ class PPOTrainer:
             act_l.append(a)
             val_l.append(v)
             obs, term, trunc = sim.step(a)
-            pen_l.append(cfg.clear_coef *
-                         mx.maximum(cfg.clear_margin - sim.clearance, 0.0))
+            ac = self._clamp(a)
+            spd = mx.sqrt(mx.sum(mx.square(ac), axis=1)) / sim.cfg.v_max
+            prox = mx.maximum(cfg.clear_margin - sim.clearance, 0.0) / cfg.clear_margin
+            # convex barrier punishes corner-skimming hard but wall-adjacent travel
+            # mildly; the speed term is the governor learned in-loop
+            pen_l.append(cfg.clear_coef * prox * prox + cfg.speed_prox_coef * prox * spd)
             done = mx.maximum(term, trunc).astype(mx.float32)
             done_l.append(done)
             reach_l.append(term.astype(mx.float32))

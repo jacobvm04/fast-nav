@@ -21,7 +21,7 @@ class FieldConfig:
     cell: float = 0.025          # occupancy/EDF resolution (m)
     geo_cell: float = 0.05       # geodesic field resolution (m)
     robot_radius: float = 0.18   # m
-    start_clearance: float = 0.05  # extra clearance beyond radius for spawn points
+    start_clearance: float = 0.12  # extra clearance beyond radius for spawn points
     n_goals: int = 16            # geodesic fields per scene
     clearance_pref: float = 0.45   # distance (m) at which wall-proximity penalty fades to 0
     clearance_weight: float = 3.0  # max multiplicative path-cost penalty next to walls

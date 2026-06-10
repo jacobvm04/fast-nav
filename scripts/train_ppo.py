@@ -39,7 +39,8 @@ def main():
     ap.add_argument("--noise", type=float, default=0.0,
                     help="sim2real noise level in training rollouts (1.0 = realistic)")
     ap.add_argument("--collision-penalty", type=float, default=0.25)
-    ap.add_argument("--clear-coef", type=float, default=0.05)
+    ap.add_argument("--clear-coef", type=float, default=0.012)
+    ap.add_argument("--speed-prox-coef", type=float, default=0.012)
     ap.add_argument("--clear-margin", type=float, default=0.10)
     ap.add_argument("--train-contact-margin", type=float, default=None,
                     help="inflated contact-terminal margin during training (eval stays at default)")
@@ -60,7 +61,7 @@ def main():
     sim.reset()
     pcfg = PPOConfig(lr=args.lr, entropy_coef=args.entropy_coef, init_std=args.init_std,
                      collision_penalty=args.collision_penalty, clear_coef=args.clear_coef,
-                     clear_margin=args.clear_margin)
+                     clear_margin=args.clear_margin, speed_prox_coef=args.speed_prox_coef)
     init = args.init if args.init and Path(args.init).exists() else None
     trainer = PPOTrainer(sim, pcfg, seed=args.seed, init_weights=init)
     n_params = sum(v.size for _, v in tree_flatten(trainer.policy.parameters()))
