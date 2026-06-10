@@ -90,6 +90,31 @@ layouts and ~89-90% on held-out layouts after 131M frames (~1 min wall clock).
 uv run python scripts/train_dagger.py --iters 1600 --eval-every 200
 ```
 
+## PPO fine-tuning (the generalization breakthrough)
+
+BC/DAgger plateaus at ~80% held-out regardless of architecture/capacity (10-config
+sweep) because the expert is privileged (it reads the geodesic field) and imitation
+labels are Markov in state — long-horizon detour decisions aren't learnable from
+per-frame labels. `scripts/train_ppo.py` fine-tunes with recurrent PPO on the
+**geodesic-progress reward** (oracle Δcost-to-go, training-time only; scaled so the
+BC value head is a near-correct critic at init).
+
+Results (gru256, ~470 ProcTHOR + ReplicaCAD layouts, M2 Max):
+
+| | train | ReplicaCAD held-out | ProcTHOR held-out |
+|---|---:|---:|---:|
+| BC/DAgger (best of sweep) | 86.0% | 78.9% | 86.3% |
+| BC init used for PPO | 81.9% | 78.2% | 82.8% |
+| + PPO fine-tune (~10 min) | 98.2% | **98.9%** | **97.2%** |
+
+The dominant failure mode (oscillating at blocked direct paths instead of
+committing to detours) is eliminated by optimizing the sequential objective
+under the policy's own information state.
+
+```bash
+uv run python scripts/train_ppo.py --init checkpoints/gru256_bc/policy.safetensors
+```
+
 ## Next steps (not yet built)
 
 - Reward design + PPO via pufferlib (3.0 trainer takes the env instance directly;
