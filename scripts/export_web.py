@@ -27,12 +27,20 @@ HELDOUT = {
 }
 MAX_CELLS = 500_000  # same filter as training eval packs
 
-POLICY_TENSORS = ["enc.weight", "enc.bias", "gru.Wx", "gru.Wh", "gru.b", "gru.bhn",
-                  "head.weight", "head.bias", "vhead.weight", "vhead.bias"]
+# per-head tensor manifests (names match fastnav.policy parameter paths)
+_TRUNK = ["enc.weight", "enc.bias", "gru.Wx", "gru.Wh", "gru.b", "gru.bhn"]
+POLICY_TENSORS = {
+    "continuous": _TRUNK + ["head.weight", "head.bias", "vhead.weight", "vhead.bias"],
+    "discrete_w": _TRUNK + ["head.vlin.weight", "head.vlin.bias", "head.wlin.weight",
+                            "head.wlin.bias", "vhead.weight", "vhead.bias"],
+}
 
-# (id, label, checkpoint) — exported in order; first existing one is the app default
+# (id, label, checkpoint[, kinematics[, head]]) — exported in order; first
+# existing one is the app default. kinematics/head default to holonomic/continuous.
 POLICIES = [
-    ("ppo-128", "PPO · 128-beam (noise champion)", "checkpoints/ppo_big_128init.safetensors"),
+    ("ppo-128", "PPO · 128-beam, noise-robust", "checkpoints/ppo_big_128init.safetensors"),
+    ("ppo-diffdrive", "PPO · diff-drive (v, ω)",
+     "checkpoints/ppo_dd_disc64/policy_best.safetensors", "diffdrive", "discrete_w"),
     ("ppo-big", "PPO · 3k-scene contact-safe", "checkpoints/ppo_big/policy_best.safetensors"),
     ("ppo-careful", "PPO · contact-safe (careful)", "checkpoints/ppo_careful2/policy_best.safetensors"),
     ("ppo-contact", "PPO · contact-safe", "checkpoints/ppo_contact2/policy_best.safetensors"),
@@ -79,14 +87,16 @@ def export_policies(out: Path) -> None:
     out_pol.mkdir(parents=True, exist_ok=True)
     cfg = SimConfig()
     entries = []
-    for pid, label, ckpt in POLICIES:
+    for pid, label, ckpt, *rest in POLICIES:
+        kin = rest[0] if rest else "holonomic"
+        head = rest[1] if len(rest) > 1 else "continuous"
         if not Path(ckpt).exists():
             print(f"skipping {pid}: {ckpt} not found")
             continue
         weights = mx.load(ckpt)
         blob = bytearray()
         tensors = {}
-        for name in POLICY_TENSORS:
+        for name in POLICY_TENSORS[head]:
             a = np.array(weights[name], dtype=np.float32)
             tensors[name] = {"shape": list(a.shape), "offset": len(blob) // 4}
             blob += a.tobytes()  # little-endian on every platform we care about
@@ -94,7 +104,8 @@ def export_policies(out: Path) -> None:
         n_rays = tensors["enc.weight"]["shape"][1] - 6  # in = rays | rel_goal 2 | pos 2 | prev 2
         entries.append({
             "id": pid, "label": label, "checkpoint": ckpt, "n_rays": n_rays,
-            "file": f"policies/{pid}.bin", "tensors": tensors,
+            "kinematics": kin, "head": head, "file": f"policies/{pid}.bin",
+            "tensors": tensors,
             "arch": {"hidden": 256, "enc": 256, "use_pos": False},
         })
         print(f"exported {pid} ({len(blob) / 1e6:.1f} MB) <- {ckpt}")
@@ -107,7 +118,7 @@ def export_policies(out: Path) -> None:
         "policies": entries,
         "sim": {
             "n_rays": cfg.n_rays, "max_range": cfg.max_range, "dt": cfg.dt,
-            "v_max": cfg.v_max, "robot_radius": cfg.robot_radius,
+            "v_max": cfg.v_max, "w_max": cfg.w_max, "robot_radius": cfg.robot_radius,
             "goal_radius": cfg.goal_radius, "max_steps": cfg.max_steps,
         },
         "noise_stack": noise,  # multiply by UI level (1.0 = realistic)

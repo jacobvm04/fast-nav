@@ -1,7 +1,9 @@
 // JavaScript port of fastnav.policy.RecurrentNavPolicy.step (MLX):
-//   x = silu(enc(obs_prev * scale)); h = GRU(x, h); act = v_max * tanh(head(h))
+//   x = silu(enc(obs_prev * scale)); h = GRU(x, h); act = head(h)
 // GRU gate order in the stacked [3H] dim is (r, z, n), with the extra bhn bias
 // applied inside the reset gate, exactly as mlx.nn.GRU computes it.
+// Heads (mirroring fastnav.policy.HEADS): "continuous" = tanh mean per dim;
+// "discrete_w" = continuous v + argmax over K omega bins.
 
 function matvec(out, W, x, nOut, nIn, bias) {
   for (let i = 0; i < nOut; i++) {
@@ -30,6 +32,16 @@ export class Policy {
     this.H = manifest.arch.hidden;
     this.E = manifest.arch.enc;
     this.nRays = manifest.n_rays ?? cfg.n_rays; // per-policy lidar resolution
+    this.kinematics = manifest.kinematics ?? 'holonomic'; // per-policy drive type
+    this.head = manifest.head ?? 'continuous';
+    // per-dim action limits: (vx, vy) for holonomic, (v, omega) for diffdrive
+    this.actScale = [cfg.v_max,
+      this.kinematics === 'diffdrive' ? (cfg.w_max ?? 2.5) : cfg.v_max];
+    if (this.head === 'discrete_w') {
+      const K = t['head.wlin.weight'].length / this.H;
+      this.wBins = Array.from({ length: K },
+        (_, i) => -this.actScale[1] + (2 * this.actScale[1] * i) / (K - 1));
+    }
     this.obsDim = this.nRays + 4;
     this.inDim = this.obsDim + 2; // obs | prev action
 
@@ -39,8 +51,8 @@ export class Policy {
     const posScale = manifest.arch.use_pos ? 0.1 : 0.0;
     scale[this.nRays + 2] = posScale;
     scale[this.nRays + 3] = posScale;
-    scale[this.obsDim] = 1 / cfg.v_max;
-    scale[this.obsDim + 1] = 1 / cfg.v_max;
+    scale[this.obsDim] = 1 / this.actScale[0];
+    scale[this.obsDim + 1] = 1 / this.actScale[1];
     this.scale = scale;
 
     this.h = new Float32Array(this.H);
@@ -78,18 +90,36 @@ export class Policy {
       h[i] = (1 - z) * n + z * h[i];
     }
 
-    const vmax = this.simCfg.v_max;
-    const hw = t['head.weight'];
-    const hb = t['head.bias'];
-    let a0 = hb[0], a1 = hb[1];
     let v = t['vhead.bias'][0];
     const vw = t['vhead.weight'];
-    for (let i = 0; i < H; i++) {
-      a0 += hw[i] * h[i];
-      a1 += hw[H + i] * h[i];
-      v += vw[i] * h[i];
+    for (let i = 0; i < H; i++) v += vw[i] * h[i];
+
+    let act;
+    if (this.head === 'discrete_w') {
+      const fw = t['head.vlin.weight'];
+      let a0 = t['head.vlin.bias'][0];
+      for (let i = 0; i < H; i++) a0 += fw[i] * h[i];
+      const ww = t['head.wlin.weight'];
+      const wb = t['head.wlin.bias'];
+      let bestK = 0;
+      let bestL = -Infinity;
+      for (let k = 0; k < this.wBins.length; k++) {
+        let l = wb[k];
+        const row = k * H;
+        for (let i = 0; i < H; i++) l += ww[row + i] * h[i];
+        if (l > bestL) { bestL = l; bestK = k; }
+      }
+      act = [this.actScale[0] * Math.tanh(a0), this.wBins[bestK]];
+    } else {
+      const hw = t['head.weight'];
+      const hb = t['head.bias'];
+      let a0 = hb[0], a1 = hb[1];
+      for (let i = 0; i < H; i++) {
+        a0 += hw[i] * h[i];
+        a1 += hw[H + i] * h[i];
+      }
+      act = [this.actScale[0] * Math.tanh(a0), this.actScale[1] * Math.tanh(a1)];
     }
-    const act = [vmax * Math.tanh(a0), vmax * Math.tanh(a1)];
     this.prev[0] = act[0];
     this.prev[1] = act[1];
     this.value = v;

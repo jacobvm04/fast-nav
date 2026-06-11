@@ -2,9 +2,11 @@
  "policies": [
   {
    "id": "ppo-128",
-   "label": "PPO \u00b7 128-beam (noise champion)",
+   "label": "PPO \u00b7 128-beam, noise-robust",
    "checkpoint": "checkpoints/ppo_big_128init.safetensors",
    "n_rays": 128,
+   "kinematics": "holonomic",
+   "head": "continuous",
    "file": "policies/ppo-128.bin",
    "tensors": {
     "enc.weight": {
@@ -80,10 +82,106 @@
    }
   },
   {
+   "id": "ppo-diffdrive",
+   "label": "PPO \u00b7 diff-drive (v, \u03c9)",
+   "checkpoint": "checkpoints/ppo_dd_disc64/policy_best.safetensors",
+   "n_rays": 64,
+   "kinematics": "diffdrive",
+   "head": "discrete_w",
+   "file": "policies/ppo-diffdrive.bin",
+   "tensors": {
+    "enc.weight": {
+     "shape": [
+      256,
+      70
+     ],
+     "offset": 0
+    },
+    "enc.bias": {
+     "shape": [
+      256
+     ],
+     "offset": 17920
+    },
+    "gru.Wx": {
+     "shape": [
+      768,
+      256
+     ],
+     "offset": 18176
+    },
+    "gru.Wh": {
+     "shape": [
+      768,
+      256
+     ],
+     "offset": 214784
+    },
+    "gru.b": {
+     "shape": [
+      768
+     ],
+     "offset": 411392
+    },
+    "gru.bhn": {
+     "shape": [
+      256
+     ],
+     "offset": 412160
+    },
+    "head.vlin.weight": {
+     "shape": [
+      1,
+      256
+     ],
+     "offset": 412416
+    },
+    "head.vlin.bias": {
+     "shape": [
+      1
+     ],
+     "offset": 412672
+    },
+    "head.wlin.weight": {
+     "shape": [
+      15,
+      256
+     ],
+     "offset": 412673
+    },
+    "head.wlin.bias": {
+     "shape": [
+      15
+     ],
+     "offset": 416513
+    },
+    "vhead.weight": {
+     "shape": [
+      1,
+      256
+     ],
+     "offset": 416528
+    },
+    "vhead.bias": {
+     "shape": [
+      1
+     ],
+     "offset": 416784
+    }
+   },
+   "arch": {
+    "hidden": 256,
+    "enc": 256,
+    "use_pos": false
+   }
+  },
+  {
    "id": "ppo-big",
    "label": "PPO \u00b7 3k-scene contact-safe",
    "checkpoint": "checkpoints/ppo_big/policy_best.safetensors",
    "n_rays": 64,
+   "kinematics": "holonomic",
+   "head": "continuous",
    "file": "policies/ppo-big.bin",
    "tensors": {
     "enc.weight": {
@@ -163,6 +261,8 @@
    "label": "PPO \u00b7 contact-safe (careful)",
    "checkpoint": "checkpoints/ppo_careful2/policy_best.safetensors",
    "n_rays": 64,
+   "kinematics": "holonomic",
+   "head": "continuous",
    "file": "policies/ppo-careful.bin",
    "tensors": {
     "enc.weight": {
@@ -242,6 +342,8 @@
    "label": "PPO \u00b7 contact-safe",
    "checkpoint": "checkpoints/ppo_contact2/policy_best.safetensors",
    "n_rays": 64,
+   "kinematics": "holonomic",
+   "head": "continuous",
    "file": "policies/ppo-contact.bin",
    "tensors": {
     "enc.weight": {
@@ -321,6 +423,8 @@
    "label": "PPO \u00b7 noise-trained (DR 1.5)",
    "checkpoint": "checkpoints/ppo_noisy/policy_best.safetensors",
    "n_rays": 64,
+   "kinematics": "holonomic",
+   "head": "continuous",
    "file": "policies/ppo-noisy.bin",
    "tensors": {
     "enc.weight": {
@@ -400,6 +504,8 @@
    "label": "PPO \u00b7 clean-trained",
    "checkpoint": "checkpoints/ppo/policy_best.safetensors",
    "n_rays": 64,
+   "kinematics": "holonomic",
+   "head": "continuous",
    "file": "policies/ppo-clean.bin",
    "tensors": {
     "enc.weight": {
@@ -480,6 +586,7 @@
   "max_range": 6.0,
   "dt": 0.1,
   "v_max": 1.5,
+  "w_max": 2.5,
   "robot_radius": 0.18,
   "goal_radius": 0.25,
   "max_steps": 512

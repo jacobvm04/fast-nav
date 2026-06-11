@@ -2,11 +2,63 @@
 // for a single robot. Same bilinear EDF sampling, same collision projection,
 // same sphere-traced lidar, same constants — including the sim2real noise
 // stack: SE(2) odometry drift, heading error, lidar + actuation noise.
+//
+// Kinematics mirror fastnav/kinematics.py: each entry owns the action clamp +
+// actuation noise (execute -> body twist), the command/sensor frame, the
+// episode-start heading, and the goal rotation into the observation frame.
+// The step/lidar/obs code below is kinematics-agnostic, like the kernels.
 
 import { signedEDF } from './edt.js';
 
 const NOISE_KEYS = ['lidar_sigma', 'lidar_dropout', 'odom_rw', 'odom_bias', 'odom_scale',
   'head_rw', 'head_bias', 'act_noise', 'act_scale'];
+
+const TWO_PI = 2 * Math.PI;
+
+export const KINEMATICS = {
+  holonomic: {
+    bodyOriented: false, // actions/sensing in the (believed) world frame
+    // (vx, vy) in the believed world frame, norm-clamped
+    execute(sim, a0, a1, ascale, g0, g1) {
+      const n = Math.hypot(a0, a1);
+      if (n > sim.cfg.v_max) {
+        a0 *= sim.cfg.v_max / n;
+        a1 *= sim.cfg.v_max / n;
+      }
+      return [a0 * ascale + sim.noise.act_noise * g0,
+        a1 * ascale + sim.noise.act_noise * g1, 0];
+    },
+    // the believed frame is meant to be world-aligned; odom[2] is its error
+    frame: (sim) => sim.odom[2],
+    resetTheta(sim) {
+      sim.heading = 0;
+      sim.odom[2] = 0;
+    },
+    relGoal: (sim) => [sim.goal[0] - sim.odom[0], sim.goal[1] - sim.odom[1]],
+  },
+  diffdrive: {
+    // (v, omega): forward velocity + yaw rate, executed in the true body frame
+    execute(sim, a0, a1, ascale, g0, g1) {
+      const { v_max, w_max } = sim.cfg;
+      const v = Math.min(Math.max(a0, -v_max), v_max);
+      const w = Math.min(Math.max(a1, -w_max), w_max);
+      return [v * ascale + sim.noise.act_noise * g0, 0,
+        w * ascale + sim.noise.act_noise * (w_max / v_max) * g1];
+    },
+    frame: (sim) => sim.heading,
+    resetTheta(sim) {
+      sim.heading = TWO_PI * Math.random() - Math.PI;
+      sim.odom[2] = sim.heading; // believed heading starts exact
+    },
+    relGoal(sim) {
+      const rx = sim.goal[0] - sim.odom[0];
+      const ry = sim.goal[1] - sim.odom[1];
+      const c = Math.cos(sim.odom[2]);
+      const s = Math.sin(sim.odom[2]);
+      return [c * rx + s * ry, -s * rx + c * ry];
+    },
+  },
+};
 
 export class Sim {
   // occ: Uint8Array [h*w] (1 = occupied), origin: [x, y] world coords of cell (0,0)
@@ -16,15 +68,17 @@ export class Sim {
     this.cell = cell;
     this.ox = origin[0];
     this.oy = origin[1];
-    this.cfg = cfg; // {n_rays, max_range, dt, v_max, robot_radius, goal_radius, max_steps}
+    this.cfg = cfg; // {kinematics?, n_rays, max_range, dt, v_max, w_max?, robot_radius, goal_radius, max_steps}
+    this.kin = KINEMATICS[cfg.kinematics || 'holonomic'];
     this.occ = occ;
     this.edf = signedEDF(occ, h, w, cell);
     this.lidar = new Float32Array(cfg.n_rays);
     this.pos = [0, 0];
+    this.heading = 0; // true heading (holonomic: 0, unused)
     this.goal = [0, 0];
     this.stepCount = 0;
     this.noise = Object.fromEntries(NOISE_KEYS.map((k) => [k, 0]));
-    this.odom = [0, 0, 0]; // believed (x, y) + heading error theta
+    this.odom = [0, 0, 0]; // believed (x, y) + frame angle (see kinematics.py)
     this.ep = [0, 0, 0, 0, 0]; // per-episode: drift bias x/y, odom scale, head bias, act scale
     this._spare = null; // Box-Muller cache
   }
@@ -61,8 +115,10 @@ export class Sim {
       n.act_scale * this.gauss()];
   }
 
+  // New episode at the current pose: believed pose re-anchors to the true pose
+  // (the heading is kept — the web robot is persistent across episodes).
   newEpisode() {
-    this.odom = [this.pos[0], this.pos[1], 0];
+    this.odom = [this.pos[0], this.pos[1], this.kin === KINEMATICS.holonomic ? 0 : this.heading];
     this.resampleEpisodeNoise();
     this.stepCount = 0;
     this.updateLidar();
@@ -94,17 +150,22 @@ export class Sim {
     this.edf = signedEDF(this.occ, this.h, this.w, this.cell);
   }
 
-  // _LIDAR_SRC: sphere tracing through the EDF. Rays are indexed by believed
-  // angle; the heading error rotates them in the true frame. Range noise and
-  // per-ray dropout applied to the traced distance.
+  // True world orientation of the sensor frame (kin_frame in the kernels).
+  sensorAngle() {
+    return this.kin.frame(this);
+  }
+
+  // _LIDAR_SRC: sphere tracing through the EDF. Rays are indexed in the sensor
+  // frame; its true world orientation rotates them in the true frame. Range
+  // noise and per-ray dropout applied to the traced distance.
   updateLidar() {
     const { cfg, cell, noise } = this;
     const eps = 0.5 * cell;
     const minstep = 0.3 * cell;
     const [px, py] = this.pos;
-    const oth = this.odom[2];
+    const frame = this.sensorAngle();
     for (let r = 0; r < cfg.n_rays; r++) {
-      const theta = (2 * Math.PI * r) / cfg.n_rays + oth;
+      const theta = (TWO_PI * r) / cfg.n_rays + frame;
       const dx = Math.cos(theta);
       const dy = Math.sin(theta);
       let tt = 0;
@@ -122,31 +183,27 @@ export class Sim {
     }
   }
 
-  // _STEP_SRC integration: velocity clamp, heading/actuation distortion,
-  // 2 substeps, 5-iter EDF gradient projection, revert on failure, then
-  // odometry integration. Returns {reached, truncated}.
-  step(vx, vy) {
+  // _STEP_SRC integration: kinematics execute (clamp + actuation noise -> body
+  // twist), 2 substeps of rotate-then-translate, 5-iter EDF gradient projection
+  // with revert on failure, then shared odometry. Returns {reached, truncated}.
+  step(a0, a1) {
     const { cfg, cell, noise } = this;
     const inv_cell = 1 / cell;
-    const vn = Math.sqrt(vx * vx + vy * vy);
-    if (vn > cfg.v_max) {
-      vx *= cfg.v_max / vn;
-      vy *= cfg.v_max / vn;
-    }
-    // command is in the believed frame; heading error + actuation error
-    // distort what actually gets executed in the true frame
-    const oth = this.odom[2];
-    const ct = Math.cos(oth);
-    const sn = Math.sin(oth);
     const ascale = 1 + this.ep[4];
-    const ex = (ct * vx - sn * vy) * ascale + noise.act_noise * this.gauss();
-    const ey = (sn * vx + ct * vy) * ascale + noise.act_noise * this.gauss();
-    vx = ex;
-    vy = ey;
+    const [e0, e1, wz] = this.kin.execute(this, a0, a1, ascale, this.gauss(), this.gauss());
+    const f0 = this.kin.frame(this);
+    const ct = Math.cos(f0);
+    const sn = Math.sin(f0);
     let [px, py] = this.pos;
     const px0 = px, py0 = py;
+    let thq = f0;
     const SUB = 2;
     for (let sub = 0; sub < SUB; sub++) {
+      thq += (wz * cfg.dt) / SUB; // rotate, then translate along the new heading
+      const cq = Math.cos(thq);
+      const sq = Math.sin(thq);
+      const vx = cq * e0 - sq * e1;
+      const vy = sq * e0 + cq * e1;
       const sx = px, sy = py;
       px += (vx * cfg.dt) / SUB;
       py += (vy * cfg.dt) / SUB;
@@ -166,18 +223,22 @@ export class Sim {
       }
       if (d < cfg.robot_radius) { px = sx; py = sy; } // projection failed: stay put
     }
+    const dth = wz * cfg.dt;
+    this.heading += dth; // rotation is never blocked by contact (disk robot)
     this.pos = [px, py];
-    // integrate odometry: measured displacement = R(-theta) * true, plus
-    // scale error, per-episode bias, and distance-scaled random walk
+    // integrate odometry: measured displacement = R(-frame) * true, plus scale
+    // error, per-episode bias, and distance-scaled random walk; heading drift
+    // also grows with rotation (0.5 m-per-rad equivalence)
     const tdx = px - px0;
     const tdy = py - py0;
     const dl = Math.sqrt(tdx * tdx + tdy * tdy);
+    const derr = dl + 0.5 * Math.abs(dth);
     const mdx = ct * tdx + sn * tdy;
     const mdy = -sn * tdx + ct * tdy;
     const oscale = 1 + this.ep[2];
     this.odom[0] += mdx * oscale + (this.ep[0] + noise.odom_rw * this.gauss()) * dl;
     this.odom[1] += mdy * oscale + (this.ep[1] + noise.odom_rw * this.gauss()) * dl;
-    this.odom[2] += (this.ep[3] + noise.head_rw * this.gauss()) * dl;
+    this.odom[2] += dth + (this.ep[3] + noise.head_rw * this.gauss()) * derr;
     const ddx = this.goal[0] - px;
     const ddy = this.goal[1] - py;
     const dist = Math.sqrt(ddx * ddx + ddy * ddy);
@@ -197,13 +258,25 @@ export class Sim {
     this.updateLidar();
   }
 
-  // obs = [lidar (R) | goal - odom (2) | odom (2)]: the policy sees the
-  // believed (odometry) pose, never the true pose — as in Sim.obs().
+  // Drive type follows the selected policy (like setRays).
+  setKinematics(name) {
+    const kin = KINEMATICS[name || 'holonomic'];
+    if (kin === this.kin) return;
+    this.kin = kin;
+    this.cfg = { ...this.cfg, kinematics: name };
+    kin.resetTheta(this);
+    this.newEpisode();
+  }
+
+  // obs = [lidar (R) | rel_goal (2) | odom (2)]: the policy sees the believed
+  // (odometry) pose, never the true pose — as in Sim.obs(). The goal vector is
+  // expressed in the kinematics' observation frame.
   obs(out) {
     const R = this.cfg.n_rays;
     out.set(this.lidar, 0);
-    out[R] = this.goal[0] - this.odom[0];
-    out[R + 1] = this.goal[1] - this.odom[1];
+    const [gx, gy] = this.kin.relGoal(this);
+    out[R] = gx;
+    out[R + 1] = gy;
     out[R + 2] = this.odom[0];
     out[R + 3] = this.odom[1];
     return out;
@@ -212,6 +285,7 @@ export class Sim {
   setState(pos, goal) {
     this.pos = [pos[0], pos[1]];
     this.goal = [goal[0], goal[1]];
+    this.kin.resetTheta(this);
     this.newEpisode();
   }
 }

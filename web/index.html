@@ -164,7 +164,7 @@
       text-align: left;
       font-size: 12px;
     }
-    #stats span:last-child { display: none; } /* compute ms — desktop nerdery */
+    #stats span:last-child { display: none; } /* hide per-step timing on small screens */
   }
   @media (pointer: coarse) {
     select, button { min-height: 38px; }
@@ -182,10 +182,10 @@
 </head>
 <body>
 <header>
-  <h1>fast-<span>nav</span><small> · held-out scenes, live policy</small></h1>
+  <h1>fast-<span>nav</span><small> · point-nav policy on held-out scenes</small></h1>
   <select id="scene"></select>
-  <button id="shuffle" title="random held-out scene">🎲 random</button>
-  <select id="policy" title="which checkpoint drives the robot"></select>
+  <button id="shuffle" title="random held-out scene">random</button>
+  <select id="policy" title="policy checkpoint"></select>
   <div class="ctl" title="sim2real noise: lidar noise+dropout, odometry/heading drift, actuation error (1× = realistic)">
     <span class="lbl">noise</span>
     <div class="seg" id="noise">
@@ -205,13 +205,13 @@
       <button data-x="8">8×</button>
     </div>
   </div>
-  <button id="pause">⏸ pause</button>
+  <button id="pause">pause</button>
   <div id="stats">
     <span>goals <b id="s-succ">0/0</b></span>
     <span>steps <b id="s-steps">–</b></span>
     <span>drift <b id="s-drift">–</b></span>
-    <span>policy est. <b id="s-val">–</b></span>
-    <span>compute <b id="s-ms">–</b></span>
+    <span>est. dist <b id="s-val">–</b></span>
+    <span>inference <b id="s-ms">–</b></span>
   </div>
 </header>
 <div id="stage">
@@ -220,24 +220,24 @@
     <div class="seg" id="tool">
       <button data-t="nav" class="on" title="tap to set goals · drag to pan">navigate</button>
       <button data-t="move" title="tap to teleport the robot">move</button>
-      <button data-t="wall" title="drag to paint obstacles">+ wall</button>
-      <button data-t="erase" title="drag to erase obstacles">− erase</button>
+      <button data-t="wall" title="drag to paint obstacles">wall</button>
+      <button data-t="erase" title="drag to erase obstacles">erase</button>
     </div>
     <span class="lbl">size</span>
     <input id="brush" type="range" min="0.1" max="0.8" step="0.05" value="0.3"
            title="brush radius (meters)">
-    <button id="resetmap" title="restore the original scene geometry">reset map</button>
+    <button id="resetmap" title="restore original map">reset map</button>
   </div>
   <div id="scanpanel">
-    <div class="label">what the robot sees</div>
+    <div class="label">policy input</div>
     <canvas id="scan"></canvas>
-    <div class="sub">the policy's entire input: 64 lidar ranges (6 m max), in its believed frame<br>
+    <div class="sub">full observation: 64 lidar ranges (6 m max), odometry frame<br>
       <i style="color:#ffd166">●</i> goal vector · <i style="color:#4cc9f0">●</i> previous action</div>
   </div>
   <div id="status">loading…</div>
-  <div id="hint">click — set goal · shift-click / move tool — teleport · drag — pan · wheel / pinch — zoom · brushes — redraw the scene<br>
-    with noise on, the hollow ring is where the robot <i>believes</i> it is<br>
-    GRU-256 PPO policy (~98% held-out success) · sim + inference in plain JS</div>
+  <div id="hint">click: set goal · shift-click: teleport · drag: pan · wheel / pinch: zoom · wall / erase: edit the map<br>
+    hollow ring = robot's odometry estimate (visible with noise on)<br>
+    GRU-256 PPO policy, ~98% success on held-out scenes · sim + inference in JS</div>
   <div id="loading">loading policy + scenes…</div>
 </div>
 <script type="module" src="js/app.js"></script>
