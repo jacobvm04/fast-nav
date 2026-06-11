@@ -11,6 +11,7 @@ import gymnasium
 import numpy as np
 import pufferlib
 
+from fastnav import kinematics
 from fastnav.scene import ScenePack
 from fastnav.sim import Sim, SimConfig
 
@@ -22,8 +23,9 @@ class FastNavEnv(pufferlib.PufferEnv):
         high = np.full(cfg.obs_dim, np.inf, dtype=np.float32)
         high[: cfg.n_rays] = cfg.max_range
         self.single_observation_space = gymnasium.spaces.Box(low=-high, high=high, dtype=np.float32)
+        act_scale = kinematics.get(cfg.kinematics).action_scale(cfg)
         self.single_action_space = gymnasium.spaces.Box(
-            low=-cfg.v_max, high=cfg.v_max, shape=(2,), dtype=np.float32)
+            low=-act_scale, high=act_scale, dtype=np.float32)
         self.render_mode = render_mode
         self.num_agents = num_envs
         self.agents_per_batch = num_envs  # trainer RNN path reads the plural name

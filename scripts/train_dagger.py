@@ -6,6 +6,7 @@ Scene split (same apartment shell, different furniture layouts):
 """
 
 import argparse
+import dataclasses
 import json
 import time
 from pathlib import Path
@@ -53,26 +54,34 @@ def main():
     ap.add_argument("--value-weight", type=float, default=0.5)
     ap.add_argument("--detour-min", type=float, default=0.0,
                     help="min geodesic/euclidean ratio for episode starts")
+    ap.add_argument("--kinematics", default="holonomic", choices=["holonomic", "diffdrive", "diffdrive_vel"])
+    ap.add_argument("--head", default="continuous", choices=["continuous", "discrete_w"],
+                    help="policy action head (fastnav.policy.HEADS)")
+    ap.add_argument("--max-goal-dist", type=float, default=None,
+                    help="cap train-episode geodesic length (m); evals keep the standard range")
     args = ap.parse_args()
 
     train_pack = ScenePack.load_dir(args.scenes, include=args.train_include, max_cells=args.max_cells)
     eval_pack = ScenePack.load_dir(args.scenes, include=args.eval_include, max_cells=args.max_cells)
     print(f"train scenes: {len(train_pack.scenes)}  eval scenes (held out): {len(eval_pack.scenes)}")
 
-    scfg = SimConfig(detour_min=args.detour_min)
+    scfg = SimConfig(detour_min=args.detour_min, kinematics=args.kinematics)
+    if args.max_goal_dist is not None:
+        scfg = dataclasses.replace(scfg, max_goal_dist=args.max_goal_dist)
     sim = Sim(train_pack, num_envs=args.envs, cfg=scfg, seed=args.seed)
     sim.reset()
     dcfg = DaggerConfig(hidden=args.hidden, depth=args.depth, augment=args.augment,
                         lidar_noise=args.lidar_noise, ray_dropout=args.ray_dropout,
                         use_pos=not args.no_pos, lr=args.lr, batch_size=args.batch_size,
                         updates_per_iter=args.updates_per_iter, chunk=args.chunk,
-                        burn_in=args.burn_in, value_weight=args.value_weight)
+                        burn_in=args.burn_in, value_weight=args.value_weight, head=args.head)
     cls = RecurrentDaggerTrainer if args.recurrent else DaggerTrainer
     trainer = cls(sim, dcfg, seed=args.seed)
     n_params = sum(v.size for _, v in tree_flatten(trainer.policy.parameters()))
     print(f"policy params: {n_params:,}")
 
-    eval_cfg = SimConfig()  # evals keep the standard episode distribution (no curriculum)
+    # evals keep the standard episode distribution (no curriculum)
+    eval_cfg = SimConfig(kinematics=args.kinematics)
     sim_train_eval = Sim(train_pack, num_envs=args.eval_envs, cfg=eval_cfg, seed=args.seed + 1)
     sim_eval = Sim(eval_pack, num_envs=args.eval_envs, cfg=eval_cfg, seed=args.seed + 2)
     sim_eval2 = None

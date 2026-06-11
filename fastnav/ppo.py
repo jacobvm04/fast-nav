@@ -28,27 +28,26 @@ import mlx.optimizers as optim
 from fastnav.policy import RecurrentNavPolicy
 from fastnav.sim import Sim
 
-_LOG_2PI = math.log(2.0 * math.pi)
-
 
 class PPONavPolicy(RecurrentNavPolicy):
-    """RecurrentNavPolicy + state-independent learnable log-std + value step."""
+    """RecurrentNavPolicy + state-independent log-std over the head's
+    continuous dims; the head supplies the sampling distribution."""
 
     def __init__(self, *args, init_std: float = 0.3, **kwargs):
         super().__init__(*args, **kwargs)
-        self.log_std = mx.full((2,), math.log(init_std))
+        self.log_std = mx.full((self.head.n_continuous,), math.log(init_std))
 
     def step_full(self, obs_prev: mx.array, h: mx.array) -> tuple[mx.array, mx.array, mx.array]:
-        """One timestep: returns (action mean [N,2], value [N], new hidden)."""
-        x = nn.silu(self.enc(obs_prev * self._scale))
-        h = self.gru(x[:, None, :], hidden=h)[:, -1, :]
-        return self.v_max * mx.tanh(self.head(h)), self.vhead(h)[:, 0], h
+        """One timestep: returns (deterministic action [N,2], value [N], new hidden)."""
+        h = self._feature(obs_prev, h)
+        return self.head.act(h), self.vhead(h)[:, 0], h
 
-
-def _gaussian_logp(act: mx.array, mean: mx.array, log_std: mx.array) -> mx.array:
-    """Diagonal Gaussian log-prob, summed over action dims. Shapes broadcast."""
-    z = (act - mean) * mx.exp(-log_std)
-    return mx.sum(-0.5 * mx.square(z) - log_std - 0.5 * _LOG_2PI, axis=-1)
+    def step_sample(self, obs_prev: mx.array,
+                    h: mx.array) -> tuple[mx.array, mx.array, mx.array, mx.array]:
+        """One rollout timestep: (sampled action [N,2], logp [N], value [N], new hidden)."""
+        h = self._feature(obs_prev, h)
+        a, logp = self.head.sample_logp(h, self.log_std)
+        return a, logp, self.vhead(h)[:, 0], h
 
 
 @dataclasses.dataclass
@@ -70,6 +69,11 @@ class PPOConfig:
     clear_coef: float = 0.012   # quadratic barrier: coef * proximity^2 per step
     speed_prox_coef: float = 0.012  # in-loop governor: coef * proximity * (speed/vmax)
     collision_penalty: float = 0.25  # terminal penalty when contact ends the episode
+    bc_coef: float = 0.0  # DAgger anchor: the head's BC loss against expert labels
+                          # added to the PPO loss. Stabilizes fine-tuning of weak
+                          # inits whose rollouts PPO alone degrades; labels come from
+                          # the expert kernel the rollout already evaluates anyway.
+    head: str = "continuous"  # action head (fastnav.policy.HEADS)
     hidden: int = 256
     use_pos: bool = False
 
@@ -81,7 +85,7 @@ class PPOTrainer:
         self.cfg = cfg = cfg or PPOConfig()
         mx.random.seed(seed)
         self.policy = PPONavPolicy(sim.cfg, hidden=cfg.hidden, use_pos=cfg.use_pos,
-                                   init_std=cfg.init_std)
+                                   init_std=cfg.init_std, head=cfg.head)
         if init_weights:
             self.policy.load_weights(init_weights, strict=False)  # BC ckpt has no log_std
         self.opt = optim.Adam(learning_rate=cfg.lr)
@@ -92,24 +96,26 @@ class PPOTrainer:
         self.prev_act = mx.zeros((n, 2), dtype=mx.float32)
         self.iter = 0
 
-        def loss_fn(model, obs, h0, done, act, logp_old, adv, ret):
-            means, vals = model(obs, h0, done)
-            logp = _gaussian_logp(act, means, model.log_std)
+        def loss_fn(model, obs, h0, done, act, logp_old, adv, ret, exp):
+            feats, vals = model.features(obs, h0, done)
+            logp = model.head.log_prob(feats, act, model.log_std)
             ratio = mx.exp(logp - logp_old)
             clipped = mx.clip(ratio, 1.0 - cfg.clip_eps, 1.0 + cfg.clip_eps)
             pol_loss = -mx.mean(mx.minimum(ratio * adv, clipped * adv))
             verr = vals - ret
             v_loss = mx.mean(mx.where(mx.abs(verr) < 1.0, 0.5 * mx.square(verr),
                                       mx.abs(verr) - 0.5))
-            entropy = mx.sum(model.log_std) + 1.0 + _LOG_2PI  # diag Gaussian
-            return pol_loss + cfg.value_coef * v_loss - cfg.entropy_coef * entropy
+            entropy = mx.mean(model.head.entropy(feats, model.log_std))
+            bc_loss = mx.mean(model.head.bc_loss(feats, exp))
+            return (pol_loss + cfg.value_coef * v_loss - cfg.entropy_coef * entropy
+                    + cfg.bc_coef * bc_loss)
 
         loss_and_grad = nn.value_and_grad(self.policy, loss_fn)
         state = [self.policy.state, self.opt.state]
 
         @partial(mx.compile, inputs=state, outputs=state)
-        def update(obs, h0, done, act, logp_old, adv, ret):
-            loss, grads = loss_and_grad(self.policy, obs, h0, done, act, logp_old, adv, ret)
+        def update(obs, h0, done, act, logp_old, adv, ret, exp):
+            loss, grads = loss_and_grad(self.policy, obs, h0, done, act, logp_old, adv, ret, exp)
             grads, _ = optim.clip_grad_norm(grads, max_norm=cfg.max_grad_norm)
             self.opt.update(self.policy, grads)
             return loss
@@ -126,36 +132,33 @@ class PPOTrainer:
         mx.clear_cache()  # return the old pack's buffers to the OS (else swap ratchets)
 
     def _clamp(self, a: mx.array) -> mx.array:
-        """Same speed clamp the sim applies, so prev-action input matches reality."""
-        vmax = self.sim.cfg.v_max
-        norm = mx.maximum(mx.sqrt(mx.sum(mx.square(a), axis=1, keepdims=True)), 1e-6)
-        return a * mx.minimum(1.0, vmax / norm)
+        """Same action clamp the sim applies, so prev-action input matches reality."""
+        return self.sim.kin.clamp(a, self.sim.cfg)
 
-    def _geo(self) -> mx.array:
-        """Oracle cost-to-go at current states (also advances expert smoothing; unused)."""
-        self.sim.expert_actions()
-        return mx.clip(self.sim.expert_geo_val, 0.0, self.cfg.geo_clip)
+    def _geo(self) -> tuple[mx.array, mx.array]:
+        """Oracle (cost-to-go, expert action) at the current states."""
+        exp = self.sim.expert_actions()
+        return mx.clip(self.sim.expert_geo_val, 0.0, self.cfg.geo_clip), exp
 
     def rollout(self) -> dict:
         sim, cfg = self.sim, self.cfg
         vs = type(self.policy).VAL_SCALE
-        std = mx.exp(self.policy.log_std)
         h0 = self.h
-        obs_l, act_l, logp_l, val_l, geo_l, done_l, reach_l, pen_l, hit_l = ([], [], [], [],
-                                                                            [], [], [], [], [])
+        obs_l, act_l, logp_l, val_l, geo_l, exp_l, done_l, reach_l, pen_l, hit_l = ([], [], [],
+            [], [], [], [], [], [], [])
         obs = sim.obs()
         for _ in range(cfg.chunk):
-            geo_l.append(self._geo())
+            geo, exp = self._geo()
+            geo_l.append(geo)
+            exp_l.append(exp)
             obs_in = mx.concatenate([obs, self.prev_act], axis=1)
-            mean, v, h_new = self.policy.step_full(obs_in, self.h)
-            a = mean + std * mx.random.normal(mean.shape)
-            logp_l.append(_gaussian_logp(a, mean, self.policy.log_std))
+            a, logp, v, h_new = self.policy.step_sample(obs_in, self.h)
+            logp_l.append(logp)
             obs_l.append(obs_in)
             act_l.append(a)
             val_l.append(v)
             obs, term, trunc = sim.step(a)
-            ac = self._clamp(a)
-            spd = mx.sqrt(mx.sum(mx.square(ac), axis=1)) / sim.cfg.v_max
+            spd = sim.kin.speed(a, sim.cfg)  # normalized linear speed
             prox = mx.maximum(cfg.clear_margin - sim.clearance, 0.0) / cfg.clear_margin
             # convex barrier punishes corner-skimming hard but wall-adjacent travel
             # mildly; the speed term is the governor learned in-loop
@@ -169,7 +172,7 @@ class PPOTrainer:
             self.prev_act = self._clamp(a) * live
 
         # bootstrap value and next-geo at the chunk's final state
-        geo_T = self._geo()
+        geo_T, _ = self._geo()
         obs_in = mx.concatenate([obs, self.prev_act], axis=1)
         _, v_T, _ = self.policy.step_full(obs_in, self.h)
 
@@ -202,6 +205,7 @@ class PPOTrainer:
             "done": mx.stack(done_l, axis=1)[..., None],
             "adv": mx.stack(adv_l, axis=1),
             "ret": mx.stack(ret_l, axis=1),
+            "exp": mx.stack(exp_l, axis=1),
             "h0": h0,
         }
         adv = batch["adv"]
@@ -226,7 +230,7 @@ class PPOTrainer:
                 idx = perm[s:s + mb]
                 loss = self._update(batch["obs"][idx], batch["h0"][idx], batch["done"][idx],
                                     batch["act"][idx], batch["logp"][idx],
-                                    batch["adv"][idx], batch["ret"][idx])
+                                    batch["adv"][idx], batch["ret"][idx], batch["exp"][idx])
         mx.eval(loss, self.policy.state, self.opt.state)
         return {"loss": float(loss), "std": float(mx.mean(mx.exp(self.policy.log_std)))}
 

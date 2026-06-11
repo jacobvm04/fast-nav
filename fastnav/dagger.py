@@ -38,6 +38,7 @@ class DaggerConfig:
     use_pos: bool = True         # feed absolute position to the policy
     burn_in: int = 0             # BPTT steps that warm the hidden without loss (recurrent)
     value_weight: float = 0.5    # cost-to-go distillation loss weight (recurrent)
+    head: str = "continuous"     # action head (fastnav.policy.HEADS), recurrent only
 
 
 class DaggerTrainer:
@@ -114,8 +115,10 @@ class DaggerTrainer:
         mx.eval(obs, self.buf_obs, self.buf_act)
 
     def _augment(self, obs: mx.array, act: mx.array) -> tuple[mx.array, mx.array]:
-        """Dihedral-group augmentation: exact symmetry of the orientation-free
-        holonomic robot with a uniform 360-degree lidar ring. Plus sensor DR."""
+        """Dihedral-group augmentation with a uniform 360-degree lidar ring, plus
+        sensor DR. Reflection (lidar mirrored, dim-1 of vectors/actions flipped)
+        is an exact symmetry of every kinematics; the rotation part only of
+        world-frame observations, so it is gated on kin.rotation_augment."""
         import math
 
         cfg = self.cfg
@@ -133,7 +136,8 @@ class DaggerTrainer:
 
         # rotation by a random multiple of the ray spacing:
         # world rotated by phi -> lidar'[i] = lidar[(i - k) % r], vectors rotated by phi
-        k = mx.random.randint(0, r, shape=(b,))
+        k = (mx.random.randint(0, r, shape=(b,)) if self.sim.kin.rotation_augment
+             else mx.zeros((b,), dtype=mx.int32))
         idx = (mx.arange(r)[None, :] - k[:, None]) % r
         lidar = mx.take_along_axis(lidar, idx, axis=1)
         phi = k.astype(mx.float32) * (2.0 * math.pi / r)
@@ -186,7 +190,8 @@ class RecurrentDaggerTrainer:
         self.sim = sim
         self.cfg = cfg = cfg or DaggerConfig()
         mx.random.seed(seed)
-        self.policy = RecurrentNavPolicy(sim.cfg, hidden=cfg.hidden, use_pos=cfg.use_pos)
+        self.policy = RecurrentNavPolicy(sim.cfg, hidden=cfg.hidden, use_pos=cfg.use_pos,
+                                         head=cfg.head)
         self.opt = optim.Adam(learning_rate=cfg.lr)
         mx.eval(self.policy.parameters())
 
@@ -209,8 +214,8 @@ class RecurrentDaggerTrainer:
         vs = type(self.policy).VAL_SCALE
 
         def loss_fn(model, obs, h0, done, act, val):
-            pred_a, pred_v = model(obs, h0, done)
-            loss_a = mx.sum(mx.mean(mx.square(pred_a - act), axis=(0, 2)) * mask)
+            loss_steps, pred_v = model.bc_loss(obs, h0, done, act)
+            loss_a = mx.sum(mx.mean(loss_steps, axis=0) * mask)
             # clip + huber: padded/obstacle-filled geo regions produce rare huge
             # cost-to-go targets that otherwise poison whole batches
             val_t = mx.clip(val * vs, 0.0, 2.5)
@@ -299,7 +304,9 @@ class RecurrentDaggerTrainer:
         lidar = mx.where(refl, lidar[:, ridx], lidar)
         flip = mx.where(refl, -1.0, 1.0)[:, 0]
 
-        k = mx.repeat(mx.random.randint(0, r, shape=(b,)), t_len, axis=0)
+        k = (mx.random.randint(0, r, shape=(b,)) if self.sim.kin.rotation_augment
+             else mx.zeros((b,), dtype=mx.int32))
+        k = mx.repeat(k, t_len, axis=0)
         idx = (mx.arange(r)[None, :] - k[:, None]) % r
         lidar = mx.take_along_axis(lidar, idx, axis=1)
         phi = k.astype(mx.float32) * (2.0 * math.pi / r)

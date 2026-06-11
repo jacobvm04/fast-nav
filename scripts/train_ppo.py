@@ -48,6 +48,15 @@ def main():
                     help="resample a fresh train-scene subset every N iters (0 = off)")
     ap.add_argument("--rotate-size", type=int, default=800, help="scenes per rotated pack")
     ap.add_argument("--rays", type=int, default=64, help="lidar rays (policy obs dim follows)")
+    ap.add_argument("--kinematics", default="holonomic", choices=["holonomic", "diffdrive", "diffdrive_vel"])
+    ap.add_argument("--head", default="continuous", choices=["continuous", "discrete_w"],
+                    help="policy action head (fastnav.policy.HEADS)")
+    ap.add_argument("--max-goal-dist", type=float, default=None,
+                    help="cap train-episode geodesic length (m); evals keep the standard range")
+    ap.add_argument("--bc-coef", type=float, default=0.0,
+                    help="DAgger anchor weight: MSE(policy mean, expert label) added to the PPO loss")
+    ap.add_argument("--chunk", type=int, default=16, help="rollout chunk / BPTT length")
+    ap.add_argument("--minibatch-seqs", type=int, default=2048)
     args = ap.parse_args()
 
     import fnmatch
@@ -86,15 +95,19 @@ def main():
 
     import dataclasses
 
-    scfg = SimConfig(n_rays=args.rays)
+    scfg = SimConfig(n_rays=args.rays, kinematics=args.kinematics)
     train_cfg = noisy_config(scfg, args.noise) if args.noise > 0 else scfg
     if args.train_contact_margin is not None:
         train_cfg = dataclasses.replace(train_cfg, contact_margin=args.train_contact_margin)
+    if args.max_goal_dist is not None:
+        train_cfg = dataclasses.replace(train_cfg, max_goal_dist=args.max_goal_dist)
     sim = Sim(train_pack, num_envs=args.envs, cfg=train_cfg, seed=args.seed)
     sim.reset()
     pcfg = PPOConfig(lr=args.lr, entropy_coef=args.entropy_coef, init_std=args.init_std,
                      collision_penalty=args.collision_penalty, clear_coef=args.clear_coef,
-                     clear_margin=args.clear_margin, speed_prox_coef=args.speed_prox_coef)
+                     clear_margin=args.clear_margin, speed_prox_coef=args.speed_prox_coef,
+                     bc_coef=args.bc_coef, head=args.head, chunk=args.chunk,
+                     minibatch_seqs=args.minibatch_seqs)
     init = args.init if args.init and Path(args.init).exists() else None
     trainer = PPOTrainer(sim, pcfg, seed=args.seed, init_weights=init)
     n_params = sum(v.size for _, v in tree_flatten(trainer.policy.parameters()))

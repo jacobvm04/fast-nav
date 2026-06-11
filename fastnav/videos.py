@@ -49,6 +49,7 @@ def hunt_failures(pack: ScenePack, policy, cfg: SimConfig, n_envs: int = 2048, s
     sim = Sim(pack, num_envs=n_envs, cfg=cfg, seed=seed)
     sim.reset()
     init_pos = np.array(sim.pos)
+    init_head = np.array(sim.heading)
     init_goal = np.array(sim.goal)
     init_k = np.array(sim.goal_k)
     scenes = np.array(sim.scene)
@@ -69,7 +70,7 @@ def hunt_failures(pack: ScenePack, policy, cfg: SimConfig, n_envs: int = 2048, s
     failed = np.nonzero(finished & ~succeeded)[0]
     coll = collided[failed]
     print(f"  failures: {len(failed)} ({coll.sum()} collisions, {len(failed) - coll.sum()} timeouts)")
-    return init_pos[failed], init_goal[failed], init_k[failed], scenes[failed], coll
+    return init_pos[failed], init_goal[failed], init_k[failed], scenes[failed], coll, init_head[failed]
 
 
 def policy_mosaic_video(pack: ScenePack, policy, cfg: SimConfig | None = None,
@@ -79,16 +80,17 @@ def policy_mosaic_video(pack: ScenePack, policy, cfg: SimConfig | None = None,
     """Render a mosaic mp4; returns the path (None if failures requested but none found)."""
     cfg = cfg or SimConfig()
     if failures:
-        pos, goal, gk, scenes, coll = hunt_failures(pack, policy, cfg)
+        pos, goal, gk, scenes, coll, head = hunt_failures(pack, policy, cfg)
         if collisions_only:
-            pos, goal, gk, scenes = pos[coll], goal[coll], gk[coll], scenes[coll]
+            pos, goal, gk, scenes, head = (pos[coll], goal[coll], gk[coll], scenes[coll],
+                                           head[coll])
         if len(pos) == 0:
             return None
         k = min(n_tiles, len(pos))
         pick = np.random.default_rng(0).choice(len(pos), size=k, replace=False)
         sim = Sim(pack, num_envs=k, cfg=cfg, seed=seed, scene_assign=scenes[pick])
         sim.reset()
-        sim.set_state(pos[pick], goal[pick], gk[pick])
+        sim.set_state(pos[pick], goal[pick], gk[pick], heading=head[pick])
         ids = list(range(k))
     else:
         sim = Sim(pack, num_envs=max(n_tiles, 64), cfg=cfg, seed=seed)

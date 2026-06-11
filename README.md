@@ -33,10 +33,20 @@ six scenes (zero timeouts).
 
 ## Robot model
 
-Holonomic kinematic point (radius 0.18 m), no orientation state, continuous world-frame
-velocity command (≤1.5 m/s), dt = 0.1 s. Lidar rays are fixed in the world frame.
-Observation = `[lidar (R) | goal − pos (2) | pos (2)]` — ground-truth odometry given;
-the learning problem is obstacle avoidance + navigation, not state estimation.
+Kinematic disk (radius 0.18 m), dt = 0.1 s, two drive types selected by
+`SimConfig.kinematics` (everything drive-specific — Metal inlines, action limits,
+observation frame, expert command conversion — lives in `fastnav/kinematics.py`):
+
+- **holonomic** (default): no orientation state, continuous world-frame velocity
+  command `(vx, vy)` ≤ 1.5 m/s. Lidar rays are fixed in the world frame.
+- **diffdrive**: unicycle model for real-robot deployment — command `(v, ω)` with
+  |v| ≤ 1.5 m/s, |ω| ≤ 2.5 rad/s. Lidar and the goal vector are body-frame; the
+  geodesic expert converts its desired direction to `(v, ω)` with a P-controller on
+  heading error and a cos⁴ speed gate (≥ holonomic expert success on held-out scenes).
+
+Observation = `[lidar (R) | rel_goal (2) | pos (2)]` in the drive's observation frame —
+ground-truth odometry given (unless the sim2real noise stack is on); the learning
+problem is obstacle avoidance + navigation, not state estimation.
 
 ## Usage
 
@@ -142,6 +152,43 @@ success clean / 86.0% under realistic noise** on ReplicaCAD held-out (82.8/77.5 
 ProcTHOR, whose furniture gaps are tighter). Training note: collision terminals sharpen
 the optimization landscape — the first run peaked then slid for 2000 iters; resuming
 from the peak at 3x lower lr with a restored exploration floor fixed it.
+
+## Differential drive: 47% → 94% held-out
+
+The diff-drive policy now **matches the holonomic PPO line** (96.1% ReplicaCAD /
+93.8% ProcTHOR held-out, 3-seed; 2.4% collision rate) despite the harder embodiment.
+Naively reusing the holonomic recipe stalled at 47%, and the two unlocks generalize:
+
+![diff-drive results](diffdrive_results.png)
+
+- **Categorical turn head** (`--head discrete_w`): the (v, ω) regression head was
+  mode-averaging the left-vs-right turn decision — MSE pulls ω toward the useless
+  midpoint of a bimodal label exactly in the ambiguous states where recovery happens
+  (measured: near-perfect ω fit on-distribution, 62% turn-sign accuracy off). 15 ω bins
+  + cross-entropy + argmax: 47% → 73% at equal budget, collisions 29% → 4%. Action
+  heads are a strategy in `fastnav/policy.py` (head owns its BC loss and PPO
+  distribution; trainers are head-agnostic), so new parameterizations are one class.
+- **64-step BPTT** (`--chunk 64 --burn-in 8`, BC *and* PPO): the residual failures were
+  near-goal wander loops — stable limit cycles of the (policy, GRU-hidden, env) closed
+  loop. From identical stuck states the policy converts 19% keeping its hidden state vs
+  67% with it wiped, yet 16-step BPTT gradients can never reach the recurrent dynamics
+  that form the cycles (and holonomic episodes are ~2× shorter, which is why it never
+  hit this). Matching the gradient horizon to the maneuver scale: BC 73 → 85 at 4×
+  sample efficiency, and PPO flipped from eroding to a monotone +10 climb.
+- **BC-anchored PPO** (`--bc-coef`): adds the head's BC loss against the expert labels
+  (already computed for the reward oracle) to the PPO objective — stabilizes fine-tuning
+  of weak inits, and is what makes erosion visible as a knob rather than a mystery.
+  Procedural lesson learned twice: compare checkpoints on identical eval seeds only
+  (±2pts noise at 2048 episodes once masked a real +5).
+
+Recipe: `train_dagger.py --kinematics diffdrive --head discrete_w --recurrent --chunk 64
+--burn-in 8 --updates-per-iter 16 --no-pos` (no augmentation — reflection+h0-zeroing
+hurts the discrete head), then `train_ppo.py` same kinematics/head/chunk with
+`--bc-coef 0.05 --lr 3e-5 --init-std 0.15 --entropy-coef 2e-3`. Champion:
+`checkpoints/ppo_dd_disc64/policy_best.safetensors`. Also in-tree: a third kinematics
+`diffdrive_vel` (body-frame velocity command through the expert's P-steering controller
+— the natural `cmd_vel` deployment interface; as a *learning* action space it
+underperformed end-to-end (v, ω), falsified twice with mechanism).
 
 ## Browser demo (held-out scenes, click-to-navigate)
 
