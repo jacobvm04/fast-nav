@@ -40,7 +40,7 @@ POLICY_TENSORS = {
 POLICIES = [
     ("ppo-128", "PPO · 128-beam, noise-robust", "checkpoints/ppo_big_128init.safetensors"),
     ("ppo-diffdrive", "PPO · diff-drive (v, ω)",
-     "checkpoints/ppo_dd_disc64/policy_best.safetensors", "diffdrive", "discrete_w"),
+     "checkpoints/ppo_dd_safe/policy_best.safetensors", "diffdrive", "discrete_w"),
     ("ppo-big", "PPO · 3k-scene contact-safe", "checkpoints/ppo_big/policy_best.safetensors"),
     ("ppo-careful", "PPO · contact-safe (careful)", "checkpoints/ppo_careful2/policy_best.safetensors"),
     ("ppo-contact", "PPO · contact-safe", "checkpoints/ppo_contact2/policy_best.safetensors"),

@@ -185,7 +185,19 @@ Recipe: `train_dagger.py --kinematics diffdrive --head discrete_w --recurrent --
 --burn-in 8 --updates-per-iter 16 --no-pos` (no augmentation — reflection+h0-zeroing
 hurts the discrete head), then `train_ppo.py` same kinematics/head/chunk with
 `--bc-coef 0.05 --lr 3e-5 --init-std 0.15 --entropy-coef 2e-3`. Champion:
-`checkpoints/ppo_dd_disc64/policy_best.safetensors`. Also in-tree: a third kinematics
+`checkpoints/ppo_dd_disc64/policy_best.safetensors`.
+
+**Sim2real + contact safety** (`checkpoints/ppo_dd_safe`, the deployed checkpoint):
+two more anchored PPO stages at `--noise 1.5` with the contact-safe knobs
+(collision-penalty 0.4→1.0, clear-coef 0.08→0.15, `--train-contact-margin 0.04`).
+The clean champion's 2.4% collision rate was reward mispricing, not a success/safety
+tradeoff (the expert does ~0.1% contact at 99.5% success on the same scenes): repricing
+cut collisions 2–5× at every noise level for <1pt of clean success. Final:
+**0.0% collisions clean / 0.5% at 1.5× noise on ReplicaCAD held-out (95.2/90.2%
+success); 1.4%/2.2% on ProcTHOR (92.5/87.8%)**, vs the clean champion's 2.4%→8.2%
+collision ramp. The residual ProcTHOR tail is penalty-insensitive (4× the price bought
+2.4→1.4) — tight furniture gaps where centimeter aim under noise decides contact; the
+128-ray treatment is the obvious next lever. Also in-tree: a third kinematics
 `diffdrive_vel` (body-frame velocity command through the expert's P-steering controller
 — the natural `cmd_vel` deployment interface; as a *learning* action space it
 underperformed end-to-end (v, ω), falsified twice with mechanism).

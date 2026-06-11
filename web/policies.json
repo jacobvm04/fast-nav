@@ -84,7 +84,7 @@
   {
    "id": "ppo-diffdrive",
    "label": "PPO \u00b7 diff-drive (v, \u03c9)",
-   "checkpoint": "checkpoints/ppo_dd_disc64/policy_best.safetensors",
+   "checkpoint": "checkpoints/ppo_dd_safe/policy_best.safetensors",
    "n_rays": 64,
    "kinematics": "diffdrive",
    "head": "discrete_w",
