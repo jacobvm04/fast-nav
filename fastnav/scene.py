@@ -20,8 +20,9 @@ import scipy.sparse.csgraph as csgraph
 class FieldConfig:
     cell: float = 0.025          # occupancy/EDF resolution (m)
     geo_cell: float = 0.05       # geodesic field resolution (m)
-    robot_radius: float = 0.13   # m (real robot ~0.10 + margin; rerun preprocess_* to
-                                 # rebake packs -- 0.18-era packs stay valid, just conservative)
+    robot_radius: float = 0.18   # m; bake radius -- traversability, geo fields and spawns
+                                 # are all computed against it, and it is stamped into each
+                                 # Scene (bake_radius) so a mismatched SimConfig is caught.
     start_clearance: float = 0.12  # extra clearance beyond radius for spawn points
     n_goals: int = 16            # geodesic fields per scene
     clearance_pref: float = 0.45   # distance (m) at which wall-proximity penalty fades to 0
@@ -45,6 +46,9 @@ class Scene:
     starts_xy: np.ndarray     # [K, M, 2] float32, sorted by geodesic distance to goal
     starts_geo: np.ndarray    # [K, M] float32 geodesic distance of each start (sorted asc)
     start_counts: np.ndarray  # [K] int32 valid entries in starts_xy
+    bake_radius: float = float("nan")  # robot_radius the fields were baked at; nan = a
+                                       # legacy pack saved before this was stamped (radius
+                                       # unknown, historically 0.18). Sim checks it.
 
     def save(self, path: str | Path) -> None:
         d = {f.name: getattr(self, f.name) for f in dataclasses.fields(self)}
@@ -60,6 +64,8 @@ class Scene:
         kw["name"] = str(kw["name"])
         kw["cell"] = float(kw["cell"])
         kw["geo_cell"] = float(kw["geo_cell"])
+        # legacy packs predate the bake_radius stamp; leave it nan (unknown).
+        kw["bake_radius"] = float(kw["bake_radius"]) if "bake_radius" in kw else float("nan")
         for k in ("geo", "starts_xy", "starts_geo"):
             if kw[k].dtype == np.float16:
                 kw[k] = kw[k].astype(np.float32)
@@ -196,7 +202,7 @@ def build_scene(name: str, occupancy: np.ndarray, origin: np.ndarray, cfg: Field
         occupancy=occupancy, edf=edf,
         geo_cell=geo_cell, geo_origin=geo_origin.astype(np.float32), geo=geo,
         goals_xy=goals_xy, starts_xy=starts_xy, starts_geo=starts_geo,
-        start_counts=start_counts,
+        start_counts=start_counts, bake_radius=float(cfg.robot_radius),
     )
 
 
@@ -247,6 +253,10 @@ class ScenePack:
         self.cell = c0.cell
         self.geo_cell = c0.geo_cell
         self.n_goals = c0.geo.shape[0]
+        # bake radius the pack's fields were computed at (nan if any scene is a
+        # legacy pack with no stamp). Sim compares this to SimConfig.robot_radius.
+        radii = {round(s.bake_radius, 4) for s in scenes if not np.isnan(s.bake_radius)}
+        self.bake_radius = radii.pop() if len(radii) == 1 else float("nan")
 
         h = max(s.edf.shape[0] for s in scenes)
         w = max(s.edf.shape[1] for s in scenes)

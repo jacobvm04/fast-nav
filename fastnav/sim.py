@@ -21,6 +21,8 @@ from __future__ import annotations
 
 import dataclasses
 import functools
+import math
+import warnings
 
 import mlx.core as mx
 import numpy as np
@@ -468,9 +470,10 @@ class SimConfig:
     dt: float = 0.1
     v_max: float = 1.5
     w_max: float = 2.5           # yaw-rate limit (rad/s); diffdrive only
-    robot_radius: float = 0.13   # real robot ~0.10 m radius + margin (was 0.18: ~2x the
-                                 # real footprint; scene packs baked at 0.18 stay valid,
-                                 # their expert paths/spawns are just more conservative)
+    robot_radius: float = 0.18   # m; collision/clearance radius at sim time. MUST match
+                                 # the FieldConfig.robot_radius a pack was BAKED with (its
+                                 # traversability, expert paths and spawns are pre-computed
+                                 # at that radius) -- Sim warns on mismatch via Scene.bake_radius.
     goal_radius: float = 0.25
     max_steps: int = 512
     min_goal_dist: float = 2.0   # episode geodesic length range
@@ -515,6 +518,16 @@ class Sim:
                  scene_assign: np.ndarray | None = None):
         self.pack = pack
         self.cfg = cfg = cfg or SimConfig()
+        # a pack's traversability/expert paths/spawns are baked at one radius; a
+        # SimConfig with a different radius collides against fields it didn't build
+        # (mismatched footprint -> phantom clearance or impossible spawns). Warn loudly
+        # but don't hard-fail: a deliberately conservative eval may want a smaller radius.
+        br = getattr(pack, "bake_radius", float("nan"))
+        if not math.isnan(br) and abs(br - cfg.robot_radius) > 1e-4:
+            warnings.warn(
+                f"scene pack baked at robot_radius={br:.3f}m but SimConfig.robot_radius="
+                f"{cfg.robot_radius:.3f}m -- rebake the pack (preprocess_*) or set the cfg to "
+                f"match; expert paths and spawns assume the bake radius.", stacklevel=2)
         self.kin = kinematics.get(cfg.kinematics)
         (self._step_kernel, self._lidar_kernel, self._expert_kernel,
          self._future_kernel) = _kernels(cfg.kinematics)

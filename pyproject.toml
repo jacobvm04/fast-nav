@@ -15,6 +15,13 @@ dependencies = [
     "trimesh>=4.12.2",
 ]
 
+[dependency-groups]
+# dev tooling, installed by `uv sync` but not shipped with the package.
+# run the suite with `uv run pytest` (or `uv run --group dev pytest`).
+dev = [
+    "pytest>=8.0",
+]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
