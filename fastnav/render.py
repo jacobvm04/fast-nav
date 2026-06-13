@@ -87,7 +87,11 @@ class MosaicRenderer:
         return img
 
     def frame(self, pos: np.ndarray, goal: np.ndarray, lidar: np.ndarray, scene: np.ndarray,
-              ego: bool = False, highlight: np.ndarray | None = None) -> np.ndarray:
+              ego: bool = False, highlight: np.ndarray | None = None,
+              waypoints: np.ndarray | None = None) -> np.ndarray:
+        """waypoints [N, H, 2]: the policy's sampled trajectory plan in WORLD
+        coords (None = no plan, e.g. non-trajectory heads); drawn as a magenta
+        polyline so flow-matching plans are visible per frame."""
         tiles = []
         for i in self.env_ids:
             s = int(scene[i])
@@ -101,6 +105,11 @@ class MosaicRenderer:
             for j, tp in enumerate(self.trails[i]):
                 a = j / len(self.trails[i])
                 cv2.circle(img, self._to_px(s, tp), 1, (140 + int(60 * a), 190, 140), -1)
+            if waypoints is not None:
+                wp_px = self._to_px(s, np.concatenate([p[None], waypoints[i]], axis=0))
+                cv2.polylines(img, [wp_px], False, (220, 60, 200), 2, cv2.LINE_AA)
+                for wpx in wp_px[1:]:
+                    cv2.circle(img, wpx, 3, (220, 60, 200), -1, cv2.LINE_AA)
             cv2.circle(img, self._to_px(s, goal[i]), 5, (50, 50, 230), -1)
             cv2.circle(img, ppx, max(2, int(self.sim.cfg.robot_radius / self.cell * self.scales[s])),
                        (60, 160, 30), -1)

@@ -24,24 +24,54 @@ from fastnav.sim import Sim, SimConfig
 
 def _policy_stepper(policy, n: int):
     recurrent = isinstance(policy, RecurrentNavPolicy)
-    h = mx.zeros((n, policy.hidden), dtype=mx.float32) if recurrent else None
+    h = policy.new_state(n) if recurrent else None
     prev = mx.zeros((n, 2), dtype=mx.float32)
+    # trajectory heads (waypoint_flow) expose a sampled ego-frame plan; capture it
+    # for the renderer, rotated into world coords by the sensor-frame angle
+    head = policy.head if recurrent else None
+    has_plan = head is not None and getattr(head, "label_kind", None) == "waypoint"
+    last_plan = [None]  # world-frame [N, H, 2] for the just-rendered state
+
+    def _capture_plan(sim: Sim, state_after: mx.array):
+        """Read the COMMITTED in-flight plan from the head's deploy state (the
+        plan actually being executed -- temporally coherent), rotate ego->world
+        for the overlay. chunk lives at [core | left(1) est(3) chunk(2H) ...]."""
+        cs = policy.core.state_size
+        chunk = np.array(state_after[:, cs + 4: cs + 4 + 2 * head.horizon])
+        ego = chunk.reshape(n, head.horizon, 2)
+        frame_th = _frame_angle(sim)
+        c, s = np.cos(frame_th), np.sin(frame_th)
+        wx = c[:, None] * ego[:, :, 0] - s[:, None] * ego[:, :, 1]
+        wy = s[:, None] * ego[:, :, 0] + c[:, None] * ego[:, :, 1]
+        last_plan[0] = np.array(sim.pos)[:, None, :] + np.stack([wx, wy], axis=2)
 
     def step(sim: Sim):
         nonlocal h, prev
         obs = sim.obs()
         if recurrent:
-            act, h_new = policy.step(mx.concatenate([obs, prev], axis=1), h)
+            obs_in = mx.concatenate([obs, prev], axis=1)
+            act, h_new = policy.step(obs_in, h)
+            if has_plan:
+                _capture_plan(sim, h_new)  # the plan committed for THIS state
         else:
             act, h_new = policy(obs), None
         _, term, trunc = sim.step(act)
         if recurrent:
             live = 1.0 - mx.maximum(term, trunc).astype(mx.float32)[:, None]
-            h = h_new * live
+            h = policy.mask_state(h_new, live)
             prev = act * live
         return term, trunc
 
+    step.plan = last_plan  # the committed plan for the state being rendered
     return step
+
+
+def _frame_angle(sim: Sim) -> np.ndarray:
+    """Sensor/command-frame world angle [N] = kin_frame(true heading, odom theta).
+    Mirrors the kernels: holonomic uses odom theta, diffdrive uses true heading."""
+    th = np.array(sim.heading)
+    odo = np.array(sim.odom)[:, 2]
+    return odo if sim.cfg.kinematics == "holonomic" else th
 
 
 def hunt_failures(pack: ScenePack, policy, cfg: SimConfig, n_envs: int = 2048, seed: int = 123):
@@ -105,7 +135,8 @@ def policy_mosaic_video(pack: ScenePack, policy, cfg: SimConfig | None = None,
     writer = None
     for _ in range(frames):
         img = ren.frame(np.array(sim.pos), np.array(sim.goal), np.array(sim.lidar),
-                        np.array(sim.scene), highlight=in_first)
+                        np.array(sim.scene), highlight=in_first,
+                        waypoints=stepper.plan[0])
         if writer is None:
             writer = cv2.VideoWriter(raw, cv2.VideoWriter_fourcc(*"mp4v"), 30,
                                      (img.shape[1], img.shape[0]))
