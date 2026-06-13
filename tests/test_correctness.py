@@ -140,6 +140,122 @@ def check_diffdrive_kinematics(pack, scene):
     assert err < 1e-5
 
 
+def _free_pose(scene, n):
+    """n copies of the most open point in the scene + the 4 cardinal headings."""
+    iy, ix = np.unravel_index(scene.edf.argmax(), scene.edf.shape)
+    free = np.array([scene.origin[0] + ix * scene.cell, scene.origin[1] + iy * scene.cell])
+    pos = np.tile(free, (n, 1))
+    head = np.array([0.0, np.pi / 2, np.pi, -np.pi / 2] * (n // 4))
+    return pos, head
+
+
+def check_lidar_lever_arm(pack, scene):
+    """With a mount offset, rays originate at pose + R(heading) * (offset, 0)."""
+    off = 0.1
+    cfg = SimConfig(n_rays=64, kinematics="diffdrive", lidar_offset=off)
+    n = 8
+    sim = Sim(pack, num_envs=n, cfg=cfg, seed=1)
+    sim.reset()
+    pos, head = _free_pose(scene, n)
+    sim.set_state(pos, pos + 3.0, np.zeros(n, np.int32), heading=head)
+    mount = pos + off * np.stack([np.cos(head), np.sin(head)], 1)
+    ref = lidar_np(scene, mount, cfg.n_rays, cfg.max_range, heading=head)
+    err = np.abs(ref - np.array(sim.lidar)).max()
+    print(f"[lever-arm] lidar-from-mount max err {err:.5f} m (cell={scene.cell})")
+    assert err < 2 * scene.cell, "lever-arm lidar mismatch vs numpy reference"
+
+
+def check_act_latency(pack, scene):
+    """Commands execute exactly act_delay steps late; fresh episodes start at rest."""
+    cfg = SimConfig(n_rays=64, kinematics="holonomic", act_latency=2)
+    n = 64
+    sim = Sim(pack, num_envs=n, cfg=cfg, seed=1)
+    sim.reset()
+    pos, _ = _free_pose(scene, n)
+    sim.set_state(pos, pos + 3.0, np.zeros(n, np.int32))
+    delay = np.array(sim.act_delay)
+    assert delay.min() == 0 and delay.max() == cfg.act_latency, "delay not spanning U{0..max}"
+    a = mx.array(np.tile([0.5, 0.0], (n, 1)).astype(np.float32))
+    moved_at = np.full(n, -1)
+    for t in range(cfg.act_latency + 2):
+        sim.step(a)
+        m = np.abs(np.array(sim.pos) - pos).max(axis=1) > 1e-6
+        moved_at[(moved_at < 0) & m] = t
+    assert np.array_equal(moved_at, delay), "first motion step != per-env command delay"
+    print(f"[latency] first motion matches per-env delay; counts {np.bincount(delay)} at 0/1/2")
+
+
+def check_expert_waypoints(pack, kinematics):
+    """The future kernel must reproduce live expert stepping: waypoints ==
+    the positions an expert-driven noise-free sim visits over the next
+    horizon*stride steps, rotated into the start sensor frame. Envs whose
+    episode terminates inside the window are excluded (the kernel integrates
+    through the goal; the live sim auto-resets)."""
+    h, s = 6, 2
+    cfg = SimConfig(n_rays=32, kinematics=kinematics)
+    n = 128
+    sim = Sim(pack, num_envs=n, cfg=cfg, seed=3)
+    sim.reset()
+    for _ in range(25):  # varied mid-episode states (turns, wall-adjacent)
+        sim.step(sim.expert_actions())
+    wp = np.array(sim.expert_waypoints(h, s)).reshape(n, h, 2)
+    pose0 = np.array(sim.pose).astype(np.float64)
+    alive = np.ones(n, bool)
+    ref = np.zeros((n, h, 2))
+    for t in range(h * s):
+        _, term, trunc = sim.step(sim.expert_actions())
+        alive &= ~(np.maximum(np.array(term), np.array(trunc)) > 0)
+        if (t + 1) % s == 0:
+            p = np.array(sim.pose).astype(np.float64)
+            dx, dy = p[:, 0] - pose0[:, 0], p[:, 1] - pose0[:, 1]
+            c0, s0 = np.cos(pose0[:, 2]), np.sin(pose0[:, 2])
+            k = (t + 1) // s - 1
+            ref[:, k, 0] = c0 * dx + s0 * dy
+            ref[:, k, 1] = -s0 * dx + c0 * dy
+    assert alive.sum() > n // 2, "too few full-window episodes to compare"
+    err = np.abs(wp[alive] - ref[alive]).max()
+    print(f"[{kinematics}] expert_waypoints vs live replay: max err {err:.2e} "
+          f"({int(alive.sum())}/{n} envs)")
+    assert err < 1e-4, f"{kinematics}: future kernel diverges from live expert stepping"
+
+
+def check_no_odometry(pack):
+    """cfg.odometry=False: the believed pose holds its episode-start anchor (so
+    rel_goal/pos observations are per-episode constants), while diffdrive
+    dynamics and lidar -- which use the true heading -- are bit-identical to
+    the odometry run under the same seeds and the full noise stack."""
+    from fastnav.sim import noisy_config
+
+    def rollout(odometry: bool):
+        cfg = noisy_config(SimConfig(n_rays=32, kinematics="diffdrive", odometry=odometry), 1.5)
+        sim = Sim(pack, num_envs=64, cfg=cfg, seed=11)
+        sim.reset()
+        mx.random.seed(5)
+        traj = []
+        for _ in range(200):
+            a = mx.random.uniform(low=-2.0, high=2.0, shape=(64, 2))
+            obs, term, trunc = sim.step(a)
+            done = np.maximum(np.array(term), np.array(trunc))
+            traj.append((np.array(sim.pose), np.array(sim.lidar), np.array(sim.odom),
+                         np.array(obs), done))
+        return traj
+
+    ref, noo = rollout(True), rollout(False)
+    for (pose_r, lidar_r, *_), (pose_n, lidar_n, *_) in zip(ref, noo):
+        assert np.array_equal(pose_r, pose_n), "odometry flag leaked into dynamics"
+        assert np.array_equal(lidar_r, lidar_n), "odometry flag leaked into lidar"
+    moved = np.abs(np.diff([p[:, :2] for p, *_ in noo], axis=0)).max()
+    assert moved > 0.01, "robot did not move"
+    for (_, _, od0, ob0, _), (_, _, od1, ob1, done1) in zip(noo, noo[1:]):
+        # auto-reset is fused into the step that reports done, so done1 envs
+        # already carry the next episode's anchor at the second sample
+        live = done1 == 0
+        assert np.array_equal(od0[live], od1[live]), "believed pose drifted without odometry"
+        assert np.array_equal(ob0[live, 32:], ob1[live, 32:]), \
+            "rel_goal/pos observation changed mid-episode without odometry"
+    print("[no-odometry] dynamics/lidar bit-identical; believed pose pinned per episode")
+
+
 def main():
     occ, origin = make_synthetic_occupancy(seed=3)
     scene = build_scene("synth0", occ, origin, FieldConfig())
@@ -160,9 +276,17 @@ def main():
     for kin in ("holonomic", "diffdrive", "diffdrive_vel"):
         check_collision_invariant(pack, scene, kin)
         check_expert(pack, kin)
+        check_expert_waypoints(pack, kin)
 
     # --- diffdrive unicycle model unit checks ---
     check_diffdrive_kinematics(pack, scene)
+
+    # --- sim2real: lidar lever arm + command latency ---
+    check_lidar_lever_arm(pack, scene)
+    check_act_latency(pack, scene)
+
+    # --- odometry ablation (cfg.odometry=False) ---
+    check_no_odometry(pack)
 
     print("ALL CHECKS PASSED")
 
