@@ -36,9 +36,27 @@ class DaggerConfig:
     lidar_noise: float = 0.0     # gaussian range noise sigma (m), train-time
     ray_dropout: float = 0.0     # per-ray prob of a missed return (-> max_range)
     use_pos: bool = True         # feed absolute position to the policy
-    burn_in: int = 0             # BPTT steps that warm the hidden without loss (recurrent)
+    burn_in: int = 0             # chunk-leading steps that warm the state without loss (recurrent)
     value_weight: float = 0.5    # cost-to-go distillation loss weight (recurrent)
     head: str = "continuous"     # action head (fastnav.policy.HEADS), recurrent only
+    core: str = "gru"            # memory core (fastnav.policy.CORES), recurrent only
+    core_opts: dict = dataclasses.field(default_factory=dict)
+    head_opts: dict = dataclasses.field(default_factory=dict)
+    # expert takeover (AggreVaTe-style roll-in/roll-out, recurrent only): when an
+    # env has been within takeover_dist of its goal for takeover_patience straight
+    # steps without finishing (the limit-cycle signature), the expert drives it for
+    # takeover_len steps. Unlike per-step beta mixing this stores COHERENT
+    # multi-step escape demonstrations conditioned on the policy's own stuck
+    # history -- the (history -> commitment) mapping per-step labels never teach.
+    takeover_dist: float = 0.0   # trigger radius (m); 0 disables
+    takeover_patience: int = 64
+    takeover_len: int = 64
+    # train-time stochastic state resets: per-env per-step probability of
+    # zeroing the carried state (and prev action) mid-episode. Breaks rollout
+    # orbits before they fill the buffer with phase-alternating relabels (the
+    # self-taught coin-flip conditional), and trains the policy to operate
+    # through resets so deploy-time wipes are in-distribution.
+    state_dropout: float = 0.0
 
 
 class DaggerTrainer:
@@ -191,19 +209,27 @@ class RecurrentDaggerTrainer:
         self.cfg = cfg = cfg or DaggerConfig()
         mx.random.seed(seed)
         self.policy = RecurrentNavPolicy(sim.cfg, hidden=cfg.hidden, use_pos=cfg.use_pos,
-                                         head=cfg.head)
+                                         head=cfg.head, core=cfg.core, core_opts=cfg.core_opts,
+                                         head_opts=cfg.head_opts)
         self.opt = optim.Adam(learning_rate=cfg.lr)
         mx.eval(self.policy.parameters())
 
         d = sim.cfg.obs_dim + 2  # obs | prev action
         self.cap = cfg.buffer_size // cfg.chunk
+        # BC label width is the head's business: per-step actions (2) or full
+        # waypoint futures (2H); rollout stores whichever the head trains on
+        head = self.policy.head
+        self._wp_label = head.label_kind == "waypoint"
         self.buf_obs = mx.zeros((self.cap, cfg.chunk, d), dtype=mx.float32)
-        self.buf_act = mx.zeros((self.cap, cfg.chunk, 2), dtype=mx.float32)
+        self.buf_act = mx.zeros((self.cap, cfg.chunk, head.label_dim), dtype=mx.float32)
         self.buf_val = mx.zeros((self.cap, cfg.chunk), dtype=mx.float32)
         self.buf_done = mx.zeros((self.cap, cfg.chunk, 1), dtype=mx.float32)
-        self.buf_h0 = mx.zeros((self.cap, cfg.hidden), dtype=mx.float32)
-        self.h = mx.zeros((sim.num_envs, cfg.hidden), dtype=mx.float32)
+        self.buf_h0 = mx.zeros((self.cap, self.policy.h0_size), dtype=mx.float32)
+        self.h = self.policy.new_state(sim.num_envs)
         self.prev_act = mx.zeros((sim.num_envs, 2), dtype=mx.float32)
+        self.near_ct = mx.zeros((sim.num_envs,), dtype=mx.int32)      # consecutive near-goal steps
+        self.takeover_left = mx.zeros((sim.num_envs,), dtype=mx.int32)
+        self.takeover_frac = 0.0  # fraction of last rollout's steps driven by takeover
         self.buf_ptr = 0
         self.buf_full = False
         self.iter = 0
@@ -225,7 +251,10 @@ class RecurrentDaggerTrainer:
             return loss_a + cfg.value_weight * loss_v
 
         loss_and_grad = nn.value_and_grad(self.policy, loss_fn)
-        state = [self.policy.state, self.opt.state]
+        # mx.random.state included: heads may draw randomness inside bc_loss
+        # (flow-matching noise); without threading the PRNG state, compile
+        # freezes the draws and training silently degenerates
+        state = [self.policy.state, self.opt.state, mx.random.state]
 
         @partial(mx.compile, inputs=state, outputs=state)
         def update(obs, h0, done, act, val):
@@ -237,6 +266,18 @@ class RecurrentDaggerTrainer:
         self._update = update
 
     beta = DaggerTrainer.beta
+
+    def swap_sim(self, sim: Sim) -> None:
+        """Replace the rollout sim (scene-pack rotation, mirrors PPOTrainer);
+        recurrent state + per-env takeover counters restart, buffer is kept."""
+        self.sim = sim
+        sim.reset()
+        n = sim.num_envs
+        self.h = self.policy.new_state(n)
+        self.prev_act = mx.zeros((n, 2), dtype=mx.float32)
+        self.near_ct = mx.zeros((n,), dtype=mx.int32)
+        self.takeover_left = mx.zeros((n,), dtype=mx.int32)
+        mx.clear_cache()  # return the old pack's buffers to the OS (else swap ratchets)
 
     @property
     def buf_count(self) -> int:
@@ -263,14 +304,19 @@ class RecurrentDaggerTrainer:
     def rollout(self) -> None:
         sim, beta, cfg = self.sim, self.beta, self.cfg
         obs = sim.obs()
-        h0 = self.h
+        h0 = self.h[:, :self.policy.h0_size]  # chunk-start state the unroll init needs
         obs_l, act_l, val_l, done_l = [], [], [], []
+        took = mx.zeros(())
         for _ in range(cfg.chunk):
             expert = sim.expert_actions()
             obs_in = mx.concatenate([obs, self.prev_act], axis=1)
             pol_act, self.h = self.policy.step(obs_in, self.h)
             obs_l.append(obs_in)
-            act_l.append(expert)
+            # waypoint heads train on the expert's future, not its action; the
+            # expert action is still what beta-mixing/takeover executes
+            act_l.append(sim.expert_waypoints(self.policy.head.horizon,
+                                              self.policy.head.stride)
+                         if self._wp_label else expert)
             val_l.append(sim.expert_geo_val)
             if beta >= 1.0:
                 act = expert
@@ -279,14 +325,37 @@ class RecurrentDaggerTrainer:
                 act = mx.where(pick, expert, pol_act)
             else:
                 act = pol_act
+            if cfg.takeover_dist > 0:
+                near = (sim.dist_goal < cfg.takeover_dist).astype(mx.int32)
+                trigger = (self.near_ct >= cfg.takeover_patience).astype(mx.int32)
+                self.takeover_left = mx.maximum(self.takeover_left - 1, 0) \
+                    + trigger * cfg.takeover_len
+                self.near_ct = (self.near_ct + near) * near * (1 - trigger)
+                take = self.takeover_left > 0
+                act = mx.where(take[:, None], expert, act)
+                took = took + mx.mean(take.astype(mx.float32))
             obs, term, trunc = sim.step(act)
             done = mx.maximum(term, trunc).astype(mx.float32)[:, None]
-            done_l.append(done)
-            self.h = self.h * (1.0 - done)
-            self.prev_act = act * (1.0 - done)
+            reset = done
+            if cfg.state_dropout > 0:
+                # stored in done_l so the BPTT unroll resets state exactly where
+                # the rollout did (buf_done's only consumer is the unroll reset)
+                wipe = (mx.random.uniform(shape=done.shape) < cfg.state_dropout)
+                reset = mx.maximum(done, wipe.astype(mx.float32))
+            done_l.append(reset)
+            self.h = self.policy.mask_state(self.h, 1.0 - reset)
+            self.prev_act = act * (1.0 - reset)
+            if cfg.takeover_dist > 0:
+                done_i = done[:, 0].astype(mx.int32)
+                self.near_ct = self.near_ct * (1 - done_i)
+                self.takeover_left = self.takeover_left * (1 - done_i)
+        self.takeover_frac = float(took) / cfg.chunk
         self._append_rows(mx.stack(obs_l, axis=1), mx.stack(act_l, axis=1),
                           mx.stack(val_l, axis=1), mx.stack(done_l, axis=1), h0)
-        mx.eval(obs, self.h, self.buf_obs)
+        # buf_h0 included: a zero-width h0 (transformer) is a slice VIEW of the
+        # full state, and an unevaluated append chain pins every chunk's state
+        # alive (leaks one full KV ring per rollout)
+        mx.eval(obs, self.h, self.buf_obs, self.buf_h0)
 
     def _augment_seq(self, obs, act):
         """Dihedral augmentation, consistent across each sequence's timesteps."""
@@ -294,8 +363,9 @@ class RecurrentDaggerTrainer:
 
         r = self.sim.cfg.n_rays
         b, t_len, d = obs.shape
+        ld = act.shape[-1]  # label width: 2 (action) or 2H (waypoint future)
         obs = obs.reshape(b * t_len, d)
-        act = act.reshape(b * t_len, 2)
+        act = act.reshape(b * t_len, ld // 2, 2)
         lidar, rel_goal, pos = obs[:, :r], obs[:, r:r + 2], obs[:, r + 2:r + 4]
         prev = obs[:, r + 4:r + 6]
 
@@ -316,7 +386,12 @@ class RecurrentDaggerTrainer:
             x, y = v[:, 0], v[:, 1] * flip
             return mx.stack([c * x - s * y, s * x + c * y], axis=1)
 
-        rel_goal, pos, act = xform(rel_goal), xform(pos), xform(act)
+        def xform_pairs(v):  # [n, k, 2]: same dihedral map on every 2-vector
+            x, y = v[..., 0], v[..., 1] * flip[:, None]
+            return mx.stack([c[:, None] * x - s[:, None] * y,
+                             s[:, None] * x + c[:, None] * y], axis=-1)
+
+        rel_goal, pos, act = xform(rel_goal), xform(pos), xform_pairs(act)
         prev = xform(prev)
         if self.cfg.lidar_noise > 0:
             lidar = lidar + self.cfg.lidar_noise * mx.random.normal(lidar.shape)
@@ -325,7 +400,7 @@ class RecurrentDaggerTrainer:
             lidar = mx.where(miss, self.sim.cfg.max_range, lidar)
         lidar = mx.clip(lidar, 0.0, self.sim.cfg.max_range)
         obs = mx.concatenate([lidar, rel_goal, pos, prev], axis=1)
-        return obs.reshape(b, t_len, d), act.reshape(b, t_len, 2)
+        return obs.reshape(b, t_len, d), act.reshape(b, t_len, ld)
 
     def train(self) -> float:
         n = self.buf_count
@@ -357,24 +432,41 @@ def evaluate(sim: Sim, policy) -> dict:
     sim.reset()
     n = sim.num_envs
     recurrent = isinstance(policy, RecurrentNavPolicy)
-    h = mx.zeros((n, policy.hidden), dtype=mx.float32) if recurrent else None
+    h = policy.new_state(n) if recurrent else None
     prev = mx.zeros((n, 2), dtype=mx.float32)
+    prev_clamped = mx.zeros((n, 2), dtype=mx.float32)
     succeeded = mx.zeros((n,), dtype=mx.bool_)
     finished = mx.zeros((n,), dtype=mx.bool_)
     collided = mx.zeros((n,), dtype=mx.bool_)
     steps_taken = mx.zeros((n,), dtype=mx.int32)
     min_clear = mx.full((n,), 9.0)
+    # mean squared per-step command jerk (normalized per action dim), accumulated
+    # over each env's first episode -- a smoothness outcome independent of reward
+    scale = mx.array(policy.act_scale)
+    jerk_sum = mx.zeros((n,))
+    jerk_cnt = mx.zeros((n,))
+    prev_live = mx.zeros((n,), dtype=mx.float32)  # no predecessor before the first step
     for t in range(sim.cfg.max_steps + 1):
         obs = sim.obs()
         if recurrent:
             act, h = policy.step(mx.concatenate([obs, prev], axis=1), h)
         else:
             act = policy(obs)
+        # measure jerk on the executed (clamped) command, the reference the
+        # low-level controller actually tracks; uses prev_clamped, not the
+        # policy-input prev (left unchanged so success numbers are unperturbed)
+        clamped = sim.kin.clamp(act, sim.cfg)
+        active = mx.logical_not(finished).astype(mx.float32)
+        dj = (clamped - prev_clamped) / scale
+        jerk_sum = jerk_sum + mx.mean(dj * dj, axis=1) * prev_live * active
+        jerk_cnt = jerk_cnt + prev_live * active
         obs, term, trunc = sim.step(act)
         min_clear = mx.where(finished, min_clear, mx.minimum(min_clear, sim.clearance))
+        live = 1.0 - mx.maximum(term, trunc).astype(mx.float32)[:, None]
+        prev_clamped = clamped * live  # jerk predecessor, tracked for both policy types
+        prev_live = live[:, 0]
         if recurrent:
-            live = 1.0 - mx.maximum(term, trunc).astype(mx.float32)[:, None]
-            h = h * live
+            h = policy.mask_state(h, live)
             prev = act * live
         done = mx.logical_or(term.astype(mx.bool_), trunc.astype(mx.bool_))
         first = mx.logical_and(done, mx.logical_not(finished))
@@ -386,7 +478,7 @@ def evaluate(sim: Sim, policy) -> dict:
             mx.eval(finished)
             if bool(mx.all(finished)):
                 break
-    mx.eval(succeeded, finished, steps_taken, min_clear)
+    mx.eval(succeeded, finished, steps_taken, min_clear, jerk_sum, jerk_cnt)
     n_fin = int(mx.sum(finished))
     n_suc = int(mx.sum(succeeded))
     safe = mx.logical_and(succeeded, min_clear > 0.03)  # never within 3cm of contact
@@ -396,4 +488,6 @@ def evaluate(sim: Sim, policy) -> dict:
         "collision_rate": int(mx.sum(collided)) / max(n_fin, 1),
         "episodes": n_fin,
         "steps_per_episode": float(mx.sum(steps_taken)) / max(n_fin, 1),
+        # mean normalized squared command jerk per step (lower = smoother)
+        "jerk": float(mx.sum(jerk_sum) / mx.maximum(mx.sum(jerk_cnt), 1.0)),
     }

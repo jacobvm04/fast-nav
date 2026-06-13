@@ -39,8 +39,12 @@ def main():
     ap.add_argument("--noise", type=float, default=0.0,
                     help="sim2real noise level in training rollouts (1.0 = realistic)")
     ap.add_argument("--collision-penalty", type=float, default=0.25)
+    ap.add_argument("--success-bonus", type=float, default=0.5)
+    ap.add_argument("--timeout-penalty", type=float, default=0.0)
     ap.add_argument("--clear-coef", type=float, default=0.012)
     ap.add_argument("--speed-prox-coef", type=float, default=0.012)
+    ap.add_argument("--smooth-coef", type=float, default=0.0,
+                    help="control-smoothness penalty on per-step command jerk (see PPOConfig)")
     ap.add_argument("--clear-margin", type=float, default=0.10)
     ap.add_argument("--train-contact-margin", type=float, default=None,
                     help="inflated contact-terminal margin during training (eval stays at default)")
@@ -48,9 +52,28 @@ def main():
                     help="resample a fresh train-scene subset every N iters (0 = off)")
     ap.add_argument("--rotate-size", type=int, default=800, help="scenes per rotated pack")
     ap.add_argument("--rays", type=int, default=64, help="lidar rays (policy obs dim follows)")
+    ap.add_argument("--dt", type=float, default=0.1, help="control timestep (s); evals match")
+    ap.add_argument("--max-steps", type=int, default=512)
+    ap.add_argument("--lidar-offset", type=float, default=0.0,
+                    help="lidar mount fwd of robot center (m); sim2real lever arm, evals match")
+    ap.add_argument("--lidar-offset-sigma", type=float, default=0.0,
+                    help="per-episode lidar mount randomization sigma (m); train only")
+    ap.add_argument("--act-latency", type=int, default=0,
+                    help="max command delay (steps), per-episode ~U{0..max}; evals match")
     ap.add_argument("--kinematics", default="holonomic", choices=["holonomic", "diffdrive", "diffdrive_vel"])
+    ap.add_argument("--odometry", action=argparse.BooleanOptionalAction, default=True,
+                    help="--no-odometry: believed pose pinned at the episode start, so the "
+                         "goal observation is a start-frame constant (see SimConfig.odometry)")
     ap.add_argument("--head", default="continuous", choices=["continuous", "discrete_w"],
                     help="policy action head (fastnav.policy.HEADS)")
+    ap.add_argument("--core", default="gru", choices=["gru", "transformer"],
+                    help="memory core (fastnav.policy.CORES)")
+    ap.add_argument("--context", type=int, default=64, help="transformer sliding window")
+    ap.add_argument("--core-layers", type=int, default=3, help="transformer blocks")
+    ap.add_argument("--core-heads", type=int, default=4, help="transformer attention heads")
+    ap.add_argument("--hidden", type=int, default=256, help="core width (d_model for transformer)")
+    ap.add_argument("--burn-in", type=int, default=0,
+                    help="chunk-leading steps excluded from the PPO loss (state warmup)")
     ap.add_argument("--max-goal-dist", type=float, default=None,
                     help="cap train-episode geodesic length (m); evals keep the standard range")
     ap.add_argument("--bc-coef", type=float, default=0.0,
@@ -58,6 +81,11 @@ def main():
     ap.add_argument("--chunk", type=int, default=16, help="rollout chunk / BPTT length")
     ap.add_argument("--minibatch-seqs", type=int, default=2048)
     args = ap.parse_args()
+
+    # large rotating scene packs + rollout buffers churn GB-scale memory; an
+    # uncapped MLX buffer cache ratchets into swap and gets the run OOM-killed
+    # (same guard as train_dagger)
+    mx.set_cache_limit(8 << 30)
 
     import fnmatch
     import random
@@ -95,19 +123,28 @@ def main():
 
     import dataclasses
 
-    scfg = SimConfig(n_rays=args.rays, kinematics=args.kinematics)
+    scfg = SimConfig(n_rays=args.rays, kinematics=args.kinematics, dt=args.dt,
+                     max_steps=args.max_steps, odometry=args.odometry,
+                     lidar_offset=args.lidar_offset, act_latency=args.act_latency)
     train_cfg = noisy_config(scfg, args.noise) if args.noise > 0 else scfg
+    if args.lidar_offset_sigma > 0:
+        train_cfg = dataclasses.replace(train_cfg, lidar_offset_sigma=args.lidar_offset_sigma)
     if args.train_contact_margin is not None:
         train_cfg = dataclasses.replace(train_cfg, contact_margin=args.train_contact_margin)
     if args.max_goal_dist is not None:
         train_cfg = dataclasses.replace(train_cfg, max_goal_dist=args.max_goal_dist)
     sim = Sim(train_pack, num_envs=args.envs, cfg=train_cfg, seed=args.seed)
     sim.reset()
+    core_opts = ({"context": args.context, "layers": args.core_layers, "heads": args.core_heads}
+                 if args.core == "transformer" else {})
     pcfg = PPOConfig(lr=args.lr, entropy_coef=args.entropy_coef, init_std=args.init_std,
+                     success_bonus=args.success_bonus, timeout_penalty=args.timeout_penalty,
                      collision_penalty=args.collision_penalty, clear_coef=args.clear_coef,
                      clear_margin=args.clear_margin, speed_prox_coef=args.speed_prox_coef,
+                     smooth_coef=args.smooth_coef,
                      bc_coef=args.bc_coef, head=args.head, chunk=args.chunk,
-                     minibatch_seqs=args.minibatch_seqs)
+                     minibatch_seqs=args.minibatch_seqs, core=args.core, core_opts=core_opts,
+                     hidden=args.hidden, burn_in=args.burn_in)
     init = args.init if args.init and Path(args.init).exists() else None
     trainer = PPOTrainer(sim, pcfg, seed=args.seed, init_weights=init)
     n_params = sum(v.size for _, v in tree_flatten(trainer.policy.parameters()))
@@ -119,6 +156,11 @@ def main():
 
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
+    # the recipe next to the weights: load_policy needs use_pos (the _scale it
+    # configures is an underscore attr, hence never in the checkpoint) + core opts
+    (out / "config.json").write_text(json.dumps(
+        {**vars(args), "use_pos": pcfg.use_pos, "core": pcfg.core, "core_opts": pcfg.core_opts},
+        indent=1))
     run = None
     if args.use_wandb:
         try:
@@ -150,17 +192,19 @@ def main():
             ev_h2 = evaluate(sim_h2, trainer.policy)
             row = {"iter": it, "frames": frames, **stats,
                    "train_success": ev_tr["success"], "heldout_success": ev_he["success"],
-                   "heldout2_success": ev_h2["success"]}
+                   "heldout2_success": ev_h2["success"], "heldout_jerk": ev_he["jerk"]}
             history.append(row)
             if run:
                 run.log({"eval/train_success": ev_tr["success"],
                          "eval/heldout_success": ev_he["success"],
-                         "eval/heldout2_success": ev_h2["success"]}, step=it)
+                         "eval/heldout2_success": ev_h2["success"],
+                         "eval/heldout_jerk": ev_he["jerk"]}, step=it)
             print(f"it {it:4d}  frames {frames / 1e6:7.1f}M  R {stats['reward_mean']:+.4f}  "
                   f"std {stats['std']:.3f}  roll-succ {stats['rollout_success'] * 100:5.1f}%  "
                   f"train {ev_tr['success'] * 100:5.1f}%  HELD-OUT {ev_he['success'] * 100:5.1f}%  "
                   f"HELD-OUT2 {ev_h2['success'] * 100:5.1f}%  "
-                  f"safe {ev_he['safe_success'] * 100:5.1f}%/{ev_h2['safe_success'] * 100:5.1f}%")
+                  f"safe {ev_he['safe_success'] * 100:5.1f}%/{ev_h2['safe_success'] * 100:5.1f}%  "
+                  f"jerk {ev_he['jerk']:.3f}")
             combined = ev_he["success"] + ev_h2["success"]
             if combined > best:
                 best = combined
